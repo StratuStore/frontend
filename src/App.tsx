@@ -1,5 +1,7 @@
+import HomePage from "@/ui/pages/Home"
+
 function App() {
-    return <div>I'm alive!</div>
+    return <HomePage />
 }
 
 export default App

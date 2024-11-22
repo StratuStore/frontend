@@ -1,0 +1,42 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    font: inherit;
+    padding: 16px 20px;
+    border-radius: 20px;
+    border: 1px solid #acacac;
+    transition: border 0.25s;
+    outline: none;
+    width: 100%;
+}
+
+.input:focus-visible {
+    border: 1px solid black;
+}
+
+.inner {
+    position: absolute;
+    display: flex;
+    align-items: center;
+
+    &:first-child {
+        left: 20px;
+
+        & + .input {
+            padding-left: 50px;
+        }
+    }
+
+    &:last-child {
+        right: 20px;
+
+        & + .input {
+            padding-right: 50px;
+        }
+    }
+}
+
