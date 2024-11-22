@@ -6,16 +6,18 @@
 
 .input {
     font: inherit;
+    color: inherit;
     padding: 16px 20px;
     border-radius: 20px;
     border: 1px solid #acacac;
     transition: border 0.25s;
     outline: none;
     width: 100%;
+    background: transparent;
 }
 
 .input:focus-visible {
-    border: 1px solid black;
+    border: 1px solid var(--text-color);
 }
 
 .inner {
