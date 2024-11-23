@@ -1,7 +1,8 @@
 import Icon from "@mdi/react"
 import { mdiFilterVariant, mdiMagnify } from "@mdi/js"
 
-import { Input } from "@/ui/shared/Input"
+import Input from "@/ui/shared/Input"
+import SectionBreak from "@/ui/shared/SectionBreak"
 
 import styles from "./styles.module.scss"
 
@@ -12,6 +13,7 @@ export default function HomePage() {
                 prependInner={<Icon path={mdiMagnify} size={1} />}
                 appendInner={<Icon path={mdiFilterVariant} size={1} />}
             />
+            <SectionBreak />
         </div>
     )
 }

@@ -5,7 +5,11 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
     appendInner?: React.ReactNode
 }
 
-export function Input({ prependInner, appendInner, ...props }: InputProps) {
+export default function Input({
+    prependInner,
+    appendInner,
+    ...props
+}: InputProps) {
     return (
         <div className={styles.wrapper}>
             {prependInner && (
