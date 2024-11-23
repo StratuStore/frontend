@@ -13,3 +13,9 @@ html {
     background-color: var(--bg-color);
 }
 
+html,
+body,
+#root {
+    height: 100%;
+}
+

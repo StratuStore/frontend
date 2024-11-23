@@ -1,3 +1,5 @@
+import clsx from "clsx"
+
 import styles from "./styles.module.scss"
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -8,10 +10,11 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export default function Input({
     prependInner,
     appendInner,
+    className,
     ...props
 }: InputProps) {
     return (
-        <div className={styles.wrapper}>
+        <div className={clsx(className, styles.wrapper)}>
             {prependInner && (
                 <span className={styles.inner}>{prependInner}</span>
             )}
