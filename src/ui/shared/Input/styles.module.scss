@@ -1,3 +1,5 @@
+@use "@/assets/sass/abstracts";
+
 .wrapper {
     position: relative;
     display: flex;
@@ -10,7 +12,7 @@
     padding: 16px 20px;
     border-radius: 20px;
     border: 1px solid var(--border-color);
-    transition: border 0.25s;
+    transition: border abstracts.$animations-duration-normal;
     outline: none;
     width: 100%;
     background: transparent;

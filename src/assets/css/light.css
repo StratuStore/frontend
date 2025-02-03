@@ -2,6 +2,9 @@
     --text-color: #000000;
     --bg-color: #ffffff;
     --accent-color: #a2cdfe;
+    --accent-color-opaque: #a2cdfe80;
     --border-color: #acacac;
+    --button-bg-hover: #2f2f31;
+    --ghost-hover: #e2e2e2;
 }
 

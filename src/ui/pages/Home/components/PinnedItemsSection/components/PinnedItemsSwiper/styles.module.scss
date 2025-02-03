@@ -1,0 +1,12 @@
+$pinnedItemCardsGap: 20;
+
+.slideContainer {
+    display: flex;
+    flex-direction: row;
+    gap: $pinnedItemCardsGap + 0px;
+}
+
+:export {
+    pinnedItemCardsGap: $pinnedItemCardsGap;
+}
+

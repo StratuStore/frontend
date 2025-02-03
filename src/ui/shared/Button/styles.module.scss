@@ -1,0 +1,46 @@
+@use "@/assets/sass/abstracts";
+
+.button {
+    font-size: abstracts.$typography-font-sm;
+    font-weight: abstracts.$typography-fw-semi-bold;
+    border: none;
+    transition: background-color abstracts.$animations-duration-normal;
+    border-radius: 8px;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.primary {
+    color: var(--bg-color);
+    background-color: var(--text-color);
+    outline: none;
+}
+
+.primary:focus-visible,
+.primary:hover {
+    background-color: var(--button-bg-hover);
+}
+
+.ghost,
+.icon {
+    color: var(--text-color);
+    background: transparent;
+}
+
+.primary,
+.ghost {
+    padding: 12px 20px;
+}
+
+.icon {
+    padding: 4px 4px;
+}
+
+.ghost:focus-visible,
+.ghost:hover,
+.icon:focus-visible,
+.icon:hover {
+    background-color: var(--ghost-hover);
+}
+
