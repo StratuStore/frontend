@@ -1,0 +1,45 @@
+@import "../../../assets/sass/abstracts/typography";
+
+.text {
+    color: var(--text-color);
+}
+
+.accent {
+    color: var(--accent-color);
+}
+
+.xxs {
+    font-size: $font-xxs;
+}
+
+.xs {
+    font-size: $font-xs;
+}
+
+.sm {
+    font-size: $font-sm;
+}
+
+.md {
+    font-size: $font-md;
+}
+
+.lg {
+    font-size: $font-lg;
+}
+
+.light {
+    font-weight: $fw-light;
+}
+
+.normal {
+    font-weight: $fw-normal;
+}
+
+.semi-bold {
+    font-weight: $fw-semi-bold;
+}
+
+.bold {
+    font-weight: $fw-bold;
+}

@@ -4,8 +4,6 @@ import { useElementSize } from "@reactuses/core"
 import PinnedItemsSwiper from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedItemsSwiper"
 import { Folder } from "@/types/models/Folder"
 
-import styles from "./styles.module.scss"
-
 const mockFolders: Folder[] = []
 
 for (let i = 0; i < 100; i++) {
@@ -20,10 +18,7 @@ export default function PinnedItemsSection() {
     const [sectionWidth] = useElementSize(sectionContainerRef)
 
     return (
-        <div
-            className={styles.pinnedItemsSectionContainer}
-            ref={sectionContainerRef}
-        >
+        <div ref={sectionContainerRef}>
             <PinnedItemsSwiper
                 parentWidth={sectionWidth}
                 folders={mockFolders}

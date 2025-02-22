@@ -1,0 +1,29 @@
+@use "@/assets/sass/abstracts";
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb {
+    font-size: abstracts.$typography-font-sm;
+    font-weight: abstracts.$typography-fw-light;
+    color: var(--text-color);
+}
+
+.separator {
+    margin: 0 5px;
+    font-size: abstracts.$typography-font-sm;
+    font-weight: abstracts.$typography-fw-light;
+    color: var(--text-color);
+}
+
+.breadcrumb:last-child {
+    margin-right: 0;
+}
+
+.breadcrumb:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
