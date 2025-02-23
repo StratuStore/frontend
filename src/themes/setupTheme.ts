@@ -30,24 +30,25 @@ function setTheme() {
         return
     }
 
-    document.documentElement.setAttribute("data-theme", currentTheme)
+    const nextTheme = currentTheme ? currentTheme : preferredTheme
 
-    if (currentTheme === Theme.Light) {
+    if (nextTheme === Theme.Light) {
         lightStyles.setAttribute("media", "all")
         darkStyles.setAttribute("media", "not all")
     }
 
-    if (currentTheme === Theme.Dark) {
+    if (nextTheme === Theme.Dark) {
         darkStyles.setAttribute("media", "all")
         lightStyles.setAttribute("media", "not all")
     }
 
-    if (currentTheme === Theme.System) {
+    if (nextTheme === Theme.System) {
         lightStyles.setAttribute("media", "(prefers-color-scheme: light)")
         darkStyles.setAttribute("media", "(prefers-color-scheme: dark)")
     }
 
-    localStorage.setItem(THEME_LS_KEY, currentTheme)
+    document.documentElement.setAttribute("data-theme", nextTheme)
+    localStorage.setItem(THEME_LS_KEY, nextTheme)
 }
 
 themeMedia.addEventListener("change", setTheme)
