@@ -9,13 +9,18 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export default function Button({
     children,
     variant = "primary",
+    className,
     ...rest
 }: ButtonProps) {
-    const classes = clsx(styles.button, {
-        [styles.primary]: variant === "primary",
-        [styles.ghost]: variant === "ghost",
-        [styles.icon]: variant === "icon",
-    })
+    const classes = clsx(
+        styles.button,
+        {
+            [styles.primary]: variant === "primary",
+            [styles.ghost]: variant === "ghost",
+            [styles.icon]: variant === "icon",
+        },
+        className
+    )
 
     return (
         <button {...rest} className={classes}>
