@@ -1,4 +1,4 @@
-import React from "react"
+import { Fragment } from "react/jsx-runtime"
 import styles from "./styles.module.scss"
 
 interface BreadcrumbsProps {
@@ -6,13 +6,15 @@ interface BreadcrumbsProps {
     onItemClick?: (item: string) => void
 }
 
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onItemClick }) => {
+export default function Breadcrumbs({
+    items,
+    onItemClick,
+}: BreadcrumbsProps): JSX.Element {
     return (
         <nav className={styles.breadcrumbs}>
             {items.map((item, index) => (
-                <>
+                <Fragment key={item}>
                     <span
-                        key={index}
                         className={styles.breadcrumb}
                         onClick={() => onItemClick && onItemClick(item)}
                     >
@@ -21,11 +23,9 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onItemClick }) => {
                     {index < items.length - 1 && (
                         <span className={styles.separator}>/</span>
                     )}
-                </>
+                </Fragment>
             ))}
         </nav>
     )
 }
-
-export default Breadcrumbs
 

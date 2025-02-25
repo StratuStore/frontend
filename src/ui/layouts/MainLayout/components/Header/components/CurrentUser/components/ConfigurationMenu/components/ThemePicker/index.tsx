@@ -1,5 +1,7 @@
+import configStore from "@/config/store"
 import { Theme } from "@/themes/types"
 import Select from "@/ui/shared/Select"
+import { observer } from "mobx-react-lite"
 
 const themeOptions = [
     { label: "Light", value: "light" },
@@ -7,17 +9,19 @@ const themeOptions = [
     { label: "System", value: "system" },
 ]
 
-function handleThemeChange(theme: Theme) {
-    document.documentElement.setAttribute("data-theme", theme)
-}
+function ThemePickerComponent() {
+    const currentTheme = configStore.theme
 
-export default function ThemePicker() {
     return (
         <Select
             placeholder="Select theme..."
             items={themeOptions}
-            onValueChange={handleThemeChange}
+            onValueChange={(theme) => configStore.setTheme(theme as Theme)}
+            defaultValue={currentTheme}
         />
     )
 }
+
+const ThemePicker = observer(ThemePickerComponent)
+export default ThemePicker
 

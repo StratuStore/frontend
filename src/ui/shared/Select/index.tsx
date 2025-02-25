@@ -2,6 +2,8 @@ import * as React from "react"
 import { Select as RadixSelect } from "radix-ui"
 import clsx from "clsx"
 import styles from "./styles.module.scss"
+import Icon from "@mdi/react"
+import { mdiCheck, mdiChevronDown } from "@mdi/js"
 
 export type SelectItem = {
     value: string
@@ -19,7 +21,9 @@ export default function Select({ items, placeholder, ...rest }: SelectProps) {
         <RadixSelect.Root {...rest}>
             <RadixSelect.Trigger className={styles.trigger} aria-label="Food">
                 <RadixSelect.Value placeholder={placeholder} />
-                <RadixSelect.Icon className={styles.icon}>D</RadixSelect.Icon>
+                <RadixSelect.Icon className={styles.icon}>
+                    <Icon path={mdiChevronDown} size="16px" />
+                </RadixSelect.Icon>
             </RadixSelect.Trigger>
 
             <RadixSelect.Portal>
@@ -39,7 +43,7 @@ export default function Select({ items, placeholder, ...rest }: SelectProps) {
                                     <RadixSelect.ItemIndicator
                                         className={styles.itemIndicator}
                                     >
-                                        C
+                                        <Icon path={mdiCheck} size="16px" />
                                     </RadixSelect.ItemIndicator>
                                 </div>
                                 <RadixSelect.ItemText>
