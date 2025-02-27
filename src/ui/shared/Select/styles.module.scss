@@ -19,7 +19,7 @@
 }
 
 .icon {
-    color: Var(--violet-11);
+    font-size: 0;
 }
 
 .content {
@@ -70,7 +70,6 @@
     user-select: none;
 
     &[data-disabled] {
-        color: var(--mauve-8);
         pointer-events: none;
     }
 
@@ -81,6 +80,11 @@
     &:hover {
         background-color: var(--accent-color-opaque);
     }
+}
+
+.indicatorPlaceholder,
+.itemIndicator {
+    font-size: 0;
 }
 
 @keyframes slideRightAndFade {

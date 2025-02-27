@@ -1,5 +1,7 @@
 import { Fragment } from "react/jsx-runtime"
 import styles from "./styles.module.scss"
+import Icon from "@/ui/shared/Icon"
+import { IconName } from "@/ui/shared/Icon/types"
 
 interface BreadcrumbsProps {
     items: string[]
@@ -21,7 +23,10 @@ export default function Breadcrumbs({
                         {item}
                     </span>
                     {index < items.length - 1 && (
-                        <span className={styles.separator}>/</span>
+                        <Icon
+                            name={IconName.ChevronRight}
+                            className={styles.separator}
+                        />
                     )}
                 </Fragment>
             ))}

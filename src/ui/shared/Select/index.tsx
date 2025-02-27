@@ -2,8 +2,8 @@ import * as React from "react"
 import { Select as RadixSelect } from "radix-ui"
 import clsx from "clsx"
 import styles from "./styles.module.scss"
-import Icon from "@mdi/react"
-import { mdiCheck, mdiChevronDown } from "@mdi/js"
+import Icon from "@/ui/shared/Icon"
+import { IconName } from "@/ui/shared/Icon/types"
 
 export type SelectItem = {
     value: string
@@ -22,7 +22,11 @@ export default function Select({ items, placeholder, ...rest }: SelectProps) {
             <RadixSelect.Trigger className={styles.trigger} aria-label="Food">
                 <RadixSelect.Value placeholder={placeholder} />
                 <RadixSelect.Icon className={styles.icon}>
-                    <Icon path={mdiChevronDown} size="16px" />
+                    <Icon
+                        name={IconName.ChevronDown}
+                        width="20px"
+                        height="20px"
+                    />
                 </RadixSelect.Icon>
             </RadixSelect.Trigger>
 
@@ -39,11 +43,15 @@ export default function Select({ items, placeholder, ...rest }: SelectProps) {
                                 key={item.value}
                                 value={item.value}
                             >
-                                <div>
+                                <div className={styles.indicatorPlaceholder}>
                                     <RadixSelect.ItemIndicator
                                         className={styles.itemIndicator}
                                     >
-                                        <Icon path={mdiCheck} size="16px" />
+                                        <Icon
+                                            name={IconName.Check}
+                                            width="16px"
+                                            height="16px"
+                                        />
                                     </RadixSelect.ItemIndicator>
                                 </div>
                                 <RadixSelect.ItemText>

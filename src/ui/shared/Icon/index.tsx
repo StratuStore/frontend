@@ -1,20 +1,20 @@
-import { Icon as MdiIcon } from "@mdi/react"
-import { IconProps as MdiIconProps } from "@mdi/react/dist/IconProps"
-import { mdiChevronLeft, mdiChevronRight, mdiFolder } from "@mdi/js"
+import clsx from "clsx"
+import spritesheetPath from "@/assets/icons/spritesheet.svg"
+import { IconProps } from "./types"
+import styles from "./styles.module.scss"
 
-import { IconName } from "@/ui/shared/Icon/types"
+export default function Icon({
+    name,
+    width = "1em",
+    height = "1em",
+    className = "",
+}: IconProps) {
+    const iconClasses = clsx(styles.icon, className)
 
-const iconPaths: Record<IconName, string> = {
-    [IconName.Folder]: mdiFolder,
-    [IconName.ChevronLeft]: mdiChevronLeft,
-    [IconName.ChevronRight]: mdiChevronRight,
-}
-
-export type IconProps = Omit<MdiIconProps, "path"> & {
-    name: IconName
-}
-
-export default function Icon({ name, ...rest }: IconProps) {
-    return <MdiIcon path={iconPaths[name]} {...rest} />
+    return (
+        <svg className={iconClasses} style={{ width, height }}>
+            <use xlinkHref={`${spritesheetPath}#${name}`} />
+        </svg>
+    )
 }
 

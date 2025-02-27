@@ -1,6 +1,6 @@
 import Button from "@/ui/shared/Button"
-import { mdiChevronLeft, mdiChevronRight } from "@mdi/js"
-import Icon from "@mdi/react"
+import Icon from "@/ui/shared/Icon"
+import { IconName } from "@/ui/shared/Icon/types"
 
 export type SwiperControlsProps = {
     hasNext: boolean
@@ -18,10 +18,10 @@ export default function SwiperControls({
     return (
         <div>
             <Button variant="icon" disabled={!hasPrev} onClick={setPrev}>
-                <Icon path={mdiChevronLeft} size="24px" />
+                <Icon name={IconName.ChevronLeft} width="24px" height="24px" />
             </Button>
             <Button variant="icon" disabled={!hasNext} onClick={setNext}>
-                <Icon path={mdiChevronRight} size="24px" />
+                <Icon name={IconName.ChevronRight} width="24px" height="24px" />
             </Button>
         </div>
     )
