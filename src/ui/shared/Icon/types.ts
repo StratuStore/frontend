@@ -1,5 +1,6 @@
 export enum IconName {
     Folder = "folder",
+    File = "file",
     InformationOutline = "information-outline",
     LockOutline = "lock-outline",
     Magnify = "magnify",

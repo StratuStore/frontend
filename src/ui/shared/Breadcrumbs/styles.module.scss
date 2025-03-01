@@ -6,15 +6,17 @@
 }
 
 .breadcrumb {
-    font-size: abstracts.$typography-font-sm;
+    font-size: 1em;
     font-weight: abstracts.$typography-fw-light;
     color: var(--text-color);
 }
 
 .separator {
-    margin: 0 5px;
-    font-size: abstracts.$typography-font-sm;
+    font-size: 1em;
     font-weight: abstracts.$typography-fw-light;
+    color: var(--text-color);
+
+    margin: 0 5px;
 }
 
 .breadcrumb:last-child {

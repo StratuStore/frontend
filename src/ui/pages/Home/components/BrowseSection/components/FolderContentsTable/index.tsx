@@ -9,6 +9,8 @@ import { useMemo, useRef } from "react"
 import { File } from "@/types/models/File"
 import { Folder } from "@/types/models/Folder"
 import styles from "./styles.module.scss"
+import FolderBadge from "@/ui/shared/FolderBadge"
+import FileBadge from "@/ui/shared/FileBadge"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -61,7 +63,14 @@ export default function FolderContentsTable({
         () => [
             columnHelper.accessor("name", {
                 header: "Filename",
-                cell: (info) => info.getValue(),
+                cell: (info) => {
+                    const item = info.row.original
+                    return item.type === "Folder" ? (
+                        <FolderBadge name={item.name} />
+                    ) : (
+                        <FileBadge name={item.name} />
+                    )
+                },
             }),
             columnHelper.accessor("createdAt", {
                 header: "Date of creation",

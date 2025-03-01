@@ -1,3 +1,5 @@
+@use "@/assets/sass/abstracts";
+
 .tableWrapper {
     width: 100%;
     height: 100%;
@@ -20,6 +22,8 @@
     text-align: left;
     font-weight: 500;
     border-bottom: 2px solid var(--border-color);
+
+    font-weight: abstracts.$typography-fw-bold;
 }
 
 .tableRow {
