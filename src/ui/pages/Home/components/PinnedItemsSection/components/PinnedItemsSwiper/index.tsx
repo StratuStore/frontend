@@ -5,8 +5,8 @@ import { Swiper as SwiperComponent, SwiperSlide } from "swiper/react"
 import PinnedFolderCard from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedFolderCard"
 import PinnedFileCard from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedFileCard"
 import SwiperHeader from "@/ui/pages/Home/components/PinnedItemsSection/components/SwiperHeader"
-import { Folder } from "@/types/models/Folder"
-import { File } from "@/types/models/File"
+import { Folder } from "@/entities/Folder"
+import { File } from "@/entities/File"
 
 import { PINNED_ITEM_CARD_WIDTH } from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedItemCard/constants"
 import { PINNED_ITEM_CARDS_GAP } from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedItemsSwiper/constants"
@@ -85,7 +85,11 @@ export default function PinnedItemsSwiper({
     return (
         <>
             <SwiperHeader swiper={swiper} />
-            <SwiperComponent onSwiper={setSwiper}>
+            <SwiperComponent
+                onSwiper={setSwiper}
+                slidesPerView={1}
+                className={styles.swiper}
+            >
                 {new Array(totalSlides).fill(0).map((_, index) => (
                     <SwiperSlide key={index}>
                         <div className={styles.slideContainer}>

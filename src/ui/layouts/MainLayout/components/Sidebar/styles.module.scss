@@ -1,0 +1,13 @@
+.sidebarContainer {
+    width: 0px;
+    flex-shrink: 0;
+
+    border-left: 1px solid var(--border-color);
+
+    &.open {
+        width: 320px;
+    }
+
+    --sidebar-section-padding: 24px 16px;
+}
+

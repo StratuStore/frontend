@@ -1,4 +1,4 @@
-import { File } from "@/types/models/File"
+import { File } from "@/entities/File"
 
 export class Folder {
     path: string[]

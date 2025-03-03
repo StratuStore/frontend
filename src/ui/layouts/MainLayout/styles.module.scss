@@ -1,4 +1,11 @@
 .mainLayoutContainer {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 100%;
+}
+
+.content {
     padding: 64px 48px;
     height: 100%;
     display: flex;

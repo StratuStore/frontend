@@ -6,17 +6,17 @@ import {
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { useMemo, useRef } from "react"
-import { File } from "@/types/models/File"
-import { Folder } from "@/types/models/Folder"
+import { File } from "@/entities/File"
+import { Folder } from "@/entities/Folder"
 import styles from "./styles.module.scss"
 import FolderBadge from "@/ui/shared/FolderBadge"
 import FileBadge from "@/ui/shared/FileBadge"
+import { fileStore } from "@/entities/File/store"
+import { createPortal } from "react-dom"
 
 interface FolderContentsTableProps {
     files: File[]
     folders: Folder[]
-    onFileClick?: (file: File) => void
-    onFolderClick?: (folder: Folder) => void
 }
 
 type TableItem = {
@@ -31,8 +31,6 @@ type TableItem = {
 export default function FolderContentsTable({
     files,
     folders,
-    onFileClick,
-    onFolderClick,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
     const columnHelper = createColumnHelper<TableItem>()
@@ -108,11 +106,19 @@ export default function FolderContentsTable({
         overscan: 10,
     })
 
+    function handleFileClick(file: File) {
+        fileStore.selectFile(file)
+    }
+
+    function handleFolderClick(folder: Folder) {
+        console.log(folder)
+    }
+
     const handleRowClick = (item: TableItem) => {
         if (item.type === "Folder") {
-            onFolderClick?.(item.originalItem as Folder)
+            handleFolderClick(item.originalItem as Folder)
         } else {
-            onFileClick?.(item.originalItem as File)
+            handleFileClick(item.originalItem as File)
         }
     }
 

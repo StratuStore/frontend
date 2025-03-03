@@ -1,6 +1,6 @@
 import { mdiFolder } from "@mdi/js"
 
-import { File } from "@/types/models/File"
+import { File } from "@/entities/File"
 import PinnedItemCard from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedItemCard"
 
 export type PinnedFileCardProps = {

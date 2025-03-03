@@ -2,7 +2,7 @@ import { useRef } from "react"
 import { useElementSize } from "@reactuses/core"
 
 import PinnedItemsSwiper from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedItemsSwiper"
-import { Folder } from "@/types/models/Folder"
+import { Folder } from "@/entities/Folder"
 
 const mockFolders: Folder[] = []
 
@@ -18,7 +18,7 @@ export default function PinnedItemsSection() {
     const [sectionWidth] = useElementSize(sectionContainerRef)
 
     return (
-        <div ref={sectionContainerRef}>
+        <div ref={sectionContainerRef} style={{ display: "grid" }}>
             <PinnedItemsSwiper
                 parentWidth={sectionWidth}
                 folders={mockFolders}
