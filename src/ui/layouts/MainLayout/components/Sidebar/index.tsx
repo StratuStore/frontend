@@ -13,14 +13,16 @@ function SidebarComponent() {
                 [styles.open]: Boolean(activeFile),
             })}
         >
-            {activeFile && (
-                <>
-                    <Header file={activeFile} />
-                    <div className="preview"></div>
-                    <div className="accessSettings"></div>
-                    <div className="fileDetails"></div>
-                </>
-            )}
+            <div className={styles.sidebarContent}>
+                {activeFile && (
+                    <>
+                        <Header file={activeFile} />
+                        <div className="preview"></div>
+                        <div className="accessSettings"></div>
+                        <div className="fileDetails"></div>
+                    </>
+                )}
+            </div>
         </div>
     )
 }
