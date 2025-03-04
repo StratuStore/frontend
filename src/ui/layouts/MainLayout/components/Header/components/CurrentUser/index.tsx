@@ -10,7 +10,7 @@ export default function CurrentUser() {
             renderTrigger={() => (
                 <div className={styles.currentUserContainer}>
                     <div className={styles.usernameWrapper}>Current User</div>
-                    <img src={avatarUrl} className="" />
+                    <img src={avatarUrl} />
                 </div>
             )}
             renderContent={() => <ConfigurationMenu />}

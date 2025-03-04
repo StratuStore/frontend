@@ -1,0 +1,30 @@
+@use "@/assets/sass/abstracts";
+
+.accessebilityStatusDescription {
+    font-style: italic;
+    margin-bottom: 12px;
+}
+
+.usersWithAccessWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.userEntryWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.userAvatar {
+    width: 32px;
+    height: 32px;
+}
+
+.userInfo {
+    font-size: 0.875rem;
+    font-weight: abstracts.$typography-fw-light;
+}
+

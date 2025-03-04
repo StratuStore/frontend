@@ -3,6 +3,7 @@ import clsx from "clsx"
 import { observer } from "mobx-react-lite"
 import styles from "./styles.module.scss"
 import Header from "./components/Header"
+import AccessSettings from "@/ui/layouts/MainLayout/components/Sidebar/components/AccessSettings"
 
 function SidebarComponent() {
     const activeFile = fileStore.activeFile
@@ -17,8 +18,7 @@ function SidebarComponent() {
                 {activeFile && (
                     <>
                         <Header file={activeFile} />
-                        <div className="preview"></div>
-                        <div className="accessSettings"></div>
+                        <AccessSettings />
                         <div className="fileDetails"></div>
                     </>
                 )}
