@@ -16,5 +16,11 @@ $pinnedItemCardsGap: 20;
     max-height: 100vh;
     min-height: 0;
     min-width: 0;
+
+    z-index: unset !important;
+
+    & > * {
+        z-index: unset !important;
+    }
 }
 

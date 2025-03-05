@@ -1,0 +1,81 @@
+@use "@/assets/sass/abstracts";
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    inset: 0;
+    animation: overlayShow abstracts.$animations-duration-normal
+        cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content {
+    max-width: 500px;
+    max-height: 85vh;
+
+    display: flex;
+    flex-direction: column;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: var(--bg-color);
+    border-radius: 12px;
+
+    border: 1px solid var(--border-color);
+
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+
+    &:focus {
+        outline: none;
+    }
+
+    --modal-section-padding: 16px 24px;
+}
+
+.heading {
+    font-size: 1.5rem;
+    font-weight: abstracts.$typography-fw-bold;
+    color: var(--text-color);
+
+    padding: var(--modal-section-padding);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.body {
+    & > :not(:last-child) {
+        border-bottom: 1px solid var(--border-color);
+    }
+}
+
+.bodySection {
+    padding: var(--modal-section-padding);
+}
+
+.closeButtonWrapper {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+@keyframes overlayShow {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes contentShow {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+

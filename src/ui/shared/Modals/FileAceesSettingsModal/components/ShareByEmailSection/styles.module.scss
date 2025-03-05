@@ -1,0 +1,42 @@
+@use "@/assets/sass/abstracts";
+
+.sectionWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionTitleWrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    margin-bottom: 12px;
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: abstracts.$typography-fw-bold;
+    color: var(--text-color);
+}
+
+.titleIconWrapper {
+    padding: 4px;
+    border-radius: 4px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    font-size: 0;
+}
+
+.emailInputWrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 12px;
+    margin-bottom: 24px;
+}
+
+.viewersTitle {
+    font-weight: abstracts.$typography-fw-light;
+    color: var(--text-color);
+    margin-bottom: 12px;
+    font-style: italic;
+}

@@ -14,6 +14,7 @@ export enum IconName {
     ContentCopy = "content-copy",
     Filter = "filter",
     Check = "check",
+    Trash = "trash",
 }
 
 export interface IconProps {
