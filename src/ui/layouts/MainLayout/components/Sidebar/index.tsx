@@ -7,11 +7,16 @@ import AccessSettings from "@/ui/layouts/MainLayout/components/Sidebar/component
 
 function SidebarComponent() {
     const activeFile = fileStore.activeFile
+    const isOpen = Boolean(activeFile)
+
+    if (!isOpen) {
+        return null
+    }
 
     return (
         <div
             className={clsx(styles.sidebarContainer, {
-                [styles.open]: Boolean(activeFile),
+                [styles.open]: isOpen,
             })}
         >
             <div className={styles.sidebarContent}>

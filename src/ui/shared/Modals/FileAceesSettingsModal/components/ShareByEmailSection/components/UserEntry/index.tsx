@@ -21,7 +21,7 @@ export default function UserEntry({ user }: UserEntryProps) {
 
     function handleUserDelete() {
         setDeleting(false)
-        toast.loading("User removed successfully")
+        toast.success("User removed successfully")
     }
 
     return (
