@@ -3,6 +3,7 @@ import styles from "./styles.module.scss"
 import { IconName } from "@/ui/shared/Icon/types"
 import Icon from "@/ui/shared/Icon"
 import { useState } from "react"
+import toast from "react-hot-toast"
 
 type User = {
     id: number
@@ -20,6 +21,7 @@ export default function UserEntry({ user }: UserEntryProps) {
 
     function handleUserDelete() {
         setDeleting(false)
+        toast.loading("User removed successfully")
     }
 
     return (
