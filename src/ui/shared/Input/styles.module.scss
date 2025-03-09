@@ -16,6 +16,14 @@
     outline: none;
     width: 100%;
     background: transparent;
+
+    &.valid {
+        border-color: var(--success-color);
+    }
+
+    &.invalid {
+        border-color: var(--error-color);
+    }
 }
 
 .input:focus-visible {

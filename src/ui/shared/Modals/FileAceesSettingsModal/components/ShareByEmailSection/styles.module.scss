@@ -27,10 +27,6 @@
 }
 
 .emailInputWrapper {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    column-gap: 12px;
     margin-bottom: 24px;
 }
 
@@ -40,3 +36,4 @@
     margin-bottom: 12px;
     font-style: italic;
 }
+

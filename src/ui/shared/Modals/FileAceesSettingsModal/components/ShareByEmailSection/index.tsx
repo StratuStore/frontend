@@ -1,10 +1,9 @@
-import Input from "@/ui/shared/Input"
-import Button from "@/ui/shared/Button"
 import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
 
 import styles from "./styles.module.scss"
 import UsersWithAccessList from "@/ui/shared/Modals/FileAceesSettingsModal/components/ShareByEmailSection/components/UsersWithAccessList"
+import ShareWithEmailForm from "@/ui/shared/Modals/FileAceesSettingsModal/components/ShareByEmailSection/components/ShareWithEmailForm"
 
 export default function ShareByEmailSection() {
     return (
@@ -20,8 +19,7 @@ export default function ShareByEmailSection() {
                 </div>
             </div>
             <div className={styles.emailInputWrapper}>
-                <Input type="email" placeholder="Enter email..." />
-                <Button>Share file</Button>
+                <ShareWithEmailForm />
             </div>
             <div className={styles.viewersWrapper}>
                 <p className={styles.viewersTitle}>
