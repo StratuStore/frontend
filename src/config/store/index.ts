@@ -11,7 +11,6 @@ class ConfigStore {
         Theme.System
 
     setTheme(theme: Theme) {
-        console.log("setTheme", theme)
         this.theme = theme
     }
 }

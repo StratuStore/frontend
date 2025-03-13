@@ -25,8 +25,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         },
         ref
     ) => {
-        console.log("Input render", touched, valid)
-
         return (
             <div className={clsx(wrapperClasses, styles.wrapper)}>
                 {prependInner && (

@@ -1,0 +1,26 @@
+.filteringOptionsForm {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 620px;
+    width: 100%;
+}
+
+.formEntry {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 12px;
+    align-items: top;
+}
+
+.isPinnedCheckbox {
+    align-self: start;
+}
+
+.submitRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+

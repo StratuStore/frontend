@@ -1,0 +1,28 @@
+@use "@/assets/sass/abstracts";
+
+.checkbox {
+    width: 1.5em;
+    height: 1.5em;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+
+    transition: border-color abstracts.$animations-duration-normal;
+}
+
+.checkbox:focus-visible,
+.checkbox:active,
+.checkbox[data-state="checked"] {
+    border-color: var(--text-color);
+}
+
+.indicator {
+    font-size: 0;
+    color: var(--text-color);
+}
+

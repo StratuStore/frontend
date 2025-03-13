@@ -5,7 +5,7 @@ import { createPortal } from "react-dom"
 export type FormControlProps = {
     control: ReactNode
     error?: string
-    errorMessageRoot: HTMLElement | null
+    errorMessageRoot?: HTMLElement | null
 }
 
 export default function FormControl({
