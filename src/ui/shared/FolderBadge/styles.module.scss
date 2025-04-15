@@ -1,0 +1,17 @@
+.folderBadgeWrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.iconWrapper {
+    padding: 4px;
+    border-radius: 4px;
+    background-color: var(--text-color);
+    font-size: 0;
+}
+
+.icon {
+    color: var(--bg-color);
+}
+

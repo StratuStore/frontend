@@ -1,0 +1,14 @@
+@use "@/assets/sass/abstracts";
+
+.formControlWrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.errorMessage {
+    font-size: 0.875rem;
+    font-weight: abstracts.$typography-fw-bold;
+    color: var(--error-color);
+}
+

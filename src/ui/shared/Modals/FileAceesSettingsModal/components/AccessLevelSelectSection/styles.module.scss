@@ -1,0 +1,45 @@
+@use "@/assets/sass/abstracts";
+
+.selectHeadingWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 8px;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+}
+
+.selectHeading {
+    font-weight: abstracts.$typography-fw-bold;
+    color: var(--text-color);
+}
+
+.selectComponentWrapper {
+    width: 50%;
+    margin-bottom: 12px;
+}
+
+.accessLevelCaption {
+    font-size: 1rem;
+    font-weight: abstracts.$typography-fw-light;
+    color: var(--text-color);
+    font-style: italic;
+    margin-bottom: 24px;
+}
+
+.linkWrapper {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 12px;
+    margin-bottom: 12px;
+}
+
+.headingIconWrapper {
+    padding: 4px;
+    border-radius: 4px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    font-size: 0;
+}
+

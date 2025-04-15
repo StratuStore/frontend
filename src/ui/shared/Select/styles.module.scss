@@ -1,0 +1,133 @@
+@use "@/assets/sass/abstracts";
+
+.trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    width: 100%;
+
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+
+    font-size: abstracts.$typography-font-sm;
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.icon {
+    font-size: 0;
+}
+
+.content {
+    overflow: hidden;
+
+    background-color: var(--bg-color);
+    color: var(--text-color);
+
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+
+    min-width: var(--radix-select-trigger-width);
+    max-height: var(--radix-select-content-available-height);
+
+    z-index: 2;
+
+    animation-duration: abstracts.$animations-duration-normal;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+    &[data-state="open"][data-side="top"] {
+        animation-name: slideDownAndFade;
+    }
+    &[data-state="open"][data-side="right"] {
+        animation-name: slideLeftAndFade;
+    }
+    &[data-state="open"][data-side="bottom"] {
+        animation-name: slideUpAndFade;
+    }
+    &[data-state="open"][data-side="left"] {
+        animation-name: slideRightAndFade;
+    }
+}
+
+.viewport {
+    padding: 4px;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    column-gap: 8px;
+    align-items: center;
+    padding: 4px 16px;
+
+    border-radius: 8px;
+
+    position: relative;
+    user-select: none;
+
+    &[data-disabled] {
+        pointer-events: none;
+    }
+
+    &[data-highlighted] {
+        outline: none;
+    }
+
+    &:hover {
+        background-color: var(--accent-color-opaque);
+    }
+}
+
+.indicatorPlaceholder,
+.itemIndicator {
+    font-size: 0;
+}
+
+@keyframes slideRightAndFade {
+    from {
+        opacity: 0;
+        transform: translateX(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideDownAndFade {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeftAndFade {
+    from {
+        opacity: 0;
+        transform: translateX(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideUpAndFade {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

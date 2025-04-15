@@ -1,0 +1,45 @@
+@use "@/assets/sass/abstracts";
+
+.tableWrapper {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tableHeader > tr {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.tableHeaderCell {
+    padding: 12px;
+    text-align: left;
+    font-weight: 500;
+    border-bottom: 2px solid var(--border-color);
+
+    font-weight: abstracts.$typography-fw-bold;
+}
+
+.tableRow {
+    display: grid;
+    position: absolute;
+    width: 100%;
+    cursor: pointer;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.tableRow:hover {
+    background-color: var(--accent-color-opaque);
+}
+
+.tableCell {
+    padding: 16px 12px;
+    border-bottom: 2px solid var(--border-color);
+}
+

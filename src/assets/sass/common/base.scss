@@ -1,0 +1,21 @@
+@use "@/assets/sass/abstracts";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: Inter, "sans-serif";
+    font-weight: abstracts.$typography-fw-normal;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+

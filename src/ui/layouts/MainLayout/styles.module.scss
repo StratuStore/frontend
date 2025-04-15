@@ -1,0 +1,13 @@
+.mainLayoutContainer {
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+}
+
+.content {
+    padding: 64px 48px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+

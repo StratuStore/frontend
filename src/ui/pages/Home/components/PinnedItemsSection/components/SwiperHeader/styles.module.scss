@@ -1,0 +1,14 @@
+@use "@/assets/sass/abstracts";
+
+.headerRowWrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.header {
+    font-weight: abstracts.$typography-fw-bold;
+    font-size: abstracts.$typography-font-lg;
+    margin-inline-end: 10px;
+}
+

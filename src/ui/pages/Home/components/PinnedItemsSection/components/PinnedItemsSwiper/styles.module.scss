@@ -1,0 +1,26 @@
+$pinnedItemCardsGap: 20;
+
+.slideContainer {
+    display: flex;
+    flex-direction: row;
+    gap: $pinnedItemCardsGap + 0px;
+}
+
+:export {
+    pinnedItemCardsGap: $pinnedItemCardsGap;
+}
+
+.swiper {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    min-height: 0;
+    min-width: 0;
+
+    z-index: unset !important;
+
+    & > * {
+        z-index: unset !important;
+    }
+}
+

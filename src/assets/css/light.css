@@ -1,0 +1,12 @@
+:root {
+    --text-color: #000000;
+    --bg-color: #ffffff;
+    --accent-color: #a2cdfe;
+    --accent-color-opaque: #a2cdfe80;
+    --border-color: #acacac;
+    --button-bg-hover: #2f2f31;
+    --ghost-hover: #e2e2e2;
+    --error-color: #7f1d1d;
+    --success-color: #034930;
+}
+

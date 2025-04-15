@@ -1,0 +1,22 @@
+@use "@/assets/sass/abstracts";
+
+.configurationMenuWrapper {
+    width: 240px;
+}
+
+.configurationMenuSection {
+    margin-bottom: 12px;
+}
+
+.configurationMenuSectionHeader {
+    font-size: abstracts.$typography-font-sm;
+    font-weight: abstracts.$typography-fw-bold;
+
+    margin-bottom: 8px;
+}
+
+.logoutButton {
+    width: 100%;
+    margin-bottom: 4px;
+}
+

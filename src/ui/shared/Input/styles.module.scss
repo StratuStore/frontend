@@ -1,0 +1,54 @@
+@use "@/assets/sass/abstracts";
+
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    font: inherit;
+    color: inherit;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: border abstracts.$animations-duration-normal;
+    outline: none;
+    width: 100%;
+    background: transparent;
+
+    &.valid {
+        border-color: var(--success-color);
+    }
+
+    &.invalid {
+        border-color: var(--error-color);
+    }
+}
+
+.input:focus-visible {
+    border: 1px solid var(--text-color);
+}
+
+.inner {
+    position: absolute;
+    display: flex;
+    align-items: center;
+
+    &:first-child {
+        left: 20px;
+
+        & + .input {
+            padding-left: 50px;
+        }
+    }
+
+    &:last-child {
+        right: 20px;
+
+        & + .input {
+            padding-right: 50px;
+        }
+    }
+}
+

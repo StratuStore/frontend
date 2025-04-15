@@ -1,0 +1,19 @@
+@use "@/assets/sass/abstracts";
+
+.headingWrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.subheading {
+    font-size: abstracts.$typography-font-sm;
+    font-weight: abstracts.$typography-fw-light;
+    color: var(--text-color);
+}
+
+.modalContent {
+    max-width: 640px;
+    width: 100%;
+}
+
