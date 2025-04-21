@@ -1,5 +1,33 @@
 {
     "languagePicker": {
-        "placeholder": "Оберіть мову..."
+        "placeholder": "Виберіть мову..."
+    },
+    "themePicker": {
+        "placeholder": "Виберіть тему...",
+        "dark": "Темна",
+        "light": "Світла",
+        "system": "Системна"
+    },
+    "currentUser": {
+        "title": "Поточний користувач"
+    },
+    "configurationMenu": {
+        "languagePicker": "Мова",
+        "themePicker": "Тема",
+        "logout": "Вийти"
+    },
+    "searchInput": {
+        "placeholder": "Шукати файли та папки за назвою..."
+    },
+    "filteringOptionsPopover": {
+        "name": "Назва",
+        "namePlaceholder": "Введіть назву елемента",
+        "fileExtension": "Розширення файлу",
+        "fileExtensionPlaceholder": "Додайте розширення файлу",
+        "sharedWith": "Також доступно для",
+        "sharedWithPlaceholder": "Додайте електронну адресу",
+        "showOnlyPinned": "Показати лише закріплені елементи",
+        "clear": "Очистити",
+        "apply": "Застосувати фільтри"
     }
 }

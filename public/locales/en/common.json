@@ -1,5 +1,33 @@
 {
     "languagePicker": {
         "placeholder": "Select language..."
+    },
+    "themePicker": {
+        "placeholder": "Select theme...",
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
+    },
+    "currentUser": {
+        "title": "Current user"
+    },
+    "configurationMenu": {
+        "languagePicker": "Language",
+        "themePicker": "Theme",
+        "logout": "Logout"
+    },
+    "searchInput": {
+        "placeholder": "Search for files and folders by name..."
+    },
+    "filteringOptionsPopover": {
+        "name": "Name",
+        "namePlaceholder": "Enter item name",
+        "fileExtension": "File extension",
+        "fileExtensionPlaceholder": "Add a file extension",
+        "sharedWith": "Also shared with",
+        "sharedWithPlaceholder": "Add an email address",
+        "showOnlyPinned": "Show only pinned items",
+        "clear": "Clear",
+        "apply": "Apply filters"
     }
 }

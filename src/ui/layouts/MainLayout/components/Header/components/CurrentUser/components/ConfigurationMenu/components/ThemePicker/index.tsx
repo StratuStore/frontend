@@ -2,15 +2,17 @@ import configStore from "@/config/store"
 import { Theme } from "@/themes/types"
 import Select from "@/ui/shared/Select"
 import { observer } from "mobx-react-lite"
-
-const themeOptions = [
-    { label: "Light", value: "light" },
-    { label: "Dark", value: "dark" },
-    { label: "System", value: "system" },
-]
+import { useTranslation } from "react-i18next"
 
 function ThemePickerComponent() {
+    const { t } = useTranslation("common")
     const currentTheme = configStore.theme
+
+    const themeOptions = [
+        { label: t("themePicker.light"), value: "light" },
+        { label: t("themePicker.dark"), value: "dark" },
+        { label: t("themePicker.system"), value: "system" },
+    ]
 
     return (
         <Select

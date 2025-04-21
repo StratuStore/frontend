@@ -11,6 +11,7 @@ import {
     FilteringFormValues,
 } from "./constants"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useTranslation } from "react-i18next"
 
 export default function Content() {
     const {
@@ -23,6 +24,8 @@ export default function Content() {
         resolver: zodResolver(filteringFormSchema),
         defaultValues,
     })
+
+    const { t } = useTranslation("common")
 
     const onSubmit = (data: FilteringFormValues) => {
         console.log("Form submitted with data:", data)
@@ -38,12 +41,16 @@ export default function Content() {
             onSubmit={handleSubmit(onSubmit)}
         >
             <div className={styles.formEntry}>
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">
+                    {t("filteringOptionsPopover.name")}
+                </label>
                 <FormControl
                     error={errors.name?.message}
                     control={
                         <Input
-                            placeholder="Enter item name..."
+                            placeholder={t(
+                                "filteringOptionsPopover.namePlaceholder"
+                            )}
                             touched={touchedFields.name}
                             valid={!errors.name}
                             {...register("name")}
@@ -51,8 +58,11 @@ export default function Content() {
                     }
                 />
             </div>
+
             <div className={styles.formEntry}>
-                <label htmlFor="extension">File extension</label>
+                <label htmlFor="extension">
+                    {t("filteringOptionsPopover.fileExtension")}
+                </label>
                 <FormControl
                     error={errors.extension?.[0]?.message}
                     control={
@@ -61,7 +71,9 @@ export default function Content() {
                             control={control}
                             render={({ field }) => (
                                 <TagsInput
-                                    inputPlaceholder="Add a file extension..."
+                                    inputPlaceholder={t(
+                                        "filteringOptionsPopover.fileExtensionPlaceholder"
+                                    )}
                                     allowDuplicates={false}
                                     delimiters={[",", "Enter", " "]}
                                     valid={!errors.extension}
@@ -72,8 +84,11 @@ export default function Content() {
                     }
                 />
             </div>
+
             <div className={styles.formEntry}>
-                <label htmlFor="sharedWith">Also shared with</label>
+                <label htmlFor="sharedWith">
+                    {t("filteringOptionsPopover.sharedWith")}
+                </label>
                 <FormControl
                     error={errors.sharedWith?.[0]?.message}
                     control={
@@ -82,7 +97,9 @@ export default function Content() {
                             control={control}
                             render={({ field }) => (
                                 <TagsInput
-                                    inputPlaceholder="Add a file extension..."
+                                    inputPlaceholder={t(
+                                        "filteringOptionsPopover.sharedWithPlaceholder"
+                                    )}
                                     allowDuplicates={false}
                                     delimiters={[",", "Enter", " "]}
                                     valid={!errors.extension}
@@ -93,8 +110,11 @@ export default function Content() {
                     }
                 />
             </div>
+
             <div className={styles.formEntry}>
-                <label htmlFor="isPinned">Show only pinned items</label>
+                <label htmlFor="isPinned">
+                    {t("filteringOptionsPopover.showOnlyPinned")}
+                </label>
                 <FormControl
                     error={errors.isPinned?.message}
                     control={
@@ -114,11 +134,14 @@ export default function Content() {
                     }
                 />
             </div>
+
             <div className={styles.submitRow}>
                 <Button variant="ghost" type="button" onClick={handleClear}>
-                    Clear
+                    {t("filteringOptionsPopover.clear")}
                 </Button>
-                <Button type="submit">Apply filters</Button>
+                <Button type="submit">
+                    {t("filteringOptionsPopover.apply")}
+                </Button>
             </div>
         </form>
     )
