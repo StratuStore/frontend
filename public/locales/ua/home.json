@@ -1,0 +1,16 @@
+{
+    "pinnedItemsSection": {
+        "title": "Закріплені файли і папки"
+    },
+    "browseSection": {
+        "title": "Перегляд"
+    },
+    "folderContentsTable": {
+        "name": "Назва елемента",
+        "createdAt": "Дата створення",
+        "type": "Тип",
+        "size": "Розмір",
+        "folderItemType": "Папка",
+        "fileTypeUnknown": "Невідомий"
+    }
+}

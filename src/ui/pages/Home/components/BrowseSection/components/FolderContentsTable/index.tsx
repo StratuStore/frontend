@@ -12,7 +12,7 @@ import styles from "./styles.module.scss"
 import FolderBadge from "@/ui/shared/FolderBadge"
 import FileBadge from "@/ui/shared/FileBadge"
 import { fileStore } from "@/entities/File/store"
-import { createPortal } from "react-dom"
+import { useTranslation } from "react-i18next"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -35,12 +35,14 @@ export default function FolderContentsTable({
     const parentRef = useRef<HTMLDivElement>(null)
     const columnHelper = createColumnHelper<TableItem>()
 
+    const { t } = useTranslation("home")
+
     const data = useMemo(() => {
         const folderItems: TableItem[] = folders.map((folder) => ({
             id: folder.path.join("/"),
             name: folder.path.at(-1) || "",
             createdAt: folder.createdAt,
-            type: "Folder",
+            type: t("folderContentsTable.folderItemType"),
             size: "-",
             originalItem: folder,
         }))
@@ -49,18 +51,20 @@ export default function FolderContentsTable({
             id: file.name,
             name: file.name,
             createdAt: file.createdAt,
-            type: file.name.split(".").pop()?.toUpperCase() || "unknown",
+            type:
+                file.name.split(".").pop()?.toUpperCase() ||
+                t("folderContentsTable.fileTypeUnknown"),
             size: file.size.toString(),
             originalItem: file,
         }))
 
         return [...folderItems, ...fileItems]
-    }, [files, folders])
+    }, [files, folders, t])
 
     const columns = useMemo(
         () => [
             columnHelper.accessor("name", {
-                header: "Filename",
+                header: t("folderContentsTable.name"),
                 cell: (info) => {
                     const item = info.row.original
                     return item.type === "Folder" ? (
@@ -71,19 +75,19 @@ export default function FolderContentsTable({
                 },
             }),
             columnHelper.accessor("createdAt", {
-                header: "Date of creation",
+                header: t("folderContentsTable.createdAt"),
                 cell: (info) => info.getValue(),
             }),
             columnHelper.accessor("type", {
-                header: "Type",
+                header: t("folderContentsTable.type"),
                 cell: (info) => info.getValue(),
             }),
             columnHelper.accessor("size", {
-                header: "Size",
+                header: t("folderContentsTable.size"),
                 cell: (info) => info.getValue(),
             }),
         ],
-        [columnHelper]
+        [columnHelper, t]
     )
 
     const table = useReactTable({

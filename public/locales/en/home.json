@@ -1,0 +1,16 @@
+{
+    "pinnedItemsSection": {
+        "title": "Pinned items & folders"
+    },
+    "browseSection": {
+        "title": "Browse"
+    },
+    "folderContentsTable": {
+        "name": "Item name",
+        "createdAt": "Date of creation",
+        "type": "Type",
+        "size": "Size",
+        "folderItemType": "Folder",
+        "fileTypeUnknown": "Unknown"
+    }
+}

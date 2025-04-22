@@ -4,12 +4,15 @@ import FolderContentsTable from "@/ui/pages/Home/components/BrowseSection/compon
 import { observer } from "mobx-react-lite"
 import { fileStore } from "@/entities/File/store"
 import { folderStore } from "@/entities/Folder/store"
+import { useTranslation } from "react-i18next"
 
 function BrowseSectionComponent() {
+    const { t } = useTranslation("home")
+
     return (
         <>
             <div className={styles.headerWrapper}>
-                <h2 className={styles.header}>Browse</h2>
+                <h2 className={styles.header}>{t("browseSection.title")}</h2>
             </div>
             <div className={styles.breadcrumbsWrapper}>
                 <Breadcrumbs items={["Home", "Browse"]} />
@@ -26,3 +29,4 @@ function BrowseSectionComponent() {
 
 const BrowseSection = observer(BrowseSectionComponent)
 export default BrowseSection
+

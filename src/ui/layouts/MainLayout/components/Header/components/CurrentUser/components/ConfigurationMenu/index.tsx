@@ -3,23 +3,30 @@ import Button from "@/ui/shared/Button"
 import styles from "./styles.module.scss"
 import ThemePicker from "@/ui/layouts/MainLayout/components/Header/components/CurrentUser/components/ConfigurationMenu/components/ThemePicker"
 import LanguagePicker from "@/ui/layouts/MainLayout/components/Header/components/CurrentUser/components/ConfigurationMenu/components/LanguagePicker"
+import { useTranslation } from "react-i18next"
 
 export default function ConfigurationMenu() {
+    const { t } = useTranslation("common")
+
     return (
         <div className={styles.configurationMenuWrapper}>
             <div className={styles.configurationMenuSection}>
-                <p className={styles.configurationMenuSectionHeader}>Theme</p>
+                <p className={styles.configurationMenuSectionHeader}>
+                    {t("configurationMenu.themePicker")}
+                </p>
                 <ThemePicker />
             </div>
 
             <div className={styles.configurationMenuSection}>
                 <p className={styles.configurationMenuSectionHeader}>
-                    Language
+                    {t("configurationMenu.languagePicker")}
                 </p>
                 <LanguagePicker />
             </div>
 
-            <Button className={styles.logoutButton}>Logout</Button>
+            <Button className={styles.logoutButton}>
+                {t("configurationMenu.logout")}
+            </Button>
         </div>
     )
 }
