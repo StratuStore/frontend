@@ -10,5 +10,9 @@ export class Folder {
         this.files = files
         this.createdAt = createdAt
     }
+
+    getType() {
+        return Folder
+    }
 }
 

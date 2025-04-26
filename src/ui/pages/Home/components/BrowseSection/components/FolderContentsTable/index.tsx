@@ -1,18 +1,18 @@
+import { File } from "@/entities/File"
+import { fileStore } from "@/entities/File/store"
+import { Folder } from "@/entities/Folder"
+import { useFileUpload } from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/hooks/useFileUpload"
+import { useTableData } from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/hooks/useTableData"
 import {
-    createColumnHelper,
+    flexRender,
     getCoreRowModel,
     useReactTable,
-    flexRender,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { useMemo, useRef } from "react"
-import { File } from "@/entities/File"
-import { Folder } from "@/entities/Folder"
+import { useRef } from "react"
 import styles from "./styles.module.scss"
-import FolderBadge from "@/ui/shared/FolderBadge"
-import FileBadge from "@/ui/shared/FileBadge"
-import { fileStore } from "@/entities/File/store"
-import { useTranslation } from "react-i18next"
+import FolderRow from "./components/FolderRow"
+import TableRow from "./components/TableRow"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -33,62 +33,10 @@ export default function FolderContentsTable({
     folders,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
-    const columnHelper = createColumnHelper<TableItem>()
 
-    const { t } = useTranslation("home")
-
-    const data = useMemo(() => {
-        const folderItems: TableItem[] = folders.map((folder) => ({
-            id: folder.path.join("/"),
-            name: folder.path.at(-1) || "",
-            createdAt: folder.createdAt,
-            type: t("folderContentsTable.folderItemType"),
-            size: "-",
-            originalItem: folder,
-        }))
-
-        const fileItems: TableItem[] = files.map((file) => ({
-            id: file.name,
-            name: file.name,
-            createdAt: file.createdAt,
-            type:
-                file.name.split(".").pop()?.toUpperCase() ||
-                t("folderContentsTable.fileTypeUnknown"),
-            size: file.size.toString(),
-            originalItem: file,
-        }))
-
-        return [...folderItems, ...fileItems]
-    }, [files, folders, t])
-
-    const columns = useMemo(
-        () => [
-            columnHelper.accessor("name", {
-                header: t("folderContentsTable.name"),
-                cell: (info) => {
-                    const item = info.row.original
-                    return item.type === "Folder" ? (
-                        <FolderBadge name={item.name} />
-                    ) : (
-                        <FileBadge name={item.name} />
-                    )
-                },
-            }),
-            columnHelper.accessor("createdAt", {
-                header: t("folderContentsTable.createdAt"),
-                cell: (info) => info.getValue(),
-            }),
-            columnHelper.accessor("type", {
-                header: t("folderContentsTable.type"),
-                cell: (info) => info.getValue(),
-            }),
-            columnHelper.accessor("size", {
-                header: t("folderContentsTable.size"),
-                cell: (info) => info.getValue(),
-            }),
-        ],
-        [columnHelper, t]
-    )
+    const { data, columns } = useTableData(files, folders)
+    const { fileInputRef, handleFileInputChange, handleUploadClick } =
+        useFileUpload()
 
     const table = useReactTable({
         data,
@@ -128,6 +76,14 @@ export default function FolderContentsTable({
 
     return (
         <div ref={parentRef} className={styles.tableWrapper}>
+            <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileInputChange}
+                multiple
+            />
+
             <table className={styles.table}>
                 <thead className={styles.tableHeader}>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -156,31 +112,34 @@ export default function FolderContentsTable({
                 >
                     {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                         const row = rows[virtualRow.index]
+
+                        if (row.original.originalItem.getType() === Folder) {
+                            return (
+                                <FolderRow
+                                    key={row.id}
+                                    row={row}
+                                    virtualRow={virtualRow}
+                                    measureElement={(node) =>
+                                        rowVirtualizer.measureElement(node)
+                                    }
+                                    onRowClick={() =>
+                                        handleRowClick(row.original)
+                                    }
+                                    onUploadClick={handleUploadClick}
+                                />
+                            )
+                        }
+
                         return (
-                            <tr
+                            <TableRow
                                 key={row.id}
-                                data-index={virtualRow.index}
-                                ref={(node) =>
+                                row={row}
+                                virtualRow={virtualRow}
+                                measureElement={(node) =>
                                     rowVirtualizer.measureElement(node)
                                 }
-                                className={styles.tableRow}
                                 onClick={() => handleRowClick(row.original)}
-                                style={{
-                                    transform: `translateY(${virtualRow.start}px)`,
-                                }}
-                            >
-                                {row.getVisibleCells().map((cell) => (
-                                    <td
-                                        key={cell.id}
-                                        className={styles.tableCell}
-                                    >
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                        )}
-                                    </td>
-                                ))}
-                            </tr>
+                            />
                         )
                     })}
                 </tbody>

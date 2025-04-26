@@ -10,5 +10,9 @@ export class File {
         this.createdAt = createdAt
         this.size = size
     }
+
+    getType() {
+        return File
+    }
 }
 
