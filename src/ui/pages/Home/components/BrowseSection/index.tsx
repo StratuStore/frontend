@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite"
 import { fileStore } from "@/entities/File/store"
 import { folderStore } from "@/entities/Folder/store"
 import { useTranslation } from "react-i18next"
+import FileUploadPopup from "@/ui/pages/Home/components/BrowseSection/components/FileUploadPopup"
 
 function BrowseSectionComponent() {
     const { t } = useTranslation("home")
@@ -23,6 +24,7 @@ function BrowseSectionComponent() {
                     folders={folderStore.folders}
                 />
             </div>
+            <FileUploadPopup />
         </>
     )
 }

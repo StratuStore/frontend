@@ -4,7 +4,7 @@
     font-size: abstracts.$typography-font-sm;
     font-weight: abstracts.$typography-fw-semi-bold;
     border: none;
-    transition: background-color abstracts.$animations-duration-normal;
+    transition: all abstracts.$animations-duration-normal;
     border-radius: 8px;
     outline: none;
     display: inline-flex;
@@ -29,13 +29,35 @@
     background: transparent;
 }
 
+.outline {
+    color: var(--text-color);
+    background: transparent;
+    border: 1px solid var(--text-color);
+}
+
+.outline:focus-visible,
+.outline:hover {
+    background-color: var(--ghost-hover);
+}
+
 .primary,
-.ghost {
+.ghost,
+.outline {
     padding: 12px 20px;
+
+    &.small {
+        padding: 8px 16px;
+        font-size: abstracts.$typography-font-xs;
+    }
 }
 
 .icon {
     padding: 4px 4px;
+
+    &.small {
+        padding: 2px 2px;
+        font-size: abstracts.$typography-font-xs;
+    }
 }
 
 .ghost:focus-visible,

@@ -1,0 +1,11 @@
+@use "@/assets/sass/abstracts";
+
+.fileTypeBadge {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    font-size: 10px;
+    border-radius: 8px;
+    font-weight: abstracts.$typography-fw-bold;
+    padding: 1px 2px;
+}
+

@@ -15,6 +15,8 @@ export enum IconName {
     Filter = "filter",
     Check = "check",
     Trash = "trash",
+    UploadCloud = "upload-cloud",
+    ClockOutline = "clock-outline",
 }
 
 export interface IconProps {

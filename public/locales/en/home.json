@@ -12,5 +12,14 @@
         "size": "Size",
         "folderItemType": "Folder",
         "fileTypeUnknown": "Unknown"
+    },
+    "fileUploadPopup": {
+        "uploadingFiles_one": "Uploading {{count}} file",
+        "uploadingFiles_other": "Uploading {{count}} files",
+        "uploadedFiles_one": "Successfuly uploaded {{count}} file",
+        "uploadedFiles_other": "Successfuly uploaded {{count}} files",
+        "errorUploadingFiles_one": "Failed to upload {{count}} file",
+        "errorUploadingFiles_other": "Failed to upload {{count}} files",
+        "destination": "Destination is {{destination}}"
     }
 }

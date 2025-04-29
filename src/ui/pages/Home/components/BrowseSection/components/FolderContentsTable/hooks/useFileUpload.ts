@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react"
 import { Folder } from "@/entities/Folder"
+import { fileUploadStore } from "@/entities/FileUpload/store"
 
 export function useFileUpload() {
     const fileInputRef = useRef<HTMLInputElement>(null)
@@ -7,6 +8,8 @@ export function useFileUpload() {
 
     const uploadFile = useCallback((file: File, targetFolder: Folder) => {
         console.log(`Uploading file ${file.name} to folder:`, targetFolder)
+
+        fileUploadStore.addFileUpload(targetFolder, file)
     }, [])
 
     const handleFileInputChange = useCallback(
