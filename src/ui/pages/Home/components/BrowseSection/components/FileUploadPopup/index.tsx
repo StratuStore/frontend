@@ -8,9 +8,6 @@ import { observer } from "mobx-react-lite"
 
 function FileUploadPopupComponent() {
     const [isExpanded, setIsExpanded] = useState<boolean>(true)
-    const [isVisible, setIsVisible] = useState<boolean>(false)
-
-    const hasFileUpload = fileUploadStore.uploadCount > 0
 
     const handleExpand = () => {
         setIsExpanded((prev) => !prev)
@@ -20,7 +17,7 @@ function FileUploadPopupComponent() {
         <div
             className={clsx(styles.fileUploadPopup, {
                 [styles.expanded]: isExpanded,
-                [styles.visible]: hasFileUpload,
+                [styles.visible]: fileUploadStore.shouldShowFileUploadPopup,
             })}
         >
             <Header isExpanded={isExpanded} onExpand={handleExpand} />

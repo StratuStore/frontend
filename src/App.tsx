@@ -1,13 +1,11 @@
-import MainLayout from "@/ui/layouts/MainLayout"
-import HomePage from "@/ui/pages/Home"
+import { router } from "@/config/router"
 import AppToaster from "@/ui/shared/AppToaster"
+import { RouterProvider } from "react-router"
 
 function App() {
     return (
         <>
-            <MainLayout>
-                <HomePage />
-            </MainLayout>
+            <RouterProvider router={router} />
             <AppToaster />
         </>
     )

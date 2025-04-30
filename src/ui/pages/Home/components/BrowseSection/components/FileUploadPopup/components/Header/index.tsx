@@ -16,13 +16,27 @@ function HeaderComponent({ isExpanded, onExpand }: HeaderProps) {
     const { t } = useTranslation("home")
     const uploadingFilesCount = fileUploadStore.uploadCount
 
+    const getCurrentCaption = () => {
+        if (fileUploadStore.hasErrorUploads) {
+            return t("fileUploadPopup.errorUploadingFiles", {
+                count: fileUploadStore.errorUploadConut,
+            })
+        }
+
+        if (fileUploadStore.allUploadsSuccessful) {
+            return t("fileUploadPopup.uploadedFiles", {
+                count: fileUploadStore.uploadCount,
+            })
+        }
+
+        return t("fileUploadPopup.uploadingFiles", {
+            count: uploadingFilesCount,
+        })
+    }
+
     return (
         <div className={clsx(styles.header, { [styles.expanded]: isExpanded })}>
-            <p className={styles.caption}>
-                {t("fileUploadPopup.uploadingFiles", {
-                    count: uploadingFilesCount,
-                })}
-            </p>
+            <p className={styles.caption}>{getCurrentCaption()}</p>
 
             <div className={styles.actions}>
                 <Button variant="icon" onClick={onExpand}>
@@ -31,7 +45,11 @@ function HeaderComponent({ isExpanded, onExpand }: HeaderProps) {
                         className={clsx(styles.chevron)}
                     />
                 </Button>
-                <Button variant="icon">
+                <Button
+                    variant="icon"
+                    disabled={!fileUploadStore.allUploadsResolved}
+                    onClick={() => fileUploadStore.closeFileUploadPopup()}
+                >
                     <Icon name={IconName.WindowClose} />
                 </Button>
             </div>

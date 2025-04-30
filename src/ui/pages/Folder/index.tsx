@@ -6,17 +6,22 @@ import { folderStore } from "@/entities/Folder/store"
 import { useTranslation } from "react-i18next"
 import FileUploadPopup from "@/ui/pages/Home/components/BrowseSection/components/FileUploadPopup"
 import { useEffect } from "react"
+import { useParams } from "react-router"
 
-function BrowseSectionComponent() {
+function FolderPageComponent() {
     const { t } = useTranslation("home")
-    const rootFolder = folderStore.rootFolder
+    const currentFolder = folderStore.currentFolder
+    const { id: folderId } = useParams()
 
     useEffect(() => {
-        folderStore.getRootFolder()
-    }, [])
+        if (!folderStore.isCurrentFolderReady && folderId) {
+            folderStore.currentFolderId = folderId
+            folderStore.fetchFolderContents()
+        }
+    }, [folderId])
 
     return (
-        <>
+        <div className={styles.folderPageWrapper}>
             <div className={styles.headerWrapper}>
                 <h2 className={styles.header}>{t("browseSection.title")}</h2>
             </div>
@@ -25,15 +30,16 @@ function BrowseSectionComponent() {
             </div>
             <div className={styles.contentsTableWrapper}>
                 <FolderContentsTable
-                    files={rootFolder?.files ?? []}
-                    folders={rootFolder?.folders ?? []}
+                    files={currentFolder?.files ?? []}
+                    folders={currentFolder?.folders ?? []}
+                    loading={folderStore.isLoading}
                 />
             </div>
             <FileUploadPopup />
-        </>
+        </div>
     )
 }
 
-const BrowseSection = observer(BrowseSectionComponent)
-export default BrowseSection
+const FolderPage = observer(FolderPageComponent)
+export default FolderPage
 

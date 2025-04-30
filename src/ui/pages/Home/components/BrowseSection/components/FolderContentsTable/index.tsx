@@ -13,10 +13,14 @@ import { useRef } from "react"
 import styles from "./styles.module.scss"
 import FolderRow from "./components/FolderRow"
 import TableRow from "./components/TableRow"
+import { useNavigate } from "react-router"
+import Loader from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/Loader"
+import NoContent from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/NoContent"
 
 interface FolderContentsTableProps {
     files: File[]
     folders: Folder[]
+    loading?: boolean
 }
 
 type TableItem = {
@@ -31,12 +35,15 @@ type TableItem = {
 export default function FolderContentsTable({
     files,
     folders,
+    loading = false,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
 
     const { data, columns } = useTableData(files, folders)
     const { fileInputRef, handleFileInputChange, handleUploadClick } =
         useFileUpload()
+
+    const navigate = useNavigate()
 
     const table = useReactTable({
         data,
@@ -62,16 +69,22 @@ export default function FolderContentsTable({
         fileStore.selectFile(file)
     }
 
-    function handleFolderClick(folder: Folder) {
-        console.log(folder)
-    }
-
     const handleRowClick = (item: TableItem) => {
-        if (item.type === "Folder") {
-            handleFolderClick(item.originalItem as Folder)
+        if (item.originalItem.constructor === Folder) {
+            navigate(`/folder/${item.originalItem.id}`)
         } else {
             handleFileClick(item.originalItem as File)
         }
+    }
+
+    if (loading) {
+        console.log("LOADING")
+        return <Loader />
+    }
+
+    if (folders.length === 0 && files.length === 0) {
+        console.log("NO CONTENT")
+        return <NoContent />
     }
 
     return (
