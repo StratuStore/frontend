@@ -49,7 +49,7 @@ export function useTableData(files: File[], folders: Folder[]) {
                 header: t("folderContentsTable.name"),
                 cell: (info) => {
                     const item = info.row.original
-                    return item.type === "Folder" ? (
+                    return item.originalItem.constructor === Folder ? (
                         <FolderBadge name={item.name} />
                     ) : (
                         <FileBadge name={item.name} />

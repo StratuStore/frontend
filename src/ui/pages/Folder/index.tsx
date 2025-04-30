@@ -14,7 +14,11 @@ function FolderPageComponent() {
     const { id: folderId } = useParams()
 
     useEffect(() => {
+        console.log("EFFECT")
+
         if (!folderStore.isCurrentFolderReady && folderId) {
+            console.log("FETCHING FOLDER CONTENTS")
+
             folderStore.currentFolderId = folderId
             folderStore.fetchFolderContents()
         }

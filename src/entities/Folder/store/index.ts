@@ -32,6 +32,7 @@ class FolderStore {
     navigateToFolder(folder: Folder) {
         this.currentFolder = folder
         this.currentFolderId = folder.id
+        this.isCurrentFolderReady = false
     }
 
     getRootFolder() {
@@ -47,7 +48,10 @@ class FolderStore {
 
         this.setIsLoading(true)
 
-        if (!this.currentFolder) {
+        if (
+            !this.currentFolder ||
+            this.currentFolder.id !== this.currentFolderId
+        ) {
             const currentFolder = await folderService.getFolerById(
                 this.currentFolderId
             )

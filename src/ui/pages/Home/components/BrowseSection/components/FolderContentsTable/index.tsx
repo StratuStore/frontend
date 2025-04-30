@@ -16,6 +16,7 @@ import TableRow from "./components/TableRow"
 import { useNavigate } from "react-router"
 import Loader from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/Loader"
 import NoContent from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/NoContent"
+import { folderStore } from "@/entities/Folder/store"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -69,21 +70,24 @@ export default function FolderContentsTable({
         fileStore.selectFile(file)
     }
 
+    function handleFolderClick(folder: Folder) {
+        folderStore.navigateToFolder(folder)
+        navigate(`/folder/${folder.id}`)
+    }
+
     const handleRowClick = (item: TableItem) => {
         if (item.originalItem.constructor === Folder) {
-            navigate(`/folder/${item.originalItem.id}`)
+            handleFolderClick(item.originalItem as Folder)
         } else {
             handleFileClick(item.originalItem as File)
         }
     }
 
     if (loading) {
-        console.log("LOADING")
         return <Loader />
     }
 
     if (folders.length === 0 && files.length === 0) {
-        console.log("NO CONTENT")
         return <NoContent />
     }
 

@@ -16,8 +16,6 @@ export type ContextMenuProps = {
 export default function ContextMenu(props: ContextMenuProps) {
     const { items, renderTrigger } = props
 
-    console.log("ContextMenu", items)
-
     return (
         <RadixContextMenu.Root>
             <RadixContextMenu.Trigger className={styles.Trigger}>

@@ -8,10 +8,7 @@ function NoContentComponent() {
         useFileUpload()
     const folder = folderStore.currentFolder
 
-    console.log(folder)
-
     if (!folder) {
-        console.log("Folder is not defined")
         return null
     }
 

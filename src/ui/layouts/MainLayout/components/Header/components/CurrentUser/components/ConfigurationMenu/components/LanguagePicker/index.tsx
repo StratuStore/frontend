@@ -14,8 +14,6 @@ export default function LanguagePicker() {
         i18n.changeLanguage(value)
     }
 
-    console.log("i18n.language", i18n.language)
-
     return (
         <Select
             placeholder={t("languagePicker.placeholder")}
