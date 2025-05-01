@@ -4,25 +4,27 @@ import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
 
 interface BreadcrumbsProps {
-    items: string[]
-    onItemClick?: (item: string) => void
+    segments: string[]
+    onSegmentClick?: (segment: string) => void
 }
 
 export default function Breadcrumbs({
-    items,
-    onItemClick,
+    segments,
+    onSegmentClick,
 }: BreadcrumbsProps): JSX.Element {
     return (
         <nav className={styles.breadcrumbs}>
-            {items.map((item, index) => (
-                <Fragment key={item}>
+            {segments.map((segment, index) => (
+                <Fragment key={segment}>
                     <span
                         className={styles.breadcrumb}
-                        onClick={() => onItemClick && onItemClick(item)}
+                        onClick={() =>
+                            onSegmentClick && onSegmentClick(segment)
+                        }
                     >
-                        {item}
+                        {segment}
                     </span>
-                    {index < items.length - 1 && (
+                    {index < segments.length - 1 && (
                         <Icon
                             name={IconName.ChevronRight}
                             className={styles.separator}

@@ -134,6 +134,29 @@ class FolderSerive {
             }, 2000)
         })
     }
+
+    async getFolderByPath(path: string[]): Promise<Folder | null> {
+        const searchFolder = (folders: Folder[]): Folder | null => {
+            for (const folder of folders) {
+                if (folder.path.join("/") === path.join("/")) {
+                    return folder
+                }
+
+                const found = searchFolder(folder.folders)
+
+                if (found) {
+                    return found
+                }
+            }
+
+            return null
+        }
+
+        const folder = searchFolder(mockFolders)
+
+        await wait(2000)
+        return folder
+    }
 }
 
 export const folderService = new FolderSerive()

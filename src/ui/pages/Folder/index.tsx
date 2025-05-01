@@ -1,4 +1,3 @@
-import Breadcrumbs from "@/ui/shared/Breadcrumbs"
 import styles from "./styles.module.scss"
 import FolderContentsTable from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable"
 import { observer } from "mobx-react-lite"
@@ -7,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import FileUploadPopup from "@/ui/pages/Home/components/BrowseSection/components/FileUploadPopup"
 import { useEffect } from "react"
 import { useParams } from "react-router"
+import FolderNavigationBreadcrumbs from "@/ui/pages/Folder/components/FolderNavigationBreadcrumbs"
 
 function FolderPageComponent() {
     const { t } = useTranslation("home")
@@ -14,11 +14,7 @@ function FolderPageComponent() {
     const { id: folderId } = useParams()
 
     useEffect(() => {
-        console.log("EFFECT")
-
         if (!folderStore.isCurrentFolderReady && folderId) {
-            console.log("FETCHING FOLDER CONTENTS")
-
             folderStore.currentFolderId = folderId
             folderStore.fetchFolderContents()
         }
@@ -30,7 +26,7 @@ function FolderPageComponent() {
                 <h2 className={styles.header}>{t("browseSection.title")}</h2>
             </div>
             <div className={styles.breadcrumbsWrapper}>
-                <Breadcrumbs items={["Home", "Browse"]} />
+                <FolderNavigationBreadcrumbs />
             </div>
             <div className={styles.contentsTableWrapper}>
                 <FolderContentsTable

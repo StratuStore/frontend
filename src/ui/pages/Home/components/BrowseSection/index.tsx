@@ -21,7 +21,7 @@ function BrowseSectionComponent() {
                 <h2 className={styles.header}>{t("browseSection.title")}</h2>
             </div>
             <div className={styles.breadcrumbsWrapper}>
-                <Breadcrumbs items={["Home", "Browse"]} />
+                <Breadcrumbs segments={["root"]} />
             </div>
             <div className={styles.contentsTableWrapper}>
                 <FolderContentsTable

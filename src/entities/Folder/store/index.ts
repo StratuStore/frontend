@@ -35,6 +35,19 @@ class FolderStore {
         this.isCurrentFolderReady = false
     }
 
+    async navigateByPath(path: string[]) {
+        this.setIsLoading(true)
+        const folder = await folderService.getFolderByPath(path)
+
+        if (!folder) {
+            return
+        }
+
+        this.navigateToFolder(folder)
+        this.setIsLoading(false)
+        return folder
+    }
+
     getRootFolder() {
         const rootFolder = folderService.getRootFolder()
 
