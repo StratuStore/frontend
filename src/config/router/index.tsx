@@ -5,8 +5,18 @@ import HomePage from "@/ui/pages/Home"
 import SearchPage from "@/ui/pages/Search"
 import PinnedPage from "@/ui/pages/Pinned"
 import FolderPage from "@/ui/pages/Folder"
+import NotFoundPage from "@/ui/pages/NotFound"
+import AuthPage from "@/ui/pages/Auth"
 
 export const router = createBrowserRouter([
+    {
+        path: "/not-found",
+        element: <NotFoundPage />,
+    },
+    {
+        path: "auth",
+        element: <AuthPage />,
+    },
     {
         path: "/",
         element: <MainLayout />,
@@ -28,6 +38,10 @@ export const router = createBrowserRouter([
                 element: <FolderPage />,
             },
         ],
+    },
+    {
+        path: "*",
+        element: <NotFoundPage />,
     },
 ])
 
