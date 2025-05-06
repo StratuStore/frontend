@@ -19,6 +19,7 @@ export enum IconName {
     ClockOutline = "clock-outline",
     CloudStorage = "cloud-storage",
     Creation = "creation",
+    Spinner = "spinner",
 }
 
 export interface IconProps {

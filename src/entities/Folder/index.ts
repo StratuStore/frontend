@@ -24,5 +24,9 @@ export class Folder {
     getType() {
         return Folder
     }
+
+    get name() {
+        return this.path[this.path.length - 1]
+    }
 }
 

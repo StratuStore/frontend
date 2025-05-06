@@ -1,40 +1,67 @@
 import React from "react"
 import { ContextMenu as RadixContextMenu } from "radix-ui"
 import styles from "./styles.module.scss"
+import { IconName } from "@/ui/shared/Icon/types"
+import Icon from "@/ui/shared/Icon"
 
-interface ContextMenuItem {
+export type ContextMenuItem = {
     label: string
-    icon?: React.ReactNode
+    iconName?: IconName
     onClick: () => void
 }
 
-export type ContextMenuProps = {
+export type ContextMenuGroup = {
+    header?: string
     items: ContextMenuItem[]
-    renderTrigger: () => React.ReactNode
+}
+
+export type ContextMenuProps = {
+    groups: ContextMenuGroup[]
+    children: React.ReactNode
 }
 
 export default function ContextMenu(props: ContextMenuProps) {
-    const { items, renderTrigger } = props
+    const { groups, children } = props
 
     return (
         <RadixContextMenu.Root>
             <RadixContextMenu.Trigger className={styles.Trigger}>
-                {renderTrigger()}
+                {children}
             </RadixContextMenu.Trigger>
 
             <RadixContextMenu.Portal>
                 <RadixContextMenu.Content className={styles.Content}>
-                    {items.map((item, index) => (
-                        <RadixContextMenu.Item
-                            key={index}
-                            className={styles.Item}
-                            onClick={item.onClick}
-                        >
-                            {item.icon && (
-                                <span className={styles.Icon}>{item.icon}</span>
+                    {groups.map((group, groupIndex) => (
+                        <React.Fragment key={groupIndex}>
+                            {group.header && (
+                                <RadixContextMenu.Label
+                                    className={styles.Label}
+                                >
+                                    {group.header}
+                                </RadixContextMenu.Label>
                             )}
-                            {item.label}
-                        </RadixContextMenu.Item>
+
+                            {group.items.map((item, itemIndex) => (
+                                <RadixContextMenu.Item
+                                    key={itemIndex}
+                                    className={styles.Item}
+                                    onClick={item.onClick}
+                                >
+                                    {item.iconName && (
+                                        <span className={styles.Icon}>
+                                            <Icon name={item.iconName} />
+                                        </span>
+                                    )}
+                                    {item.label}
+                                </RadixContextMenu.Item>
+                            ))}
+
+                            {groupIndex < groups.length - 1 && (
+                                <RadixContextMenu.Separator
+                                    className={styles.Separator}
+                                />
+                            )}
+                        </React.Fragment>
                     ))}
                 </RadixContextMenu.Content>
             </RadixContextMenu.Portal>

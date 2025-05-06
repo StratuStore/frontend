@@ -3,6 +3,7 @@
     --bg-color: #ffffff;
     --accent-color: #a2cdfe;
     --accent-color-opaque: #a2cdfe80;
+    --accent-color-opaque-20: rgba(162, 205, 254, 0.2);
     --border-color: #acacac;
     --button-bg-hover: #2f2f31;
     --ghost-hover: #e2e2e2;

@@ -1,6 +1,9 @@
 import { Folder } from "@/entities/Folder"
 import { File } from "@/entities/File"
 import { wait } from "@/utils/id/wait"
+import { CreateFolderDto } from "@/entities/Folder/dto/CreateFolderDto"
+import { RenameFolderDto } from "@/entities/Folder/dto/RenameFolderDto"
+import { DeleteFolderDto } from "@/entities/Folder/dto/DeleteFolderDto"
 
 const mockFolders: Folder[] = [
     new Folder(
@@ -128,6 +131,8 @@ class FolderSerive {
     }
 
     getIncludedFolders(id: string) {
+        console.log(id)
+
         return new Promise<void>((resolve) => {
             setTimeout(() => {
                 resolve()
@@ -156,6 +161,21 @@ class FolderSerive {
 
         await wait(2000)
         return folder
+    }
+
+    async createFolder(dto: CreateFolderDto): Promise<void> {
+        console.log(dto)
+        await wait(2000)
+    }
+
+    async renameFolder(dto: RenameFolderDto): Promise<void> {
+        console.log(dto)
+        await wait(2000)
+    }
+
+    async deleteFolder(dto: DeleteFolderDto): Promise<void> {
+        console.log(dto)
+        await wait(2000)
     }
 }
 

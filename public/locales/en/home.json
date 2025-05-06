@@ -21,5 +21,26 @@
         "errorUploadingFiles_one": "Failed to upload {{count}} file",
         "errorUploadingFiles_other": "Failed to upload {{count}} files",
         "destination": "Destination is {{destination}}"
+    },
+    "createFolderModal": {
+        "heading": "Create new folder",
+        "nameInputLabel": "Folder name",
+        "nameInputPlaceholder": "Enter folder name",
+        "clear": "Clear",
+        "submit": "Submit"
+    },
+    "renameFolderModal": {
+        "heading": "Rename folder",
+        "nameInputLabel": "Folder name",
+        "nameInputPlaceholder": "Enter folder name",
+        "clear": "Clear",
+        "submit": "Submit"
+    },
+    "renameFileModal": {
+        "heading": "Rename file",
+        "nameInputLabel": "File name",
+        "nameInputPlaceholder": "Enter file name",
+        "clear": "Clear",
+        "submit": "Submit"
     }
 }

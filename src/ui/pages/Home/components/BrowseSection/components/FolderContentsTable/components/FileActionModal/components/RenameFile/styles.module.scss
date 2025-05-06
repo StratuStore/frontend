@@ -1,0 +1,19 @@
+.createFolderForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formEntry {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.submitRow {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    column-gap: 8px;
+}
+

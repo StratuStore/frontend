@@ -1,31 +1,138 @@
-import { makeAutoObservable } from "mobx"
+import { autorun, makeAutoObservable } from "mobx"
 import { File } from ".."
-
-const sampleFiles: File[] = [
-    new File("1", "document.pdf", "2025-02-22T10:30:00Z", 1024576),
-    new File("2", "image.jpg", "2025-02-21T15:45:00Z", 2097152),
-    new File("3", "script.js", "2025-02-20T09:15:00Z", 5120),
-    new File("4", "presentation.pptx", "2025-02-19T11:00:00Z", 5242880),
-    new File("5", "spreadsheet.xlsx", "2025-02-18T08:45:00Z", 1048576),
-    new File("6", "archive.zip", "2025-02-17T13:30:00Z", 10485760),
-]
+import { fileUploadStore } from "@/entities/FileUpload/store"
+import { Folder } from "@/entities/Folder"
+import { FileModalAction } from "@/entities/File/store/types"
+import { RenameFileDto } from "@/entities/File/dto/RenameFileDto"
+import { folderStore } from "@/entities/Folder/store"
+import { fileService } from "@/entities/File/api"
 
 class FileStore {
     constructor() {
         makeAutoObservable(this)
     }
 
-    files: File[] = sampleFiles
-    activeFile: File | null = null
+    selectedFiles: File[] = []
 
-    selectFile(file: File) {
-        this.activeFile = file
+    uploadFolder: Folder | null = null
+    fileUploadInput: HTMLInputElement | null = null
+
+    modalAction: FileModalAction | null = null
+    isActionLoading: boolean = false
+
+    setUploadFolder(folder: Folder | null) {
+        this.uploadFolder = folder
     }
 
-    deselectFile() {
-        this.activeFile = null
+    setModalAction(modalAction: FileModalAction | null) {
+        this.modalAction = modalAction
+    }
+
+    setIsActionLoading(isActionLoading: boolean) {
+        this.isActionLoading = isActionLoading
+    }
+
+    selectFile(file: File) {
+        // const isSelected = this.selectedFiles.some(
+        //     (selectedFile) => selectedFile.id === file.id
+        // )
+
+        // if (!isSelected) {
+        //     this.selectedFiles.push(file)
+        // }
+
+        this.selectedFiles = [file]
+    }
+
+    deselectFile(file: File) {
+        const index = this.selectedFiles.findIndex(
+            (selectedFile) => selectedFile.id === file.id
+        )
+
+        if (index !== -1) {
+            this.selectedFiles.splice(index, 1)
+        }
+    }
+
+    clearSelectedFiles() {
+        this.selectedFiles.length = 0
+    }
+
+    mountFileInput() {
+        const fileInput = document.createElement("input")
+        fileInput.type = "file"
+        fileInput.accept = ".pdf, .jpg, .js, .pptx, .xlsx, .zip"
+        fileInput.style.display = "none"
+
+        document.body.appendChild(fileInput)
+
+        this.fileUploadInput = fileInput
+
+        fileInput.addEventListener("change", (event) => {
+            const input = event.target as HTMLInputElement
+            const files = input.files
+
+            if (!files || files.length === 0 || this.uploadFolder === null) {
+                return
+            }
+
+            Array.from(files).forEach((file) => {
+                fileUploadStore.addFileUpload(this.uploadFolder!, file)
+            })
+
+            input.value = ""
+        })
+
+        return fileInput
+    }
+
+    startFileUpload(folder: Folder) {
+        this.setUploadFolder(folder)
+        this.fileUploadInput?.click()
+        this.setUploadFolder(null)
+    }
+
+    showRenameFileModal() {
+        this.setModalAction(FileModalAction.Rename)
+    }
+
+    closeActionModal() {
+        this.setModalAction(null)
+    }
+
+    async renameFile(fileId: string, newName: string) {
+        const dto = new RenameFileDto(fileId, newName)
+
+        try {
+            fileStore.setIsActionLoading(true)
+            await fileService.renameFile(dto)
+
+            folderStore.fetchFolderContents()
+        } catch (error) {
+            console.log(error)
+        } finally {
+            fileStore.setIsActionLoading(false)
+            this.closeActionModal()
+        }
+    }
+
+    async deleteFile(fileId: string) {
+        try {
+            fileStore.setIsActionLoading(true)
+            await fileService.deleteFile(fileId)
+
+            folderStore.fetchFolderContents()
+        } catch (error) {
+            console.log(error)
+        } finally {
+            fileStore.setIsActionLoading(true)
+        }
     }
 }
 
 export const fileStore = new FileStore()
+
+autorun(() => {
+    fileStore.mountFileInput()
+})
 

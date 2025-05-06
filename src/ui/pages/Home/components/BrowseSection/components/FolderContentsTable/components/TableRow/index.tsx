@@ -3,27 +3,40 @@ import { VirtualItem } from "@tanstack/react-virtual"
 import { TableItem } from "../../hooks/useTableData"
 import styles from "../../styles.module.scss"
 import { flexRender } from "@tanstack/react-table"
-
+import clsx from "clsx"
+import { observer } from "mobx-react-lite"
 interface TableRowProps {
     row: Row<TableItem>
     virtualRow: VirtualItem
+    active?: boolean
+
     measureElement: (node: HTMLTableRowElement | null) => void
     onClick: () => void
+    onDoubleClick?: () => void
+    onContextMenu?: () => void
 }
 
-export default function TableRow({
+function TableRowComponent({
     row,
     virtualRow,
+    active = false,
+
     measureElement,
     onClick,
+    onDoubleClick,
+    onContextMenu,
 }: TableRowProps) {
     return (
         <tr
             key={row.id}
             data-index={virtualRow.index}
             ref={measureElement}
-            className={styles.tableRow}
+            className={clsx(styles.tableRow, {
+                [styles.active]: active,
+            })}
             onClick={onClick}
+            onDoubleClick={onDoubleClick}
+            onContextMenu={onContextMenu}
             style={{
                 transform: `translateY(${virtualRow.start}px)`,
             }}
@@ -36,4 +49,7 @@ export default function TableRow({
         </tr>
     )
 }
+
+const TableRow = observer(TableRowComponent)
+export default TableRow
 

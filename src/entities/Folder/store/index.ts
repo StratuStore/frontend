@@ -1,17 +1,25 @@
 import { makeAutoObservable } from "mobx"
 import { Folder } from ".."
 import { folderService } from "@/entities/Folder/api"
+import { CreateFolderDto } from "../dto/CreateFolderDto"
+import { FolderModalAction } from "@/entities/Folder/store/types"
+import { RenameFolderDto } from "@/entities/Folder/dto/RenameFolderDto"
+import { DeleteFolderDto } from "@/entities/Folder/dto/DeleteFolderDto"
 
 class FolderStore {
     constructor() {
         makeAutoObservable(this)
     }
 
-    rootFolder: Folder | null = null
     currentFolderId: string | null = null
     currentFolder: Folder | null = null
     isLoading: boolean = false
     isCurrentFolderReady: boolean = false
+
+    modalAction: FolderModalAction | null = null
+    isActionLoading: boolean = false
+
+    selectedFolders: Folder[] = []
 
     setIsLoading(isLoading: boolean) {
         this.isLoading = isLoading
@@ -27,6 +35,40 @@ class FolderStore {
 
     setCurrentFolder(currentFolder: Folder | null) {
         this.currentFolder = currentFolder
+    }
+
+    setModalAction(modalAction: FolderModalAction | null) {
+        this.modalAction = modalAction
+    }
+
+    setActionLoading(isActionLoading: boolean) {
+        this.isActionLoading = isActionLoading
+    }
+
+    selectFolder(folder: Folder) {
+        // const isSelected = this.selectedFolders.some(
+        //     (selectedFolder) => selectedFolder.id === folder.id
+        // )
+
+        // if (!isSelected) {
+        //     this.selectedFolders.push(folder)
+        // }
+
+        this.selectedFolders = [folder]
+    }
+
+    deselectFolder(folder: Folder) {
+        const index = this.selectedFolders.findIndex(
+            (selectedFolder) => selectedFolder.id === folder.id
+        )
+
+        if (index !== -1) {
+            this.selectedFolders.splice(index, 1)
+        }
+    }
+
+    clearSelectedFolders() {
+        this.selectedFolders.length = 0
     }
 
     navigateToFolder(folder: Folder) {
@@ -51,7 +93,8 @@ class FolderStore {
     getRootFolder() {
         const rootFolder = folderService.getRootFolder()
 
-        this.rootFolder = rootFolder || null
+        this.currentFolder = rootFolder || null
+        this.currentFolderId = rootFolder?.id || null
     }
 
     async fetchFolderContents() {
@@ -76,6 +119,70 @@ class FolderStore {
 
         this.setIsLoading(false)
         this.setIsCurrentFolderReady(true)
+    }
+
+    showCreateFolderModal() {
+        this.setModalAction(FolderModalAction.Create)
+    }
+
+    async createFolder(name: string) {
+        if (!this.currentFolderId) {
+            return
+        }
+
+        const dto = new CreateFolderDto(name, this.currentFolderId)
+
+        try {
+            this.setActionLoading(true)
+            await folderService.createFolder(dto)
+
+            this.fetchFolderContents()
+        } catch (error) {
+            console.error("Error creating folder:", error)
+        } finally {
+            this.setActionLoading(false)
+            this.closeActionModal()
+        }
+    }
+
+    showRenameFolderModal() {
+        this.setModalAction(FolderModalAction.Rename)
+    }
+
+    async renameFolder(id: string, newName: string) {
+        const dto = new RenameFolderDto(id, newName)
+
+        try {
+            this.setActionLoading(true)
+            await folderService.renameFolder(dto)
+
+            this.fetchFolderContents()
+        } catch (error) {
+            console.error("Error renaming folder:", error)
+        } finally {
+            this.setActionLoading(false)
+            this.closeActionModal()
+        }
+    }
+
+    async deleteFolder(id: string) {
+        const dto = new DeleteFolderDto(id)
+
+        try {
+            this.setIsLoading(true)
+            await folderService.deleteFolder(dto)
+
+            this.fetchFolderContents()
+        } catch (error) {
+            console.error("Error renaming folder:", error)
+        } finally {
+            this.setIsLoading(false)
+            this.closeActionModal()
+        }
+    }
+
+    closeActionModal() {
+        this.setModalAction(null)
     }
 }
 

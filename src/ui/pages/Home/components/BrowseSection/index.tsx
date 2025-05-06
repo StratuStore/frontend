@@ -9,7 +9,7 @@ import { useEffect } from "react"
 
 function BrowseSectionComponent() {
     const { t } = useTranslation("home")
-    const rootFolder = folderStore.rootFolder
+    const currentFolder = folderStore.currentFolder
 
     useEffect(() => {
         folderStore.getRootFolder()
@@ -25,8 +25,9 @@ function BrowseSectionComponent() {
             </div>
             <div className={styles.contentsTableWrapper}>
                 <FolderContentsTable
-                    files={rootFolder?.files ?? []}
-                    folders={rootFolder?.folders ?? []}
+                    files={currentFolder?.files ?? []}
+                    folders={currentFolder?.folders ?? []}
+                    loading={folderStore.isLoading}
                 />
             </div>
             <FileUploadPopup />
