@@ -8,6 +8,7 @@ export type ContextMenuItem = {
     label: string
     iconName?: IconName
     onClick: () => void
+    visible?: boolean
 }
 
 export type ContextMenuGroup = {
@@ -18,6 +19,14 @@ export type ContextMenuGroup = {
 export type ContextMenuProps = {
     groups: ContextMenuGroup[]
     children: React.ReactNode
+}
+
+function isGroupVisible(group: ContextMenuGroup): boolean {
+    return group.items.some((item) => isItemVisible(item))
+}
+
+function isItemVisible(item: ContextMenuItem): boolean {
+    return item.visible !== false
 }
 
 export default function ContextMenu(props: ContextMenuProps) {
@@ -31,38 +40,52 @@ export default function ContextMenu(props: ContextMenuProps) {
 
             <RadixContextMenu.Portal>
                 <RadixContextMenu.Content className={styles.Content}>
-                    {groups.map((group, groupIndex) => (
-                        <React.Fragment key={groupIndex}>
-                            {group.header && (
-                                <RadixContextMenu.Label
-                                    className={styles.Label}
-                                >
-                                    {group.header}
-                                </RadixContextMenu.Label>
-                            )}
+                    {groups.map((group, groupIndex) => {
+                        if (!isGroupVisible(group)) {
+                            return null
+                        }
 
-                            {group.items.map((item, itemIndex) => (
-                                <RadixContextMenu.Item
-                                    key={itemIndex}
-                                    className={styles.Item}
-                                    onClick={item.onClick}
-                                >
-                                    {item.iconName && (
-                                        <span className={styles.Icon}>
-                                            <Icon name={item.iconName} />
-                                        </span>
-                                    )}
-                                    {item.label}
-                                </RadixContextMenu.Item>
-                            ))}
+                        return (
+                            <React.Fragment key={groupIndex}>
+                                {group.header && (
+                                    <RadixContextMenu.Label
+                                        className={styles.Label}
+                                    >
+                                        {group.header}
+                                    </RadixContextMenu.Label>
+                                )}
 
-                            {groupIndex < groups.length - 1 && (
-                                <RadixContextMenu.Separator
-                                    className={styles.Separator}
-                                />
-                            )}
-                        </React.Fragment>
-                    ))}
+                                {group.items.map((item, itemIndex) => {
+                                    if (!isItemVisible(item)) {
+                                        return null
+                                    }
+
+                                    return (
+                                        <RadixContextMenu.Item
+                                            key={itemIndex}
+                                            className={styles.Item}
+                                            onClick={item.onClick}
+                                        >
+                                            {item.iconName && (
+                                                <span className={styles.Icon}>
+                                                    <Icon
+                                                        name={item.iconName}
+                                                    />
+                                                </span>
+                                            )}
+                                            {item.label}
+                                        </RadixContextMenu.Item>
+                                    )
+                                })}
+
+                                {groupIndex < groups.length - 1 && (
+                                    <RadixContextMenu.Separator
+                                        className={styles.Separator}
+                                    />
+                                )}
+                            </React.Fragment>
+                        )
+                    })}
                 </RadixContextMenu.Content>
             </RadixContextMenu.Portal>
         </RadixContextMenu.Root>

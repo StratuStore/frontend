@@ -89,6 +89,10 @@ function FolderContentsTableComponent({
 
     function handleFolderDoubleClick(folder: Folder) {
         folderStore.navigateToFolder(folder)
+
+        folderStore.clearSelectedFolders()
+        fileStore.clearSelectedFiles()
+
         navigate(`/folder/${folder.id}`)
     }
 

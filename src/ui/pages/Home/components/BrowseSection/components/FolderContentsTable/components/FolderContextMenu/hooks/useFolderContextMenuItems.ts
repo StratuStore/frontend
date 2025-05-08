@@ -1,12 +1,19 @@
 import { ContextMenuGroup } from "@/ui/shared/ContextMenu"
 import { folderStore } from "@/entities/Folder/store"
 import { fileStore } from "@/entities/File/store"
+import { clipboardStore } from "@/entities/Clipboard/store"
 
 export function useFolderContextMenuItems(): ContextMenuGroup[] {
     const selectedFiles = fileStore.selectedFiles
     const selectedFolders = folderStore.selectedFolders
 
+    const clipboardItem = clipboardStore.getItem()
+    console.log("clipboardItem", clipboardItem)
+
     if (selectedFiles.length === 0 && selectedFolders.length === 0) {
+        const clipboardItem = clipboardStore.getItem()
+        const isPasteOptionVisible = clipboardItem !== null
+
         return [
             {
                 items: [
@@ -26,6 +33,13 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                             fileStore.startFileUpload(folderStore.currentFolder)
                         },
                     },
+                    {
+                        label: "Paste",
+                        onClick: () => {
+                            clipboardStore.paste()
+                        },
+                        visible: isPasteOptionVisible,
+                    },
                 ],
             },
         ]
@@ -41,6 +55,14 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                         label: "Rename",
                         onClick: () => {
                             folderStore.showRenameFolderModal()
+                        },
+                    },
+                    {
+                        label: "Cut",
+                        onClick: () => {
+                            clipboardStore.cutToClipboard(
+                                folderStore.selectedFolders[0]
+                            )
                         },
                     },
                     {

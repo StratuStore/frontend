@@ -33,15 +33,18 @@ class FileStore {
     }
 
     selectFile(file: File) {
-        // const isSelected = this.selectedFiles.some(
-        //     (selectedFile) => selectedFile.id === file.id
-        // )
+        const isSelected = this.selectedFiles.some(
+            (selectedFile) => selectedFile.id === file.id
+        )
 
-        // if (!isSelected) {
-        //     this.selectedFiles.push(file)
-        // }
+        if (!isSelected) {
+            this.selectedFiles.push(file)
+            return
+        }
 
-        this.selectedFiles = [file]
+        this.selectedFiles = this.selectedFiles.filter(
+            (selectedFile) => selectedFile.id !== file.id
+        )
     }
 
     deselectFile(file: File) {
@@ -55,7 +58,7 @@ class FileStore {
     }
 
     clearSelectedFiles() {
-        this.selectedFiles.length = 0
+        this.selectedFiles = []
     }
 
     mountFileInput() {

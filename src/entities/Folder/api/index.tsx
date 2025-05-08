@@ -4,6 +4,8 @@ import { wait } from "@/utils/id/wait"
 import { CreateFolderDto } from "@/entities/Folder/dto/CreateFolderDto"
 import { RenameFolderDto } from "@/entities/Folder/dto/RenameFolderDto"
 import { DeleteFolderDto } from "@/entities/Folder/dto/DeleteFolderDto"
+import { CopyFolderDto } from "@/entities/Folder/dto/CopyFolderDto"
+import { MoveFolderDto } from "@/entities/Folder/dto/MoveFolderDto"
 
 const mockFolders: Folder[] = [
     new Folder(
@@ -103,10 +105,33 @@ const mockFolders: Folder[] = [
 ]
 
 class FolderSerive {
-    async getFolerById(id: string): Promise<Folder | null> {
+    async getById(id: string): Promise<Folder | null> {
         const searchFolder = (folders: Folder[]): Folder | null => {
             for (const folder of folders) {
                 if (folder.id === id) {
+                    return folder
+                }
+
+                const found = searchFolder(folder.folders)
+
+                if (found) {
+                    return found
+                }
+            }
+
+            return null
+        }
+
+        const folder = searchFolder(mockFolders)
+
+        await wait(2000)
+        return folder
+    }
+
+    async getByPath(path: string[]): Promise<Folder | null> {
+        const searchFolder = (folders: Folder[]): Folder | null => {
+            for (const folder of folders) {
+                if (folder.path.join("/") === path.join("/")) {
                     return folder
                 }
 
@@ -140,40 +165,27 @@ class FolderSerive {
         })
     }
 
-    async getFolderByPath(path: string[]): Promise<Folder | null> {
-        const searchFolder = (folders: Folder[]): Folder | null => {
-            for (const folder of folders) {
-                if (folder.path.join("/") === path.join("/")) {
-                    return folder
-                }
-
-                const found = searchFolder(folder.folders)
-
-                if (found) {
-                    return found
-                }
-            }
-
-            return null
-        }
-
-        const folder = searchFolder(mockFolders)
-
-        await wait(2000)
-        return folder
-    }
-
-    async createFolder(dto: CreateFolderDto): Promise<void> {
+    async create(dto: CreateFolderDto): Promise<void> {
         console.log(dto)
         await wait(2000)
     }
 
-    async renameFolder(dto: RenameFolderDto): Promise<void> {
+    async rename(dto: RenameFolderDto): Promise<void> {
         console.log(dto)
         await wait(2000)
     }
 
-    async deleteFolder(dto: DeleteFolderDto): Promise<void> {
+    async delete(dto: DeleteFolderDto): Promise<void> {
+        console.log(dto)
+        await wait(2000)
+    }
+
+    async copy(dto: CopyFolderDto): Promise<void> {
+        console.log(dto)
+        await wait(2000)
+    }
+
+    async move(dto: MoveFolderDto): Promise<void> {
         console.log(dto)
         await wait(2000)
     }

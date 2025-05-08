@@ -2,6 +2,8 @@ import Icon from "@/ui/shared/Icon"
 import styles from "./styles.module.scss"
 import { IconName } from "@/ui/shared/Icon/types"
 import Button from "@/ui/shared/Button"
+import { GoogleLogin } from "@react-oauth/google"
+import GoogleLoginButton from "@/ui/pages/Auth/components/GoogleLoginButton"
 
 export default function AuthPage() {
     return (
@@ -26,7 +28,7 @@ export default function AuthPage() {
             <p className={styles.login}>
                 Please, log in using your Google account
             </p>
-            <Button variant="outline">Login with Google</Button>
+            <GoogleLoginButton />
         </div>
     )
 }

@@ -46,15 +46,18 @@ class FolderStore {
     }
 
     selectFolder(folder: Folder) {
-        // const isSelected = this.selectedFolders.some(
-        //     (selectedFolder) => selectedFolder.id === folder.id
-        // )
+        const isSelected = this.selectedFolders.some(
+            (selectedFolder) => selectedFolder.id === folder.id
+        )
 
-        // if (!isSelected) {
-        //     this.selectedFolders.push(folder)
-        // }
+        if (!isSelected) {
+            this.selectedFolders.push(folder)
+            return
+        }
 
-        this.selectedFolders = [folder]
+        this.selectedFolders = this.selectedFolders.filter(
+            (selectedFolder) => selectedFolder.id !== folder.id
+        )
     }
 
     deselectFolder(folder: Folder) {
@@ -68,7 +71,7 @@ class FolderStore {
     }
 
     clearSelectedFolders() {
-        this.selectedFolders.length = 0
+        this.selectedFolders = []
     }
 
     navigateToFolder(folder: Folder) {
@@ -79,7 +82,7 @@ class FolderStore {
 
     async navigateByPath(path: string[]) {
         this.setIsLoading(true)
-        const folder = await folderService.getFolderByPath(path)
+        const folder = await folderService.getByPath(path)
 
         if (!folder) {
             return
@@ -108,7 +111,7 @@ class FolderStore {
             !this.currentFolder ||
             this.currentFolder.id !== this.currentFolderId
         ) {
-            const currentFolder = await folderService.getFolerById(
+            const currentFolder = await folderService.getById(
                 this.currentFolderId
             )
 
@@ -134,7 +137,7 @@ class FolderStore {
 
         try {
             this.setActionLoading(true)
-            await folderService.createFolder(dto)
+            await folderService.create(dto)
 
             this.fetchFolderContents()
         } catch (error) {
@@ -154,7 +157,7 @@ class FolderStore {
 
         try {
             this.setActionLoading(true)
-            await folderService.renameFolder(dto)
+            await folderService.rename(dto)
 
             this.fetchFolderContents()
         } catch (error) {
@@ -170,7 +173,7 @@ class FolderStore {
 
         try {
             this.setIsLoading(true)
-            await folderService.deleteFolder(dto)
+            await folderService.delete(dto)
 
             this.fetchFolderContents()
         } catch (error) {
