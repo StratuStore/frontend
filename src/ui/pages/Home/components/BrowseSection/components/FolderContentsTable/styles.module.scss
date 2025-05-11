@@ -32,10 +32,14 @@
     width: 100%;
     cursor: pointer;
     grid-template-columns: repeat(4, 1fr);
+
+    &.active {
+        background-color: var(--accent-color-opaque);
+    }
 }
 
 .tableRow:hover {
-    background-color: var(--accent-color-opaque);
+    background-color: var(--accent-color-opaque-20);
 }
 
 .tableCell {

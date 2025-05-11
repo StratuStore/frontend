@@ -1,0 +1,45 @@
+@use "@/assets/sass/abstracts";
+
+.uploadEntry {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.firstRow {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.secondRow {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.copyLinkWrapper {
+    margin-inline-start: auto;
+}
+
+.destination {
+    font-size: 12px;
+    text-decoration: underline;
+    font-weight: abstracts.$typography-fw-semi-bold;
+}
+
+.filename {
+    font-size: 14px;
+    font-weight: abstracts.$typography-fw-bold;
+}
+
+.progressBarWrapper {
+    margin-top: 4px;
+}
+

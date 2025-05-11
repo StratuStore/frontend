@@ -4,12 +4,18 @@
     font-size: abstracts.$typography-font-sm;
     font-weight: abstracts.$typography-fw-semi-bold;
     border: none;
-    transition: background-color abstracts.$animations-duration-normal;
+    transition: all abstracts.$animations-duration-normal;
     border-radius: 8px;
     outline: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 }
 
 .primary {
@@ -19,7 +25,7 @@
 }
 
 .primary:focus-visible,
-.primary:hover {
+.primary:hover:not(:disabled) {
     background-color: var(--button-bg-hover);
 }
 
@@ -29,19 +35,52 @@
     background: transparent;
 }
 
+.outline {
+    color: var(--text-color);
+    background: transparent;
+    border: 1px solid var(--text-color);
+}
+
+.outline:focus-visible,
+.outline:hover:not(:disabled) {
+    background-color: var(--ghost-hover);
+}
+
 .primary,
-.ghost {
+.ghost,
+.outline {
     padding: 12px 20px;
+
+    &.small {
+        padding: 8px 16px;
+        font-size: abstracts.$typography-font-xs;
+    }
 }
 
 .icon {
     padding: 4px 4px;
+
+    &.small {
+        padding: 2px 2px;
+        font-size: abstracts.$typography-font-xs;
+    }
 }
 
 .ghost:focus-visible,
-.ghost:hover,
+.ghost:hover:not(:disabled),
 .icon:focus-visible,
-.icon:hover {
+.icon:hover:not(:disabled) {
     background-color: var(--ghost-hover);
+}
+
+.loaderContainer {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hiddenContent {
+    visibility: hidden;
 }
 

@@ -1,14 +1,32 @@
 import { File } from "@/entities/File"
 
 export class Folder {
+    id: string
     path: string[]
     files: File[]
+    folders: Folder[]
     createdAt: string
 
-    constructor(path: string[], files: File[], createdAt: string) {
+    constructor(
+        id: string,
+        path: string[],
+        files: File[],
+        folders: Folder[],
+        createdAt: string
+    ) {
+        this.id = id
         this.path = path
         this.files = files
+        this.folders = folders
         this.createdAt = createdAt
+    }
+
+    getType() {
+        return Folder
+    }
+
+    get name() {
+        return this.path[this.path.length - 1]
     }
 }
 

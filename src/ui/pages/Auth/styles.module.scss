@@ -1,0 +1,51 @@
+.authPageWrapper {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.imageWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.contentWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 4rem;
+    font-weight: 700;
+}
+
+.appName {
+    font-size: 8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    background: linear-gradient(90deg, #4169e1, #8a2be2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+    .appNameIcon {
+        fill: url(#app-name-gradient);
+    }
+}
+
+.login {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+

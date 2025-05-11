@@ -1,0 +1,25 @@
+@use "@/assets/sass/abstracts";
+
+.folderPageWrapper {
+    margin-top: 24px;
+}
+
+.header {
+    font-weight: abstracts.$typography-fw-bold;
+    font-size: abstracts.$typography-font-lg;
+    margin-inline-end: 10px;
+}
+
+.headerWrapper {
+    margin-bottom: 15px;
+}
+
+.breadcrumbsWrapper {
+    margin-bottom: 15px;
+    font-size: abstracts.$typography-font-md;
+}
+
+.contentsTableWrapper {
+    height: 100%;
+}
+

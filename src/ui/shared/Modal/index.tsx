@@ -8,10 +8,12 @@ import clsx from "clsx"
 type BodySectionComponent = () => React.ReactNode
 
 export type ModalProps = {
-    renderTrigger: () => React.ReactNode
-    renderHeading: () => React.ReactNode
+    renderTrigger?: () => React.ReactNode
+    renderHeading?: () => React.ReactNode
     renderBodySections: BodySectionComponent[]
     contentClasses?: string
+    open?: boolean
+    closeModal?: () => void
 }
 
 export default function Modal({
@@ -19,17 +21,26 @@ export default function Modal({
     renderHeading,
     renderBodySections,
     contentClasses,
+    open,
+    closeModal,
 }: ModalProps) {
     return (
-        <Dialog.Root>
-            <Dialog.Trigger asChild>{renderTrigger()}</Dialog.Trigger>
+        <Dialog.Root open={open}>
+            {renderTrigger && (
+                <Dialog.Trigger asChild>{renderTrigger()}</Dialog.Trigger>
+            )}
+
             <Dialog.Portal>
                 <Dialog.Overlay className={styles.overlay} />
 
                 <Dialog.Content
                     className={clsx(styles.content, contentClasses)}
+                    onEscapeKeyDown={closeModal}
                 >
-                    <div className={styles.heading}>{renderHeading()}</div>
+                    {renderHeading && (
+                        <div className={styles.heading}>{renderHeading()}</div>
+                    )}
+
                     <div className={styles.body}>
                         {renderBodySections.map((renderBodySection, index) => (
                             <div key={index} className={styles.bodySection}>
@@ -39,7 +50,7 @@ export default function Modal({
                     </div>
 
                     <Dialog.Close asChild className={styles.closeButtonWrapper}>
-                        <Button variant="icon">
+                        <Button variant="icon" onClick={closeModal}>
                             <Icon
                                 name={IconName.WindowClose}
                                 width="24px"

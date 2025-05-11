@@ -1,0 +1,35 @@
+@use "@/assets/sass/abstracts";
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.caption {
+    font-size: abstracts.$typography-font-md;
+    font-weight: abstracts.$typography-fw-bold;
+}
+
+.actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.chevron {
+    transition: transform 0.3s ease;
+
+    &.expanded {
+        transform: rotate(180deg);
+    }
+}
+
+.header.expanded {
+    margin-bottom: 12px;
+
+    .chevron {
+        transform: rotate(180deg);
+    }
+}
+

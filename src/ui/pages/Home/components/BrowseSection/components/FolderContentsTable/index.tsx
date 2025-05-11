@@ -1,22 +1,30 @@
+import { File } from "@/entities/File"
+import { fileStore } from "@/entities/File/store"
+import { Folder } from "@/entities/Folder"
+import { useTableData } from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/hooks/useTableData"
 import {
-    createColumnHelper,
+    flexRender,
     getCoreRowModel,
     useReactTable,
-    flexRender,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { useMemo, useRef } from "react"
-import { File } from "@/entities/File"
-import { Folder } from "@/entities/Folder"
+import { useRef, useEffect, useCallback } from "react"
 import styles from "./styles.module.scss"
-import FolderBadge from "@/ui/shared/FolderBadge"
-import FileBadge from "@/ui/shared/FileBadge"
-import { fileStore } from "@/entities/File/store"
-import { useTranslation } from "react-i18next"
+import TableRow from "./components/TableRow"
+import { useNavigate } from "react-router"
+import Loader from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/Loader"
+import NoContent from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/NoContent"
+import { folderStore } from "@/entities/Folder/store"
+import FolderContentsContextMenu from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FolderContextMenu"
+import { observer } from "mobx-react-lite"
+import FolderActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FodlerActionModal"
+import FileActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FileActionModal"
+import Spinner from "@/ui/shared/Spinner"
 
 interface FolderContentsTableProps {
     files: File[]
     folders: Folder[]
+    loading?: boolean
 }
 
 type TableItem = {
@@ -28,67 +36,32 @@ type TableItem = {
     originalItem: File | Folder
 }
 
-export default function FolderContentsTable({
+function isFolderActive(folder: Folder, selectedFolders: Folder[]) {
+    return selectedFolders.some(
+        (selectedFolder) => selectedFolder.id === folder.id
+    )
+}
+
+function isFileActive(file: File, selectedFiles: File[]) {
+    return selectedFiles.some((selectedFile) => selectedFile.id === file.id)
+}
+
+function FolderContentsTableComponent({
     files,
     folders,
+    loading = false,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
-    const columnHelper = createColumnHelper<TableItem>()
+    const loaderRef = useRef<HTMLDivElement>(null)
+    const { data, columns } = useTableData(files, folders)
+    const navigate = useNavigate()
 
-    const { t } = useTranslation("home")
+    const selectedFolders = folderStore.selectedFolders
+    const selectedFiles = fileStore.selectedFiles
 
-    const data = useMemo(() => {
-        const folderItems: TableItem[] = folders.map((folder) => ({
-            id: folder.path.join("/"),
-            name: folder.path.at(-1) || "",
-            createdAt: folder.createdAt,
-            type: t("folderContentsTable.folderItemType"),
-            size: "-",
-            originalItem: folder,
-        }))
-
-        const fileItems: TableItem[] = files.map((file) => ({
-            id: file.name,
-            name: file.name,
-            createdAt: file.createdAt,
-            type:
-                file.name.split(".").pop()?.toUpperCase() ||
-                t("folderContentsTable.fileTypeUnknown"),
-            size: file.size.toString(),
-            originalItem: file,
-        }))
-
-        return [...folderItems, ...fileItems]
-    }, [files, folders, t])
-
-    const columns = useMemo(
-        () => [
-            columnHelper.accessor("name", {
-                header: t("folderContentsTable.name"),
-                cell: (info) => {
-                    const item = info.row.original
-                    return item.type === "Folder" ? (
-                        <FolderBadge name={item.name} />
-                    ) : (
-                        <FileBadge name={item.name} />
-                    )
-                },
-            }),
-            columnHelper.accessor("createdAt", {
-                header: t("folderContentsTable.createdAt"),
-                cell: (info) => info.getValue(),
-            }),
-            columnHelper.accessor("type", {
-                header: t("folderContentsTable.type"),
-                cell: (info) => info.getValue(),
-            }),
-            columnHelper.accessor("size", {
-                header: t("folderContentsTable.size"),
-                cell: (info) => info.getValue(),
-            }),
-        ],
-        [columnHelper, t]
-    )
+    // Determine if more items are being loaded
+    const isLoadingMoreItems =
+        folderStore.isLoading && folderStore.pagination.offset > 0
 
     const table = useReactTable({
         data,
@@ -110,82 +83,173 @@ export default function FolderContentsTable({
         overscan: 10,
     })
 
+    const handleObserver = useCallback(
+        (entries: IntersectionObserverEntry[]) => {
+            const [entry] = entries
+            if (
+                entry.isIntersecting &&
+                !folderStore.isLoading &&
+                folderStore.pagination.total > 0 &&
+                folderStore.pagination.offset + folderStore.pagination.limit <
+                    folderStore.pagination.total
+            ) {
+                folderStore.fetchMoreFolderContents()
+            }
+        },
+        []
+    )
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleObserver, {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.1,
+        })
+
+        const loader = loaderRef.current
+
+        if (loader) {
+            observer.observe(loaderRef.current)
+        }
+
+        return () => {
+            if (loader) {
+                observer.unobserve(loader)
+            }
+        }
+    }, [handleObserver, folders, files])
+
     function handleFileClick(file: File) {
+        folderStore.clearSelectedFolders()
         fileStore.selectFile(file)
     }
 
     function handleFolderClick(folder: Folder) {
-        console.log(folder)
+        fileStore.clearSelectedFiles()
+        folderStore.selectFolder(folder)
+    }
+
+    function handleFolderDoubleClick(folder: Folder) {
+        folderStore.navigateToFolder(folder)
+
+        folderStore.clearSelectedFolders()
+        fileStore.clearSelectedFiles()
+
+        navigate(`/folder/${folder.id}`)
     }
 
     const handleRowClick = (item: TableItem) => {
-        if (item.type === "Folder") {
+        if (item.originalItem.constructor === Folder) {
             handleFolderClick(item.originalItem as Folder)
         } else {
             handleFileClick(item.originalItem as File)
         }
     }
 
+    if (loading && !isLoadingMoreItems) {
+        return <Loader />
+    }
+
+    if (folders.length === 0 && files.length === 0) {
+        return <NoContent />
+    }
+
     return (
         <div ref={parentRef} className={styles.tableWrapper}>
-            <table className={styles.table}>
-                <thead className={styles.tableHeader}>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => (
-                                <th
-                                    key={header.id}
-                                    className={styles.tableHeaderCell}
-                                >
-                                    {flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                    )}
-                                </th>
-                            ))}
-                        </tr>
-                    ))}
-                </thead>
-
-                <tbody
-                    style={{
-                        height: `${rowVirtualizer.getTotalSize()}px`,
-                        position: "relative",
-                        width: "100%",
-                    }}
-                >
-                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                        const row = rows[virtualRow.index]
-                        return (
-                            <tr
-                                key={row.id}
-                                data-index={virtualRow.index}
-                                ref={(node) =>
-                                    rowVirtualizer.measureElement(node)
-                                }
-                                className={styles.tableRow}
-                                onClick={() => handleRowClick(row.original)}
-                                style={{
-                                    transform: `translateY(${virtualRow.start}px)`,
-                                }}
-                            >
-                                {row.getVisibleCells().map((cell) => (
-                                    <td
-                                        key={cell.id}
-                                        className={styles.tableCell}
+            <FolderContentsContextMenu>
+                <table className={styles.table}>
+                    <thead className={styles.tableHeader}>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <tr key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => (
+                                    <th
+                                        key={header.id}
+                                        className={styles.tableHeaderCell}
                                     >
                                         {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
+                                            header.column.columnDef.header,
+                                            header.getContext()
                                         )}
-                                    </td>
+                                    </th>
                                 ))}
                             </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
+                        ))}
+                    </thead>
+
+                    <tbody
+                        style={{
+                            height: `${rowVirtualizer.getTotalSize()}px`,
+                            position: "relative",
+                            width: "100%",
+                        }}
+                    >
+                        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                            const row = rows[virtualRow.index]
+
+                            if (
+                                row.original.originalItem.getType() === Folder
+                            ) {
+                                return (
+                                    <TableRow
+                                        key={row.id}
+                                        row={row}
+                                        virtualRow={virtualRow}
+                                        active={isFolderActive(
+                                            row.original.originalItem as Folder,
+                                            selectedFolders
+                                        )}
+                                        measureElement={(node) =>
+                                            rowVirtualizer.measureElement(node)
+                                        }
+                                        onClick={() =>
+                                            handleRowClick(row.original)
+                                        }
+                                        onDoubleClick={() =>
+                                            handleFolderDoubleClick(
+                                                row.original
+                                                    .originalItem as Folder
+                                            )
+                                        }
+                                        onContextMenu={() =>
+                                            handleRowClick(row.original)
+                                        }
+                                    />
+                                )
+                            }
+
+                            return (
+                                <TableRow
+                                    key={row.id}
+                                    row={row}
+                                    virtualRow={virtualRow}
+                                    active={isFileActive(
+                                        row.original.originalItem as File,
+                                        selectedFiles
+                                    )}
+                                    measureElement={(node) =>
+                                        rowVirtualizer.measureElement(node)
+                                    }
+                                    onClick={() => handleRowClick(row.original)}
+                                    onContextMenu={() =>
+                                        handleRowClick(row.original)
+                                    }
+                                />
+                            )
+                        })}
+                    </tbody>
+                </table>
+            </FolderContentsContextMenu>
+
+            <div ref={loaderRef} className={styles.loaderContainer}>
+                {isLoadingMoreItems && <Spinner />}
+            </div>
+
+            <FolderActionModal />
+            <FileActionModal />
         </div>
     )
 }
+
+const FolderContentsTable = observer(FolderContentsTableComponent)
+export default FolderContentsTable
 

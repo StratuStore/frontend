@@ -1,0 +1,93 @@
+import { useForm } from "react-hook-form"
+import {
+    renameFolderFormSchema,
+    RenameFolderFormValues,
+    getDefaultValues,
+} from "./constants"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { folderStore } from "@/entities/Folder/store"
+import FormControl from "@/ui/shared/forms/FormControl"
+import Input from "@/ui/shared/Input"
+import { useTranslation } from "react-i18next"
+import styles from "./styles.module.scss"
+import Button from "@/ui/shared/Button"
+import { observer } from "mobx-react-lite"
+import { useMemo } from "react"
+
+function RenameFolderComponent() {
+    const folder = folderStore.selectedFolders[0]
+    const defaultValues = useMemo(
+        () => getDefaultValues(folder.name),
+        [folder.name]
+    )
+
+    const {
+        handleSubmit,
+        formState: { errors, touchedFields },
+        reset,
+        register,
+    } = useForm<RenameFolderFormValues>({
+        resolver: zodResolver(renameFolderFormSchema),
+        defaultValues,
+        mode: "onTouched",
+    })
+
+    const { t } = useTranslation("home")
+
+    function onSubmit(data: RenameFolderFormValues) {
+        folderStore.renameFolder(folder.id, data.name)
+    }
+
+    function handleClear() {
+        reset(defaultValues)
+    }
+
+    if (!folder) {
+        return
+    }
+
+    return (
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={styles.createFolderForm}
+        >
+            <div className={styles.formEntry}>
+                <label htmlFor="name">
+                    {t("renameFolderModal.nameInputLabel")}
+                </label>
+                <FormControl
+                    error={errors.name?.message}
+                    control={
+                        <Input
+                            placeholder={t(
+                                "renameFolderModal.nameInputPlaceholder"
+                            )}
+                            touched={touchedFields.name}
+                            valid={!errors.name}
+                            {...register("name")}
+                        />
+                    }
+                />
+            </div>
+
+            <div className={styles.submitRow}>
+                <Button
+                    variant="ghost"
+                    type="button"
+                    onClick={handleClear}
+                    disabled={folderStore.isActionLoading}
+                >
+                    {t("renameFolderModal.clear")}
+                </Button>
+
+                <Button type="submit" loading={folderStore.isActionLoading}>
+                    {t("renameFolderModal.submit")}
+                </Button>
+            </div>
+        </form>
+    )
+}
+
+const RenameFolder = observer(RenameFolderComponent)
+export default RenameFolder
+
