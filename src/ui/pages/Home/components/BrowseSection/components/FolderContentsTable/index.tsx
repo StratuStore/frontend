@@ -8,7 +8,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { useRef } from "react"
+import { useRef, useEffect, useCallback } from "react"
 import styles from "./styles.module.scss"
 import TableRow from "./components/TableRow"
 import { useNavigate } from "react-router"
@@ -19,6 +19,7 @@ import FolderContentsContextMenu from "@/ui/pages/Home/components/BrowseSection/
 import { observer } from "mobx-react-lite"
 import FolderActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FodlerActionModal"
 import FileActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FileActionModal"
+import Spinner from "@/ui/shared/Spinner"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -51,11 +52,16 @@ function FolderContentsTableComponent({
     loading = false,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
+    const loaderRef = useRef<HTMLDivElement>(null)
     const { data, columns } = useTableData(files, folders)
     const navigate = useNavigate()
 
     const selectedFolders = folderStore.selectedFolders
     const selectedFiles = fileStore.selectedFiles
+
+    // Determine if more items are being loaded
+    const isLoadingMoreItems =
+        folderStore.isLoading && folderStore.pagination.offset > 0
 
     const table = useReactTable({
         data,
@@ -76,6 +82,42 @@ function FolderContentsTableComponent({
                 : undefined,
         overscan: 10,
     })
+
+    const handleObserver = useCallback(
+        (entries: IntersectionObserverEntry[]) => {
+            const [entry] = entries
+            if (
+                entry.isIntersecting &&
+                !folderStore.isLoading &&
+                folderStore.pagination.total > 0 &&
+                folderStore.pagination.offset + folderStore.pagination.limit <
+                    folderStore.pagination.total
+            ) {
+                folderStore.fetchMoreFolderContents()
+            }
+        },
+        []
+    )
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleObserver, {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.1,
+        })
+
+        const loader = loaderRef.current
+
+        if (loader) {
+            observer.observe(loaderRef.current)
+        }
+
+        return () => {
+            if (loader) {
+                observer.unobserve(loader)
+            }
+        }
+    }, [handleObserver, folders, files])
 
     function handleFileClick(file: File) {
         folderStore.clearSelectedFolders()
@@ -104,7 +146,7 @@ function FolderContentsTableComponent({
         }
     }
 
-    if (loading) {
+    if (loading && !isLoadingMoreItems) {
         return <Loader />
     }
 
@@ -197,6 +239,10 @@ function FolderContentsTableComponent({
                     </tbody>
                 </table>
             </FolderContentsContextMenu>
+
+            <div ref={loaderRef} className={styles.loaderContainer}>
+                {isLoadingMoreItems && <Spinner />}
+            </div>
 
             <FolderActionModal />
             <FileActionModal />

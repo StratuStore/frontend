@@ -13,6 +13,7 @@ function BrowseSectionComponent() {
 
     useEffect(() => {
         folderStore.getRootFolder()
+        folderStore.fetchFolderContents()
     }, [])
 
     return (

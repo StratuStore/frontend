@@ -15,6 +15,15 @@ class FolderStore {
     currentFolder: Folder | null = null
     isLoading: boolean = false
     isCurrentFolderReady: boolean = false
+    pagination: {
+        limit: number
+        offset: number
+        total: number
+    } = {
+        limit: 50,
+        offset: 0,
+        total: -1,
+    }
 
     modalAction: FolderModalAction | null = null
     isActionLoading: boolean = false
@@ -117,11 +126,33 @@ class FolderStore {
 
             this.setCurrentFolder(currentFolder || null)
         } else {
-            await folderService.getIncludedFolders(this.currentFolderId)
+            await folderService.getFolderContents(this.currentFolderId)
         }
 
         this.setIsLoading(false)
         this.setIsCurrentFolderReady(true)
+    }
+
+    async fetchMoreFolderContents() {
+        if (!this.currentFolder) {
+            return
+        }
+
+        this.setIsLoading(true)
+        this.pagination.offset += this.pagination.limit
+
+        try {
+            await folderService.getFolderContents(
+                this.currentFolder.id,
+                this.pagination.offset,
+                this.pagination.limit
+            )
+        } catch (error) {
+            console.error("Error fetching more folder contents:", error)
+            this.pagination.offset += this.pagination.limit
+        } finally {
+            this.setIsLoading(false)
+        }
     }
 
     showCreateFolderModal() {

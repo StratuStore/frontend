@@ -155,8 +155,8 @@ class FolderSerive {
         return mockFolders.find((folder) => folder.path.length === 1)
     }
 
-    getIncludedFolders(id: string) {
-        console.log(id)
+    getFolderContents(id: string, offset = 0, limit = 10) {
+        console.log(id, offset, limit)
 
         return new Promise<void>((resolve) => {
             setTimeout(() => {
