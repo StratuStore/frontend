@@ -20,6 +20,7 @@ import { observer } from "mobx-react-lite"
 import FolderActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FodlerActionModal"
 import FileActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FileActionModal"
 import Spinner from "@/ui/shared/Spinner"
+import FilePreviewModal from "@/ui/shared/Modals/FilePreviewModal"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -246,6 +247,7 @@ function FolderContentsTableComponent({
 
             <FolderActionModal />
             <FileActionModal />
+            <FilePreviewModal open closeModal={() => {}} />
         </div>
     )
 }
