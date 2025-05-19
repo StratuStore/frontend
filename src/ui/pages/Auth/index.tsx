@@ -1,8 +1,6 @@
 import Icon from "@/ui/shared/Icon"
 import styles from "./styles.module.scss"
 import { IconName } from "@/ui/shared/Icon/types"
-import Button from "@/ui/shared/Button"
-import { GoogleLogin } from "@react-oauth/google"
 import GoogleLoginButton from "@/ui/pages/Auth/components/GoogleLoginButton"
 
 export default function AuthPage() {

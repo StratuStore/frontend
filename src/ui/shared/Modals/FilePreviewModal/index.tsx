@@ -9,6 +9,8 @@ import image from "./static-test/image.jpeg"
 import video from "./static-test/video.mp4"
 import audio from "./static-test/audio.mp3"
 
+const files = [image, video, audio]
+
 export type FilePreviewModalProps = {
     open: boolean
     closeModal: () => void
@@ -63,7 +65,7 @@ export default function FilePreviewModal(props: FilePreviewModalProps) {
                     </div>
 
                     <div className={styles.body}>
-                        <DocumentPreview uri={image} />
+                        <DocumentPreview uri={files[2]} />
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>

@@ -1,4 +1,3 @@
-import React from "react"
 import ReactPlayer from "react-player"
 
 export type VideoPreviewProps = {
@@ -6,8 +5,6 @@ export type VideoPreviewProps = {
 }
 
 export default function VideoPreview({ uri }: VideoPreviewProps) {
-    console.log(uri)
-
     return (
         <ReactPlayer
             url={uri}

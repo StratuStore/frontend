@@ -38,7 +38,7 @@ class FileStore {
         )
 
         if (!isSelected) {
-            this.selectedFiles.push(file)
+            this.selectedFiles = [file]
             return
         }
 
