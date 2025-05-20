@@ -20,6 +20,10 @@ export enum IconName {
     CloudStorage = "cloud-storage",
     Creation = "creation",
     Spinner = "spinner",
+    Download = "download",
+    Plus = "plus",
+    Minus = "minus",
+    Restart = "restart",
 }
 
 export interface IconProps {

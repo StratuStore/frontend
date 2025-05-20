@@ -158,11 +158,13 @@ class FolderSerive {
     getFolderContents(id: string, offset = 0, limit = 10) {
         console.log(id, offset, limit)
 
-        return new Promise<void>((resolve) => {
-            setTimeout(() => {
-                resolve()
-            }, 2000)
-        })
+        // return new Promise<void>((resolve) => {
+        //     setTimeout(() => {
+        //         resolve()
+        //     }, 2000)
+        // })
+
+        return
     }
 
     async create(dto: CreateFolderDto): Promise<void> {

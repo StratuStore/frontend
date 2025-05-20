@@ -1,20 +1,27 @@
+import { authStore } from "@/entities/Auth/store"
 import Button from "@/ui/shared/Button"
-import { useGoogleLogin } from "@react-oauth/google"
+import { observer } from "mobx-react-lite"
+import { useNavigate, useParams } from "react-router"
 
-export default function GoogleLoginButton() {
-    const login = useGoogleLogin({
-        onSuccess: (tokenResponse) => console.log(tokenResponse),
-    })
+function GoogleLoginButtonComponent() {
+    const { redirectTo } = useParams()
+    const navigate = useNavigate()
+
+    async function handleLoginClick() {
+        await authStore.login()
+
+        if (authStore.isReady && authStore.user) {
+            navigate(redirectTo || "/")
+        }
+    }
 
     return (
-        <Button
-            variant="outline"
-            onClick={() => {
-                login()
-            }}
-        >
+        <Button onClick={handleLoginClick} loading={authStore.isLoading}>
             Login with Google
         </Button>
     )
 }
+
+const GoogleLoginButton = observer(GoogleLoginButtonComponent)
+export default GoogleLoginButton
 

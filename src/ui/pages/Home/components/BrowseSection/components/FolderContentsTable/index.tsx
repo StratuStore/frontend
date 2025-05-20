@@ -8,7 +8,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { useRef, useEffect, useCallback } from "react"
+import { useRef, useEffect, useCallback, useState } from "react"
 import styles from "./styles.module.scss"
 import TableRow from "./components/TableRow"
 import { useNavigate } from "react-router"
@@ -20,6 +20,7 @@ import { observer } from "mobx-react-lite"
 import FolderActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FodlerActionModal"
 import FileActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FileActionModal"
 import Spinner from "@/ui/shared/Spinner"
+import FilePreviewModal from "@/ui/shared/Modals/FilePreviewModal"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -53,21 +54,23 @@ function FolderContentsTableComponent({
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
-    const { data, columns } = useTableData(files, folders)
     const navigate = useNavigate()
 
-    const selectedFolders = folderStore.selectedFolders
-    const selectedFiles = fileStore.selectedFiles
+    const [isPreviewModalOpen, setPreviewModalOpen] = useState<boolean>(false)
 
-    // Determine if more items are being loaded
-    const isLoadingMoreItems =
-        folderStore.isLoading && folderStore.pagination.offset > 0
+    const { data, columns } = useTableData(files, folders)
 
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
     })
+
+    const selectedFolders = folderStore.selectedFolders
+    const selectedFiles = fileStore.selectedFiles
+
+    const isLoadingMoreItems =
+        folderStore.isLoading && folderStore.pagination.offset > 0
 
     const { rows } = table.getRowModel()
 
@@ -233,6 +236,9 @@ function FolderContentsTableComponent({
                                     onContextMenu={() =>
                                         handleRowClick(row.original)
                                     }
+                                    onDoubleClick={() =>
+                                        setPreviewModalOpen(true)
+                                    }
                                 />
                             )
                         })}
@@ -246,6 +252,10 @@ function FolderContentsTableComponent({
 
             <FolderActionModal />
             <FileActionModal />
+            <FilePreviewModal
+                open={isPreviewModalOpen}
+                closeModal={() => setPreviewModalOpen(false)}
+            />
         </div>
     )
 }

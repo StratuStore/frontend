@@ -1,20 +1,15 @@
-import { FileUpload, FileUploadStatus } from "@/entities/FileUpload"
+import { FileUpload } from "@/entities/FileUpload"
 import styles from "./styles.module.scss"
 import UploadStatusIcon from "@/ui/pages/Home/components/BrowseSection/components/FileUploadPopup/components/UploadEntry/components/UploadStatusIcon"
-import Button from "@/ui/shared/Button"
-import FileTypeBadge from "@/ui/pages/Home/components/BrowseSection/components/FileUploadPopup/components/UploadEntry/components/FileTypeBadge"
-import { useTranslation } from "react-i18next"
 import ProgressBar from "@/ui/pages/Home/components/BrowseSection/components/FileUploadPopup/components/UploadEntry/components/ProgressBar"
+import { observer } from "mobx-react-lite"
 
 export type UploadEntryProps = {
     fileUpload: FileUpload
 }
 
-export default function UploadEntry({ fileUpload }: UploadEntryProps) {
+function UploadEntryComponent({ fileUpload }: UploadEntryProps) {
     const file = fileUpload.file
-    // const fileType = file.name.split(".").pop() || ""
-
-    // const { t } = useTranslation("home")
 
     return (
         <div className={styles.uploadEntry}>
@@ -22,7 +17,7 @@ export default function UploadEntry({ fileUpload }: UploadEntryProps) {
                 <div className={styles.uploadInfo}>
                     <div className={styles.firstRow}>
                         <UploadStatusIcon
-                            status={FileUploadStatus.Successful}
+                            status={fileUpload.status}
                             iconProps={{ width: "20px", height: "20px" }}
                         />
                         <div className={styles.filename}>{file.name}</div>
@@ -45,11 +40,14 @@ export default function UploadEntry({ fileUpload }: UploadEntryProps) {
 
             <div className={styles.progressBarWrapper}>
                 <ProgressBar
-                    progress={100}
-                    status={FileUploadStatus.Successful}
+                    progress={fileUpload.progress}
+                    status={fileUpload.status}
                 />
             </div>
         </div>
     )
 }
+
+const UploadEntry = observer(UploadEntryComponent)
+export default UploadEntry
 

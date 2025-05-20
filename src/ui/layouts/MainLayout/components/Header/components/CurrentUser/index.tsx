@@ -1,25 +1,32 @@
 import Popover from "@/ui/shared/Popover"
 
-import avatarUrl from "@/assets/images/avatar.png"
 import styles from "./styles.module.scss"
 import ConfigurationMenu from "@/ui/layouts/MainLayout/components/Header/components/CurrentUser/components/ConfigurationMenu"
-import { useTranslation } from "react-i18next"
+import { observer } from "mobx-react-lite"
+import { authStore } from "@/entities/Auth/store"
 
-export default function CurrentUser() {
-    const { t } = useTranslation("common")
+function CurrentUserComponent() {
+    const user = authStore.user
+
+    if (!user) {
+        return null
+    }
+
+    console.log(user)
 
     return (
         <Popover
             renderTrigger={() => (
                 <div className={styles.currentUserContainer}>
-                    <div className={styles.usernameWrapper}>
-                        {t("currentUser.title")}
-                    </div>
-                    <img src={avatarUrl} />
+                    <div className={styles.usernameWrapper}>{user.name}</div>
+                    <img src={user.picture} className={styles.avatar} />
                 </div>
             )}
             renderContent={() => <ConfigurationMenu />}
         />
     )
 }
+
+const CurrentUser = observer(CurrentUserComponent)
+export default CurrentUser
 
