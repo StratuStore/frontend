@@ -65,7 +65,12 @@ export default function FilePreviewModal(props: FilePreviewModalProps) {
                     </div>
 
                     <div className={styles.body}>
-                        <DocumentPreview uri={files[2]} />
+                        <DocumentPreview
+                            uri={
+                                "http://localhost:5645/files/read?connectionID=2768f30f-e289-46dc-ad92-26cef0c2600f"
+                            }
+                            extension="jpg"
+                        />
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>

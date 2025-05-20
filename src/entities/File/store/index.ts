@@ -92,7 +92,6 @@ class FileStore {
     startFileUpload(folder: Folder) {
         this.setUploadFolder(folder)
         this.fileUploadInput?.click()
-        this.setUploadFolder(null)
     }
 
     showRenameFileModal() {
@@ -130,6 +129,30 @@ class FileStore {
         } finally {
             fileStore.setIsActionLoading(true)
         }
+    }
+
+    async downloadFile() {
+        const fileToDownload = this.selectedFiles[0]
+
+        if (!fileToDownload) {
+            return
+        }
+
+        // const connectiondId = await fileService.openConnection(
+        //     fileToDownload.id
+        // )
+
+        const connectiondId = "2768f30f-e289-46dc-ad92-26cef0c2600f"
+
+        const link = document.createElement("a")
+
+        link.href = fileService.getDownloadUrl(connectiondId)
+        link.download = `${fileToDownload.name}.${fileToDownload.extension}`
+        link.target = "_blank"
+
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
     }
 }
 

@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx"
 import { FileUpload, FileUploadStatus } from "@/entities/FileUpload"
 import { Folder } from "@/entities/Folder"
+import { fileSystemService } from "@/entities/FileUpload/api"
 
 class FileUploadStore {
     constructor() {
@@ -42,6 +43,24 @@ class FileUploadStore {
 
     addFileUpload(folder: Folder, file: globalThis.File) {
         const fileUpload = new FileUpload(folder, file)
+
+        fileSystemService.uploadFile(fileUpload.file, {
+            onProgress: (progress: number) => {
+                fileUpload.progress = progress
+            },
+
+            onSuccess: () => {
+                fileUpload.status = FileUploadStatus.Successful
+                fileUpload.progress = 100
+                fileUpload.error = null
+            },
+
+            onError: (error: Error) => {
+                fileUpload.status = FileUploadStatus.Failed
+                fileUpload.error = error.message
+            },
+        })
+
         fileUpload.status = FileUploadStatus.Failed
 
         this.items.push(fileUpload)

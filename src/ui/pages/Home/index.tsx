@@ -3,7 +3,6 @@ import BrowseSection from "@/ui/pages/Home/components/BrowseSection"
 import SectionBreak from "@/ui/shared/SectionBreak"
 import FilePropertiesSidebar from "@/ui/shared/FilePropertiesSidebar"
 import styles from "./styles.module.scss"
-import { withAuthGuard } from "@/entities/Auth/components/withAuthGuard"
 
 function HomePageComponent() {
     return (
@@ -20,6 +19,7 @@ function HomePageComponent() {
     )
 }
 
-const HomePage = withAuthGuard(HomePageComponent)
+// const HomePage = withAuthGuard(HomePageComponent)
+const HomePage = HomePageComponent
 export default HomePage
 

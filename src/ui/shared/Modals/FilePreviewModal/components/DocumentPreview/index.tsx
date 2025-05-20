@@ -5,6 +5,7 @@ import AudioPreview from "./components/AudioPreview"
 
 export type DocumentPreviewProps = {
     uri: string
+    extension: string
 }
 
 type PreviewComponentProps = {
@@ -12,10 +13,8 @@ type PreviewComponentProps = {
 }
 
 function resolvePreviewComponent(
-    uri: string
+    fileExtension: string
 ): FC<PreviewComponentProps> | null {
-    const fileExtension = uri.split(".").pop()?.toLowerCase()
-
     if (fileExtension === "mp4") {
         return VideoPreview
     } else if (["jpg", "jpeg", "png", "gif"].includes(fileExtension || "")) {
@@ -27,8 +26,11 @@ function resolvePreviewComponent(
     return null
 }
 
-export default function DocumentPreview({ uri }: DocumentPreviewProps) {
-    const PreviewComponent = resolvePreviewComponent(uri)
+export default function DocumentPreview({
+    uri,
+    extension,
+}: DocumentPreviewProps) {
+    const PreviewComponent = resolvePreviewComponent(extension)
 
     if (!PreviewComponent) {
         return <p>Unsupported file type</p>
