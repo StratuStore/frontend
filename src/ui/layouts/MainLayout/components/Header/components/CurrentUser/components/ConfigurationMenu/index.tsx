@@ -4,9 +4,18 @@ import styles from "./styles.module.scss"
 import ThemePicker from "@/ui/layouts/MainLayout/components/Header/components/CurrentUser/components/ConfigurationMenu/components/ThemePicker"
 import LanguagePicker from "@/ui/layouts/MainLayout/components/Header/components/CurrentUser/components/ConfigurationMenu/components/LanguagePicker"
 import { useTranslation } from "react-i18next"
+import { observer } from "mobx-react-lite"
+import { authStore } from "@/entities/Auth/store"
+import { useNavigate } from "react-router"
 
-export default function ConfigurationMenu() {
+function ConfigurationMenuComponent() {
     const { t } = useTranslation("common")
+    const navigate = useNavigate()
+
+    async function handleLogout() {
+        await authStore.logout()
+        navigate("/auth")
+    }
 
     return (
         <div className={styles.configurationMenuWrapper}>
@@ -24,10 +33,17 @@ export default function ConfigurationMenu() {
                 <LanguagePicker />
             </div>
 
-            <Button className={styles.logoutButton}>
+            <Button
+                className={styles.logoutButton}
+                onClick={handleLogout}
+                loading={authStore.isLoading}
+            >
                 {t("configurationMenu.logout")}
             </Button>
         </div>
     )
 }
+
+const ConfigurationMenu = observer(ConfigurationMenuComponent)
+export default ConfigurationMenu
 

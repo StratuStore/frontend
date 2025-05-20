@@ -8,16 +8,28 @@ export type ProgressBarProps = {
     status: FileUploadStatus
 }
 
-export default function ProgressBar({ progress }: ProgressBarProps) {
+function getProgressBarColor(status: FileUploadStatus): string {
+    switch (status) {
+        case FileUploadStatus.Pending:
+            return "var(--text-color)"
+        case FileUploadStatus.InProgress:
+            return "var(--success-color)"
+        case FileUploadStatus.Successful:
+            return "var(--success-color)"
+        case FileUploadStatus.Failed:
+            return "var(--error-color)"
+        default:
+            return "var(--text-color)"
+    }
+}
+
+export default function ProgressBar({ progress, status }: ProgressBarProps) {
     return (
         <_ProgressBar
             completed={progress}
             labelClassName={styles.label}
-            // className={styles.wrapper}
-            // barContainerClassName={styles.container}
-            // completedClassName={styles.barCompleted}
             height="15px"
-            bgColor="#4CAF50"
+            bgColor={getProgressBarColor(status)}
         />
     )
 }

@@ -60,7 +60,7 @@ class FolderStore {
         )
 
         if (!isSelected) {
-            this.selectedFolders.push(folder)
+            this.selectedFolders = [folder]
             return
         }
 

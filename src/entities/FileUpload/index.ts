@@ -18,7 +18,7 @@ export class FileUpload {
     id: number = id()
     destination: Folder
     file: globalThis.File
-    status: FileUploadStatus = FileUploadStatus.Pending
+    status: FileUploadStatus = FileUploadStatus.InProgress
     progress: number = 0
     error: string | null = null
 }

@@ -84,7 +84,9 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                 items: [
                     {
                         label: "Download",
-                        onClick: () => {},
+                        onClick: () => {
+                            fileStore.downloadFile()
+                        },
                     },
                     {
                         label: "Rename",

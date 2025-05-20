@@ -4,7 +4,7 @@ import SectionBreak from "@/ui/shared/SectionBreak"
 import FilePropertiesSidebar from "@/ui/shared/FilePropertiesSidebar"
 import styles from "./styles.module.scss"
 
-export default function HomePage() {
+function HomePageComponent() {
     return (
         <>
             <div className={styles.pinnedItemsSectionWrapper}>
@@ -18,4 +18,8 @@ export default function HomePage() {
         </>
     )
 }
+
+// const HomePage = withAuthGuard(HomePageComponent)
+const HomePage = HomePageComponent
+export default HomePage
 
