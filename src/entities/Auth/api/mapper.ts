@@ -24,6 +24,13 @@ class AuthMapper {
 
         return user
     }
+
+    getUserFromAccessToken(accessToken: string): User {
+        const payload = jwtDecode<User>(accessToken)
+        const user = plainToClass(User, payload)
+
+        return user
+    }
 }
 
 export const authMapper = new AuthMapper()

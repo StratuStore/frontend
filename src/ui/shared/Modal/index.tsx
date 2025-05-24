@@ -4,6 +4,7 @@ import Button from "@/ui/shared/Button"
 import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
 import clsx from "clsx"
+import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 type BodySectionComponent = () => React.ReactNode
 
@@ -31,11 +32,15 @@ export default function Modal({
             )}
 
             <Dialog.Portal>
-                <Dialog.Overlay className={styles.overlay} />
+                <Dialog.Overlay
+                    className={styles.overlay}
+                    data-testid={TEST_IDS.ModalBackdrop}
+                />
 
                 <Dialog.Content
                     className={clsx(styles.content, contentClasses)}
                     onEscapeKeyDown={closeModal}
+                    data-testid={TEST_IDS.ModalContent}
                 >
                     {renderHeading && (
                         <div className={styles.heading}>{renderHeading()}</div>

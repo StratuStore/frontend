@@ -5,10 +5,13 @@ import styles from "../../styles.module.scss"
 import { flexRender } from "@tanstack/react-table"
 import clsx from "clsx"
 import { observer } from "mobx-react-lite"
+
 interface TableRowProps {
     row: Row<TableItem>
     virtualRow: VirtualItem
     active?: boolean
+    wrapperProps?: React.HTMLAttributes<HTMLTableRowElement> &
+        Record<string, string>
 
     measureElement: (node: HTMLTableRowElement | null) => void
     onClick: () => void
@@ -20,6 +23,7 @@ function TableRowComponent({
     row,
     virtualRow,
     active = false,
+    wrapperProps = {},
 
     measureElement,
     onClick,
@@ -40,6 +44,7 @@ function TableRowComponent({
             style={{
                 transform: `translateY(${virtualRow.start}px)`,
             }}
+            {...wrapperProps}
         >
             {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className={styles.tableCell}>

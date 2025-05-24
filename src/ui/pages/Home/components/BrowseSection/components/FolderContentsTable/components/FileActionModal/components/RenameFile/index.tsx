@@ -13,6 +13,7 @@ import Button from "@/ui/shared/Button"
 import { observer } from "mobx-react-lite"
 import { useMemo } from "react"
 import { fileStore } from "@/entities/File/store"
+import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 function RenameFileComponent() {
     const file = fileStore.selectedFiles[0]
@@ -64,6 +65,7 @@ function RenameFileComponent() {
                             )}
                             touched={touchedFields.name}
                             valid={!errors.name}
+                            data-testid={TEST_IDS.RenameFileInput}
                             {...register("name")}
                         />
                     }
@@ -80,7 +82,11 @@ function RenameFileComponent() {
                     {t("renameFileModal.clear")}
                 </Button>
 
-                <Button type="submit" loading={fileStore.isActionLoading}>
+                <Button
+                    type="submit"
+                    loading={fileStore.isActionLoading}
+                    data-testid={TEST_IDS.RenameFileSubmitButton}
+                >
                     {t("renameFileModal.submit")}
                 </Button>
             </div>

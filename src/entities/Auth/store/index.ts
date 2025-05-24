@@ -80,6 +80,8 @@ export class AuthStore {
             this.isLoading = true
             const persistedRefreshToken = this.getPersistedRefreshToken()
 
+            console.log("persistedRefreshToken", persistedRefreshToken)
+
             if (!persistedRefreshToken) {
                 return
             }
@@ -113,6 +115,13 @@ export class AuthStore {
                 this.isReady = true
             })
         }
+    }
+
+    async mockAuthState(accessToken: string) {
+        const user = authMapper.getUserFromAccessToken(accessToken)
+        this.user = user
+        this.isReady = true
+        this.isLoading = false
     }
 
     private async getGoogleToken(): Promise<string> {

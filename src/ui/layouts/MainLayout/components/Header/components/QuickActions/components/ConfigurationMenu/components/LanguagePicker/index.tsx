@@ -1,6 +1,7 @@
 import Select from "@/ui/shared/Select"
 import { useTranslation } from "react-i18next"
 import { SelectItem } from "@/ui/shared/Select"
+import { TEST_HEADER } from "@/shared/constants/tests/header"
 
 export default function LanguagePicker() {
     const { i18n, t } = useTranslation("common")
@@ -12,6 +13,7 @@ export default function LanguagePicker() {
 
     const handleLanguageChange = (value: string) => {
         i18n.changeLanguage(value)
+        document.documentElement.lang = value
     }
 
     return (
@@ -20,6 +22,9 @@ export default function LanguagePicker() {
             items={languages}
             value={i18n.language}
             onValueChange={handleLanguageChange}
+            triggerProps={{
+                "data-testid": TEST_HEADER.LanguagePicker,
+            }}
         />
     )
 }

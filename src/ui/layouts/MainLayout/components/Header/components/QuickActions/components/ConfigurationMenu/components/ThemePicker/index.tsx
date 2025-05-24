@@ -1,4 +1,5 @@
 import configStore from "@/config/store"
+import { TEST_HEADER } from "@/shared/constants/tests/header"
 import { Theme } from "@/themes/types"
 import Select from "@/ui/shared/Select"
 import { observer } from "mobx-react-lite"
@@ -20,6 +21,9 @@ function ThemePickerComponent() {
             items={themeOptions}
             onValueChange={(theme) => configStore.setTheme(theme as Theme)}
             defaultValue={currentTheme}
+            triggerProps={{
+                "data-testid": TEST_HEADER.ThemePicker,
+            }}
         />
     )
 }

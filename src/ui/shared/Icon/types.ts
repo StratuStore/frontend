@@ -24,6 +24,7 @@ export enum IconName {
     Plus = "plus",
     Minus = "minus",
     Restart = "restart",
+    Logout = "logout",
 }
 
 export interface IconProps {

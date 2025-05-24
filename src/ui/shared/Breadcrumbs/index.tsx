@@ -2,6 +2,7 @@ import { Fragment } from "react/jsx-runtime"
 import styles from "./styles.module.scss"
 import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
+import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 interface BreadcrumbsProps {
     segments: string[]
@@ -13,7 +14,7 @@ export default function Breadcrumbs({
     onSegmentClick,
 }: BreadcrumbsProps): JSX.Element {
     return (
-        <nav className={styles.breadcrumbs}>
+        <nav className={styles.breadcrumbs} data-testid={TEST_IDS.Breadcrumbs}>
             {segments.map((segment, index) => (
                 <Fragment key={segment}>
                     <span

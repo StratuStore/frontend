@@ -21,6 +21,7 @@ import FolderActionModal from "@/ui/pages/Home/components/BrowseSection/componen
 import FileActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FileActionModal"
 import Spinner from "@/ui/shared/Spinner"
 import FilePreviewModal from "@/ui/shared/Modals/FilePreviewModal"
+import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -213,9 +214,9 @@ function FolderContentsTableComponent({
                                                     .originalItem as Folder
                                             )
                                         }
-                                        onContextMenu={() =>
-                                            handleRowClick(row.original)
-                                        }
+                                        wrapperProps={{
+                                            "data-testid": `${TEST_IDS.FolderRow}-${row.original.originalItem.id}`,
+                                        }}
                                     />
                                 )
                             }
@@ -233,12 +234,12 @@ function FolderContentsTableComponent({
                                         rowVirtualizer.measureElement(node)
                                     }
                                     onClick={() => handleRowClick(row.original)}
-                                    onContextMenu={() =>
-                                        handleRowClick(row.original)
-                                    }
                                     onDoubleClick={() =>
                                         setPreviewModalOpen(true)
                                     }
+                                    wrapperProps={{
+                                        "data-testid": `${TEST_IDS.FileRow}-${row.original.originalItem.id}`,
+                                    }}
                                 />
                             )
                         })}

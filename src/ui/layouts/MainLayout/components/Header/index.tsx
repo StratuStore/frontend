@@ -2,6 +2,7 @@ import CurrentUser from "@/ui/layouts/MainLayout/components/Header/components/Cu
 import SearchInput from "@/ui/layouts/MainLayout/components/Header/components/SearchInput"
 
 import styles from "./styles.module.scss"
+import QuickActions from "./components/QuickActions"
 
 export default function Header() {
     return (
@@ -9,6 +10,11 @@ export default function Header() {
             <div className={styles.searchInputWrapper}>
                 <SearchInput />
             </div>
+
+            <div className={styles.quickActionsWrapper}>
+                <QuickActions />
+            </div>
+
             <CurrentUser />
         </div>
     )

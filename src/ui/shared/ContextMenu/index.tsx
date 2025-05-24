@@ -3,6 +3,7 @@ import { ContextMenu as RadixContextMenu } from "radix-ui"
 import styles from "./styles.module.scss"
 import { IconName } from "@/ui/shared/Icon/types"
 import Icon from "@/ui/shared/Icon"
+import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 export type ContextMenuItem = {
     label: string
@@ -39,7 +40,10 @@ export default function ContextMenu(props: ContextMenuProps) {
             </RadixContextMenu.Trigger>
 
             <RadixContextMenu.Portal>
-                <RadixContextMenu.Content className={styles.Content}>
+                <RadixContextMenu.Content
+                    className={styles.Content}
+                    data-testid={TEST_IDS.ContextMenuContent}
+                >
                     {groups.map((group, groupIndex) => {
                         if (!isGroupVisible(group)) {
                             return null

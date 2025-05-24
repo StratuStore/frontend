@@ -4,6 +4,7 @@ import clsx from "clsx"
 import styles from "./styles.module.scss"
 import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
+import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 export type SelectItem = {
     value: string
@@ -14,12 +15,19 @@ export type SelectItem = {
 export type SelectProps = React.ComponentProps<typeof RadixSelect.Root> & {
     items: SelectItem[]
     placeholder?: string
+    triggerProps?: React.ComponentProps<typeof RadixSelect.Trigger> &
+        Record<string, string>
 }
 
-export default function Select({ items, placeholder, ...rest }: SelectProps) {
+export default function Select({
+    items,
+    placeholder,
+    triggerProps,
+    ...rest
+}: SelectProps) {
     return (
         <RadixSelect.Root {...rest}>
-            <RadixSelect.Trigger className={styles.trigger} aria-label="Food">
+            <RadixSelect.Trigger className={styles.trigger} {...triggerProps}>
                 <RadixSelect.Value placeholder={placeholder} />
                 <RadixSelect.Icon className={styles.icon}>
                     <Icon
@@ -35,6 +43,7 @@ export default function Select({ items, placeholder, ...rest }: SelectProps) {
                     className={styles.content}
                     position="popper"
                     sideOffset={5}
+                    data-testid={TEST_IDS.PopoverContent}
                 >
                     <RadixSelect.Viewport className={styles.viewport}>
                         {items.map((item) => (

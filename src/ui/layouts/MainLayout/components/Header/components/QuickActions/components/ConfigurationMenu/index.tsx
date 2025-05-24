@@ -1,24 +1,18 @@
-import Button from "@/ui/shared/Button"
-
 import styles from "./styles.module.scss"
-import ThemePicker from "@/ui/layouts/MainLayout/components/Header/components/CurrentUser/components/ConfigurationMenu/components/ThemePicker"
-import LanguagePicker from "@/ui/layouts/MainLayout/components/Header/components/CurrentUser/components/ConfigurationMenu/components/LanguagePicker"
+import ThemePicker from "./components/ThemePicker"
+import LanguagePicker from "./components/LanguagePicker"
 import { useTranslation } from "react-i18next"
 import { observer } from "mobx-react-lite"
-import { authStore } from "@/entities/Auth/store"
-import { useNavigate } from "react-router"
+import { TEST_HEADER } from "@/shared/constants/tests/header"
 
 function ConfigurationMenuComponent() {
     const { t } = useTranslation("common")
-    const navigate = useNavigate()
-
-    async function handleLogout() {
-        await authStore.logout()
-        navigate("/auth")
-    }
 
     return (
-        <div className={styles.configurationMenuWrapper}>
+        <div
+            className={styles.configurationMenuWrapper}
+            data-testid={TEST_HEADER.ConfigurationMenu}
+        >
             <div className={styles.configurationMenuSection}>
                 <p className={styles.configurationMenuSectionHeader}>
                     {t("configurationMenu.themePicker")}
@@ -32,14 +26,6 @@ function ConfigurationMenuComponent() {
                 </p>
                 <LanguagePicker />
             </div>
-
-            <Button
-                className={styles.logoutButton}
-                onClick={handleLogout}
-                loading={authStore.isLoading}
-            >
-                {t("configurationMenu.logout")}
-            </Button>
         </div>
     )
 }

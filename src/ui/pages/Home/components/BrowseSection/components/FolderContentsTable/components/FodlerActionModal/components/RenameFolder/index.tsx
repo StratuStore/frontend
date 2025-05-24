@@ -13,6 +13,7 @@ import styles from "./styles.module.scss"
 import Button from "@/ui/shared/Button"
 import { observer } from "mobx-react-lite"
 import { useMemo } from "react"
+import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 function RenameFolderComponent() {
     const folder = folderStore.selectedFolders[0]
@@ -64,6 +65,7 @@ function RenameFolderComponent() {
                             )}
                             touched={touchedFields.name}
                             valid={!errors.name}
+                            data-testid={TEST_IDS.RenameFolderInput}
                             {...register("name")}
                         />
                     }
@@ -80,7 +82,11 @@ function RenameFolderComponent() {
                     {t("renameFolderModal.clear")}
                 </Button>
 
-                <Button type="submit" loading={folderStore.isActionLoading}>
+                <Button
+                    type="submit"
+                    loading={folderStore.isActionLoading}
+                    data-testid={TEST_IDS.RenameFolderSubmitButton}
+                >
                     {t("renameFolderModal.submit")}
                 </Button>
             </div>
