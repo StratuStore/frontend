@@ -1,3 +1,4 @@
 export class DeleteFolderDto {
-    constructor(public folderId: string) {}
+    constructor(public id: string) {}
 }
+

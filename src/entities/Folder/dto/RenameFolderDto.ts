@@ -1,3 +1,4 @@
 export class RenameFolderDto {
-    constructor(public folderId: string, public newName: string) {}
+    constructor(public id: string, public name: string) {}
 }
+

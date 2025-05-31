@@ -7,13 +7,8 @@ import PinnedPage from "@/ui/pages/Pinned"
 import FolderPage from "@/ui/pages/Folder"
 import NotFoundPage from "@/ui/pages/NotFound"
 import AuthPage from "@/ui/pages/Auth"
-import ImagePreview from "@/ui/shared/Modals/FilePreviewModal/components/DocumentPreview/components/ImagePreview"
 
 export const router = createBrowserRouter([
-    {
-        path: "/image",
-        element: <ImagePreview />,
-    },
     {
         path: "/not-found",
         element: <NotFoundPage />,

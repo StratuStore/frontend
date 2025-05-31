@@ -7,9 +7,6 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
     const selectedFiles = fileStore.selectedFiles
     const selectedFolders = folderStore.selectedFolders
 
-    const clipboardItem = clipboardStore.getItem()
-    console.log("clipboardItem", clipboardItem)
-
     if (selectedFiles.length === 0 && selectedFolders.length === 0) {
         const clipboardItem = clipboardStore.getItem()
         const isPasteOptionVisible = clipboardItem !== null
@@ -18,13 +15,13 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
             {
                 items: [
                     {
-                        label: "New Folder",
+                        label: "New folder",
                         onClick: () => {
                             folderStore.showCreateFolderModal()
                         },
                     },
                     {
-                        label: "Upload Files",
+                        label: "Upload a file",
                         onClick: () => {
                             if (!folderStore.currentFolder) {
                                 return
@@ -46,17 +43,9 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
     }
 
     if (selectedFolders.length === 1 && selectedFiles.length === 0) {
-        const folder = selectedFolders[0]
-
         return [
             {
                 items: [
-                    {
-                        label: "Rename",
-                        onClick: () => {
-                            folderStore.showRenameFolderModal()
-                        },
-                    },
                     {
                         label: "Cut",
                         onClick: () => {
@@ -66,9 +55,27 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                         },
                     },
                     {
+                        label: "Upload a file to this folder",
+                        onClick: () => {
+                            if (!folderStore.currentFolder) {
+                                return
+                            }
+
+                            fileStore.startFileUpload(
+                                folderStore.selectedFolders[0]
+                            )
+                        },
+                    },
+                    {
+                        label: "Rename",
+                        onClick: () => {
+                            folderStore.showRenameFolderModal()
+                        },
+                    },
+                    {
                         label: "Delete",
                         onClick: () => {
-                            folderStore.deleteFolder(folder.id)
+                            folderStore.showDeleteFolderModal()
                         },
                     },
                 ],
@@ -82,6 +89,14 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
         return [
             {
                 items: [
+                    {
+                        label: "Cut",
+                        onClick: () => {
+                            clipboardStore.cutToClipboard(
+                                fileStore.selectedFiles[0]
+                            )
+                        },
+                    },
                     {
                         label: "Download",
                         onClick: () => {
@@ -107,20 +122,7 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
 
     return [
         {
-            items: [
-                // {
-                //     label: "Download",
-                //     onClick: () => {
-                //         showDeleteMultipleItemsModal()
-                //     },
-                // },
-                // {
-                //     label: "Delete",
-                //     onClick: () => {
-                //         showDeleteMultipleItemsModal()
-                //     },
-                // },
-            ],
+            items: [],
         },
     ]
 }

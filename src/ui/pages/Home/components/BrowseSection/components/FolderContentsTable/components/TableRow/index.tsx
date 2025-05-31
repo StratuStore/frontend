@@ -5,6 +5,7 @@ import styles from "../../styles.module.scss"
 import { flexRender } from "@tanstack/react-table"
 import clsx from "clsx"
 import { observer } from "mobx-react-lite"
+import { clipboardStore } from "@/entities/Clipboard/store"
 
 interface TableRowProps {
     row: Row<TableItem>
@@ -30,6 +31,18 @@ function TableRowComponent({
     onDoubleClick,
     onContextMenu,
 }: TableRowProps) {
+    const clipboardItem = clipboardStore.getItem()
+
+    function isRowInClipboard() {
+        if (!clipboardItem) {
+            return false
+        }
+
+        return clipboardItem.id === row.original.originalItem.id
+    }
+
+    const isItemInClipboard = isRowInClipboard()
+
     return (
         <tr
             key={row.id}
@@ -37,6 +50,7 @@ function TableRowComponent({
             ref={measureElement}
             className={clsx(styles.tableRow, {
                 [styles.active]: active,
+                [styles.clipboard]: isItemInClipboard,
             })}
             onClick={onClick}
             onDoubleClick={onDoubleClick}

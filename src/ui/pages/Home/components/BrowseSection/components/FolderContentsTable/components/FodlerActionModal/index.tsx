@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite"
 import styles from "./styles.module.scss"
 import CreateFolder from "./components/CreateFolder"
 import RenameFolder from "./components/RenameFolder"
+import DeleteFolder from "./components/DeleteFolder"
 
 function FolderActionModalComponent() {
     const open = folderStore.modalAction !== null
@@ -15,6 +16,8 @@ function FolderActionModalComponent() {
                 return <CreateFolder />
             case FolderModalAction.Rename:
                 return <RenameFolder />
+            case FolderModalAction.Delete:
+                return <DeleteFolder />
         }
     }
 
@@ -24,6 +27,8 @@ function FolderActionModalComponent() {
                 return "Create Folder"
             case FolderModalAction.Rename:
                 return "Rename Folder"
+            case FolderModalAction.Delete:
+                return "Delete Folder"
         }
     }
 

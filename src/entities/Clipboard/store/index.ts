@@ -9,6 +9,7 @@ import { CopyFileDto } from "@/entities/File/dto/CopyFileDto"
 import { fileService } from "@/entities/File/api"
 import { MoveFileDto } from "@/entities/File/dto/MoveFileDto"
 import toast from "react-hot-toast"
+import { fileStore } from "@/entities/File/store"
 
 export class ClipboardStore {
     constructor() {
@@ -55,12 +56,14 @@ export class ClipboardStore {
         if (clone.constructor === File) {
             this.setFile(clone as File)
             this.setFolder(null)
+            fileStore.clearSelectedFiles()
         } else {
             this.setFolder(clone as Folder)
             this.setFile(null)
+            folderStore.clearSelectedFolders()
         }
 
-        toast.success("Item copied to clipboard")
+        toast.success("Item added to clipboard")
     }
 
     copyToClipboard(item: File | Folder) {
@@ -73,16 +76,17 @@ export class ClipboardStore {
         this.setClipboardAction(ClipboardAction.Cut)
     }
 
-    paste() {
+    async paste() {
         if (this.clipboardAction === ClipboardAction.Copy) {
-            this.copy()
+            await this.copy()
         } else if (this.clipboardAction === ClipboardAction.Cut) {
-            this.cut()
+            await this.cut()
         }
 
         this.setClipboardAction(null)
         this.setFile(null)
         this.setFolder(null)
+        folderStore.refreshFolderContents()
     }
 
     async copy() {
@@ -133,9 +137,9 @@ export class ClipboardStore {
 
     async cut() {
         if (this.file) {
-            await this.copyFile()
+            await this.cutFile()
         } else if (this.folder) {
-            await this.copyFolder()
+            await this.cutFolder()
         }
     }
 

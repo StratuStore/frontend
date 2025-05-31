@@ -10,6 +10,7 @@ import { LS_KEYS } from "@/shared/constants/ls"
 import { RefreshDto } from "@/entities/Auth/dto/RefreshDto"
 import { authMapper } from "@/entities/Auth/api/mapper"
 import { RevokeDto } from "@/entities/Auth/dto/RevokeDto"
+import { fmsClient } from "@/config/axios"
 
 export class AuthStore {
     constructor() {
@@ -31,12 +32,15 @@ export class AuthStore {
             const response = await authService.login(dto)
 
             const refreshToken = response.body.refreshToken
+            const accessToken = response.body.accessToken
+
             this.persistAuth(refreshToken)
 
             const user = authMapper.getUserFromResponse(response)
 
             runInAction(() => {
                 this.user = user
+                this.accessToken = accessToken
             })
         } catch (error) {
             console.log(error)
@@ -159,7 +163,8 @@ autorun(() => {
 reaction(
     () => authStore.accessToken,
     (accessToken) => {
-        axios.defaults.headers.common.Authorization = accessToken
+        axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+        fmsClient.defaults.headers.common.Authorization = `Bearer ${accessToken}`
     }
 )
 

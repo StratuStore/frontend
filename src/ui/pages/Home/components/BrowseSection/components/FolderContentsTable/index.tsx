@@ -159,8 +159,8 @@ function FolderContentsTableComponent({
     }
 
     return (
-        <div ref={parentRef} className={styles.tableWrapper}>
-            <FolderContentsContextMenu>
+        <FolderContentsContextMenu>
+            <div ref={parentRef} className={styles.tableWrapper}>
                 <table className={styles.table}>
                     <thead className={styles.tableHeader}>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -245,19 +245,19 @@ function FolderContentsTableComponent({
                         })}
                     </tbody>
                 </table>
-            </FolderContentsContextMenu>
 
-            <div ref={loaderRef} className={styles.loaderContainer}>
-                {isLoadingMoreItems && <Spinner />}
+                <div ref={loaderRef} className={styles.loaderContainer}>
+                    {isLoadingMoreItems && <Spinner />}
+                </div>
+
+                <FolderActionModal />
+                <FileActionModal />
+                <FilePreviewModal
+                    open={isPreviewModalOpen}
+                    closeModal={() => setPreviewModalOpen(false)}
+                />
             </div>
-
-            <FolderActionModal />
-            <FileActionModal />
-            <FilePreviewModal
-                open={isPreviewModalOpen}
-                closeModal={() => setPreviewModalOpen(false)}
-            />
-        </div>
+        </FolderContentsContextMenu>
     )
 }
 

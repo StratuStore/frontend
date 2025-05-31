@@ -14,10 +14,12 @@ function FolderPageComponent() {
     const { id: folderId } = useParams()
 
     useEffect(() => {
-        if (!folderStore.isCurrentFolderReady && folderId) {
-            folderStore.currentFolderId = folderId
-            folderStore.fetchFolderContents()
+        if (!folderId) {
+            return
         }
+
+        folderStore.currentFolderId = folderId
+        folderStore.getFolderById(folderId)
     }, [folderId])
 
     return (

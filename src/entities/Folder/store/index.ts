@@ -5,6 +5,8 @@ import { CreateFolderDto } from "../dto/CreateFolderDto"
 import { FolderModalAction } from "@/entities/Folder/store/types"
 import { RenameFolderDto } from "@/entities/Folder/dto/RenameFolderDto"
 import { DeleteFolderDto } from "@/entities/Folder/dto/DeleteFolderDto"
+import { GetFolderDto } from "@/entities/Folder/dto/GetFolderDto"
+import toast from "react-hot-toast"
 
 class FolderStore {
     constructor() {
@@ -89,48 +91,52 @@ class FolderStore {
         this.isCurrentFolderReady = false
     }
 
-    async navigateByPath(path: string[]) {
-        this.setIsLoading(true)
-        const folder = await folderService.getByPath(path)
+    async getRootFolder() {
+        try {
+            this.setIsLoading(true)
+            const rootFolder = await folderService.getRootFolder()
 
-        if (!folder) {
-            return
+            const pathSegment = {
+                name: "root",
+                id: rootFolder.id,
+            }
+            rootFolder.path.push(pathSegment)
+
+            this.currentFolder = rootFolder
+            this.currentFolderId = rootFolder.id
+        } catch (error) {
+            console.error("Error fetching root folder:", error)
+            toast.error("Failed to load folder. Please try again.")
+            this.currentFolder = null
+            this.currentFolderId = null
+        } finally {
+            this.setIsLoading(false)
+            this.setIsCurrentFolderReady(true)
         }
-
-        this.navigateToFolder(folder)
-        this.setIsLoading(false)
-        return folder
     }
 
-    getRootFolder() {
-        const rootFolder = folderService.getRootFolder()
+    async getFolderById(id: string) {
+        try {
+            this.setIsLoading(true)
+            const folder = await folderService.getById(id)
 
-        this.currentFolder = rootFolder || null
-        this.currentFolderId = rootFolder?.id || null
-    }
+            const pathSegment = {
+                name: folder.name,
+                id: folder.id,
+            }
+            folder.path.push(pathSegment)
 
-    async fetchFolderContents() {
-        if (!this.currentFolderId) {
-            return
+            this.currentFolder = folder
+            this.currentFolderId = folder.id
+        } catch (error) {
+            console.error("Error fetching folder:", error)
+            toast.error("Failed to load folder. Please try again.")
+            this.currentFolder = null
+            this.currentFolderId = null
+        } finally {
+            this.setIsLoading(false)
+            this.setIsCurrentFolderReady(true)
         }
-
-        this.setIsLoading(true)
-
-        if (
-            !this.currentFolder ||
-            this.currentFolder.id !== this.currentFolderId
-        ) {
-            const currentFolder = await folderService.getById(
-                this.currentFolderId
-            )
-
-            this.setCurrentFolder(currentFolder || null)
-        } else {
-            await folderService.getFolderContents(this.currentFolderId)
-        }
-
-        this.setIsLoading(false)
-        this.setIsCurrentFolderReady(true)
     }
 
     async fetchMoreFolderContents() {
@@ -139,20 +145,45 @@ class FolderStore {
         }
 
         this.setIsLoading(true)
-        this.pagination.offset += this.pagination.limit
+        const dto = new GetFolderDto(
+            this.currentFolder.id,
+            this.pagination.offset,
+            this.pagination.limit
+        )
 
         try {
-            await folderService.getFolderContents(
-                this.currentFolder.id,
-                this.pagination.offset,
-                this.pagination.limit
-            )
+            const contents = await folderService.getFolderContents(dto)
+            const { files, folders, foldersCount, filesCount } = contents
+
+            this.currentFolder.files = [...this.currentFolder.files, ...files]
+            this.currentFolder.folders = [
+                ...this.currentFolder.folders,
+                ...folders,
+            ]
+            this.pagination.total = foldersCount + filesCount
+            this.pagination.offset += this.pagination.limit
         } catch (error) {
             console.error("Error fetching more folder contents:", error)
+            toast.error("Failed to load more items. Please try again.")
             this.pagination.offset += this.pagination.limit
         } finally {
             this.setIsLoading(false)
         }
+    }
+
+    async refreshFolderContents() {
+        if (!this.currentFolder) {
+            return
+        }
+
+        this.pagination.offset = 0
+        this.pagination.limit = 50
+        this.pagination.total = -1
+        this.currentFolder.folders = []
+        this.currentFolder.files = []
+        this.clearSelectedFolders()
+
+        this.fetchMoreFolderContents()
     }
 
     showCreateFolderModal() {
@@ -170,7 +201,7 @@ class FolderStore {
             this.setActionLoading(true)
             await folderService.create(dto)
 
-            this.fetchFolderContents()
+            this.refreshFolderContents()
         } catch (error) {
             console.error("Error creating folder:", error)
         } finally {
@@ -183,6 +214,10 @@ class FolderStore {
         this.setModalAction(FolderModalAction.Rename)
     }
 
+    showDeleteFolderModal() {
+        this.setModalAction(FolderModalAction.Delete)
+    }
+
     async renameFolder(id: string, newName: string) {
         const dto = new RenameFolderDto(id, newName)
 
@@ -190,7 +225,7 @@ class FolderStore {
             this.setActionLoading(true)
             await folderService.rename(dto)
 
-            this.fetchFolderContents()
+            this.refreshFolderContents()
         } catch (error) {
             console.error("Error renaming folder:", error)
         } finally {
@@ -203,14 +238,16 @@ class FolderStore {
         const dto = new DeleteFolderDto(id)
 
         try {
-            this.setIsLoading(true)
+            this.setActionLoading(true)
             await folderService.delete(dto)
+            toast.success("Folder deleted successfully.")
 
-            this.fetchFolderContents()
+            this.refreshFolderContents()
         } catch (error) {
             console.error("Error renaming folder:", error)
+            toast.error("Failed to delete folder. Please try again.")
         } finally {
-            this.setIsLoading(false)
+            this.setActionLoading(false)
             this.closeActionModal()
         }
     }

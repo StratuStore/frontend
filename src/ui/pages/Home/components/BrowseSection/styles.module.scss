@@ -1,5 +1,12 @@
 @use "@/assets/sass/abstracts";
 
+.browseSectionWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
 .header {
     font-weight: abstracts.$typography-fw-bold;
     font-size: abstracts.$typography-font-lg;
@@ -16,6 +23,6 @@
 }
 
 .contentsTableWrapper {
-    height: 100%;
+    flex-grow: 1;
 }
 

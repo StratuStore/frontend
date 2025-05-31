@@ -6,7 +6,7 @@ import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 interface BreadcrumbsProps {
     segments: string[]
-    onSegmentClick?: (segment: string) => void
+    onSegmentClick?: (index: number) => void
 }
 
 export default function Breadcrumbs({
@@ -19,9 +19,7 @@ export default function Breadcrumbs({
                 <Fragment key={segment}>
                     <span
                         className={styles.breadcrumb}
-                        onClick={() =>
-                            onSegmentClick && onSegmentClick(segment)
-                        }
+                        onClick={() => onSegmentClick && onSegmentClick(index)}
                     >
                         {segment}
                     </span>

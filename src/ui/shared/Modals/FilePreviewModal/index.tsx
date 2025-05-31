@@ -5,7 +5,7 @@ import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
 import FileBadge from "@/ui/shared/FileBadge"
 import DocumentPreview from "@/ui/shared/Modals/FilePreviewModal/components/DocumentPreview"
-import image from "./static-test/image.jpeg"
+import image from "./static-test/image.jpg"
 import video from "./static-test/video.mp4"
 import audio from "./static-test/audio.mp3"
 
@@ -65,12 +65,7 @@ export default function FilePreviewModal(props: FilePreviewModalProps) {
                     </div>
 
                     <div className={styles.body}>
-                        <DocumentPreview
-                            uri={
-                                "http://localhost:5645/files/read?connectionID=2768f30f-e289-46dc-ad92-26cef0c2600f"
-                            }
-                            extension="jpg"
-                        />
+                        <DocumentPreview uri={files[2]} extension="mp3" />
                     </div>
                 </Dialog.Content>
             </Dialog.Portal>

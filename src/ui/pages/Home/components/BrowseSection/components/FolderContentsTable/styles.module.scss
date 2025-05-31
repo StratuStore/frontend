@@ -36,6 +36,11 @@
     &.active {
         background-color: var(--accent-color-opaque);
     }
+
+    &.clipboard {
+        opacity: 0.5;
+        pointer-events: none;
+    }
 }
 
 .tableRow:hover {

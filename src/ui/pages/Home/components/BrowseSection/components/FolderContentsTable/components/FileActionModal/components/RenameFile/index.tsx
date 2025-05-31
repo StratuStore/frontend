@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form"
 import {
-    renameFileFormSchema,
+    createRenameFileFormSchema,
     RenameFileFormValues,
     getDefaultValues,
 } from "./constants"
@@ -22,13 +22,18 @@ function RenameFileComponent() {
         [file.name]
     )
 
+    const schema = useMemo(
+        () => createRenameFileFormSchema(file.name),
+        [file.name]
+    )
+
     const {
         handleSubmit,
         formState: { errors, touchedFields },
         reset,
         register,
     } = useForm<RenameFileFormValues>({
-        resolver: zodResolver(renameFileFormSchema),
+        resolver: zodResolver(schema),
         defaultValues,
         mode: "onTouched",
     })

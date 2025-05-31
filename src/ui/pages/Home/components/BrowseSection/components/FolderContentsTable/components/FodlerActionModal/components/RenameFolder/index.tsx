@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form"
 import {
-    renameFolderFormSchema,
+    createRenameFolderFormSchema,
     RenameFolderFormValues,
     getDefaultValues,
 } from "./constants"
@@ -21,6 +21,10 @@ function RenameFolderComponent() {
         () => getDefaultValues(folder.name),
         [folder.name]
     )
+    const schema = useMemo(
+        () => createRenameFolderFormSchema(folder.name),
+        [folder.name]
+    )
 
     const {
         handleSubmit,
@@ -28,7 +32,7 @@ function RenameFolderComponent() {
         reset,
         register,
     } = useForm<RenameFolderFormValues>({
-        resolver: zodResolver(renameFolderFormSchema),
+        resolver: zodResolver(schema),
         defaultValues,
         mode: "onTouched",
     })

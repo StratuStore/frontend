@@ -2,6 +2,9 @@
 
 .folderPageWrapper {
     margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .header {
@@ -20,6 +23,6 @@
 }
 
 .contentsTableWrapper {
-    height: 100%;
+    flex-grow: 1;
 }
 

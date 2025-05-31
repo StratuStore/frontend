@@ -21,8 +21,8 @@ export function useTableData(files: File[], folders: Folder[]) {
 
     const data = useMemo(() => {
         const folderItems: TableItem[] = folders.map((folder) => ({
-            id: folder.path.join("/"),
-            name: folder.path.at(-1) || "",
+            id: folder.id,
+            name: folder.name,
             createdAt: folder.createdAt,
             type: t("folderContentsTable.folderItemType"),
             size: "-",

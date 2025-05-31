@@ -13,11 +13,10 @@ function BrowseSectionComponent() {
 
     useEffect(() => {
         folderStore.getRootFolder()
-        folderStore.fetchFolderContents()
     }, [])
 
     return (
-        <>
+        <div className={styles.browseSectionWrapper}>
             <div className={styles.headerWrapper}>
                 <h2 className={styles.header}>{t("browseSection.title")}</h2>
             </div>
@@ -32,7 +31,7 @@ function BrowseSectionComponent() {
                 />
             </div>
             <FileUploadPopup />
-        </>
+        </div>
     )
 }
 
