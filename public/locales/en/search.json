@@ -1,0 +1,9 @@
+{
+    "noSearchResults": {
+        "title": "No search results",
+        "description": "We couldn't find any results for your search. Please try a different query.",
+        "backToHomePage": "Back to home page"
+    },
+    "heading": "Search results",
+    "backToHomePage": "Back to home page"
+}

@@ -1,14 +1,15 @@
 import ReactPlayer from "react-player"
 import styles from "./styles.module.scss"
+import { File } from "@/entities/File"
 
 export type AudioPreviewProps = {
-    uri: string
+    file: File
 }
 
-export default function AudioPreview({ uri }: AudioPreviewProps) {
+export default function AudioPreview({ file }: AudioPreviewProps) {
     return (
         <div className={styles.audioPreviewContainer}>
-            <ReactPlayer url={uri} controls playing={false} />
+            <ReactPlayer url={file.getUrl()} controls playing={false} />
         </div>
     )
 }

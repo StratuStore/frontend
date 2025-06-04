@@ -7,6 +7,10 @@ import { RenameFolderDto } from "@/entities/Folder/dto/RenameFolderDto"
 import { DeleteFolderDto } from "@/entities/Folder/dto/DeleteFolderDto"
 import { GetFolderDto } from "@/entities/Folder/dto/GetFolderDto"
 import toast from "react-hot-toast"
+import { SearchDto } from "@/entities/Search/dto/SearchDto"
+import { searchService } from "@/entities/Search/api"
+import { File } from "@/entities/File"
+import { fileStore } from "@/entities/File/store"
 
 class FolderStore {
     constructor() {
@@ -31,6 +35,17 @@ class FolderStore {
     isActionLoading: boolean = false
 
     selectedFolders: Folder[] = []
+
+    search: SearchDto = {}
+    searchResults: {
+        folders: Folder[]
+        files: File[]
+        total: number
+    } = {
+        folders: [],
+        files: [],
+        total: -1,
+    }
 
     setIsLoading(isLoading: boolean) {
         this.isLoading = isLoading
@@ -83,6 +98,14 @@ class FolderStore {
 
     clearSelectedFolders() {
         this.selectedFolders = []
+    }
+
+    setSearchFilters(search: SearchDto) {
+        this.search = search
+    }
+
+    closeActionModal() {
+        this.setModalAction(null)
     }
 
     navigateToFolder(folder: Folder) {
@@ -182,6 +205,7 @@ class FolderStore {
         this.currentFolder.folders = []
         this.currentFolder.files = []
         this.clearSelectedFolders()
+        fileStore.clearSelectedFiles()
 
         this.fetchMoreFolderContents()
     }
@@ -249,11 +273,32 @@ class FolderStore {
         } finally {
             this.setActionLoading(false)
             this.closeActionModal()
+            toast.success("Folder deleted successfully.")
         }
     }
 
-    closeActionModal() {
-        this.setModalAction(null)
+    async getSearchResults() {
+        try {
+            this.setIsLoading(true)
+            const results = await searchService.getResults(this.search)
+
+            this.searchResults = {
+                folders: results.folders,
+                files: results.files,
+                total: results.foldersCount + results.filesCount,
+            }
+        } catch (error) {
+            console.error("Error fetching search results:", error)
+            toast.error("Failed to load search results. Please try again.")
+
+            this.searchResults = {
+                folders: [],
+                files: [],
+                total: -1,
+            }
+        } finally {
+            this.setIsLoading(false)
+        }
     }
 }
 

@@ -1,13 +1,14 @@
+import { File } from "@/entities/File"
 import ReactPlayer from "react-player"
 
 export type VideoPreviewProps = {
-    uri: string
+    file: File
 }
 
-export default function VideoPreview({ uri }: VideoPreviewProps) {
+export default function VideoPreview({ file }: VideoPreviewProps) {
     return (
         <ReactPlayer
-            url={uri}
+            url={file.getUrl()}
             controls
             width="100%"
             height="100%"

@@ -5,9 +5,11 @@ import { fileStore } from "@/entities/File/store"
 import Button from "@/ui/shared/Button"
 import FolderActionModal from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FodlerActionModal"
 import FolderContentsContextMenu from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/FolderContextMenu"
+import { useTranslation } from "react-i18next"
 
 function NoContentComponent() {
     const folder = folderStore.currentFolder
+    const { t } = useTranslation("home")
 
     if (!folder) {
         return null
@@ -19,13 +21,14 @@ function NoContentComponent() {
                 className={styles.noContentWrapper}
                 onClick={() => fileStore.startFileUpload(folder)}
             >
-                <p className={styles.caption}>This folder is empty</p>
                 <p className={styles.caption}>
-                    Click this area to upload a file to this folder
+                    {t("folderContentsTable.noContentHeading")}
                 </p>
                 <p className={styles.caption}>
-                    Or you can create a new folder by clicking the "New Folder"
-                    button
+                    {t("folderContentsTable.noContentClickThisArea")}
+                </p>
+                <p className={styles.caption}>
+                    {t("folderContentsTable.noContentCreateAFolder")}
                 </p>
                 <div className={styles.buttonWrapper}>
                     <Button
@@ -35,7 +38,7 @@ function NoContentComponent() {
                             folderStore.showCreateFolderModal()
                         }}
                     >
-                        Create new folder
+                        {t("folderContentsTable.noContentCreateFolderButton")}
                     </Button>
                 </div>
             </div>

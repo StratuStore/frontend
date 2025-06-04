@@ -11,7 +11,11 @@
         "type": "Type",
         "size": "Size",
         "folderItemType": "Folder",
-        "fileTypeUnknown": "Unknown"
+        "fileTypeUnknown": "Unknown",
+        "noContentHeading": "This folder is empty",
+        "noContentClickThisArea": "Click this area to upload a file to this folder",
+        "noContentCreateAFolder": "Or you can create a new folder by clicking the 'New Folder' button",
+        "noContentCreateFolderButton": "Create new folder"
     },
     "fileUploadPopup": {
         "uploadingFiles_one": "Uploading {{count}} file",

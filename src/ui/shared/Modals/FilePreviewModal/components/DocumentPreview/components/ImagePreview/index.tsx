@@ -1,18 +1,17 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import styles from "./styles.module.scss"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import {
     TransformWrapper,
     TransformComponent,
     ReactZoomPanPinchContentRef,
 } from "react-zoom-pan-pinch"
 import Controls from "./components/Controls"
-import { set } from "mobx"
+import { File } from "@/entities/File"
 
 export type ImagePreviewProps = {
-    uri: string
+    file: File
 }
 
-export default function ImagePreview({ uri }: ImagePreviewProps) {
+export default function ImagePreview({ file }: ImagePreviewProps) {
     const zoomFactor = 8
     const scaleUp = true
 
@@ -74,8 +73,8 @@ export default function ImagePreview({ uri }: ImagePreviewProps) {
     useEffect(() => {
         const image = new Image()
         image.onload = () => handleImageOnLoad(image)
-        image.src = uri
-    }, [uri])
+        image.src = file.getUrl()
+    }, [file])
 
     return (
         <div
@@ -103,7 +102,7 @@ export default function ImagePreview({ uri }: ImagePreviewProps) {
                             height: "100%",
                         }}
                     >
-                        <img src={uri} />
+                        <img src={file.getUrl()} />
                     </TransformComponent>
                 </TransformWrapper>
             )}

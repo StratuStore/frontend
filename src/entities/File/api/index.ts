@@ -1,49 +1,58 @@
 import { RenameFileDto } from "@/entities/File/dto/RenameFileDto"
-import { CopyFileDto } from "@/entities/File/dto/CopyFileDto"
-import { wait } from "@/utils/id/wait"
+import { CreateFileDto } from "@/entities/File/dto/CreateFileDto"
+import { fmsClient, fsClient } from "@/config/axios"
 import { MoveFileDto } from "@/entities/File/dto/MoveFileDto"
+import { File } from "@/entities/File"
+import { CreateFileResponseDto } from "@/entities/File/dto/CreateFileResponseDto"
+import { plainToClass } from "class-transformer"
+import { GetFileResponseDto } from "@/entities/File/dto/GetFileDto"
 
 class FileService {
-    async renameFile(dto: RenameFileDto): Promise<void> {
-        console.log(dto)
-        await wait(2000)
+    async create(dto: CreateFileDto): Promise<File> {
+        const response = await fmsClient.post<CreateFileResponseDto>(
+            "/file",
+            dto
+        )
+        const instance = plainToClass(File, response.data.body)
+        return instance
     }
 
-    async deleteFile(id: string): Promise<void> {
-        console.log(id)
-        await wait(2000)
+    async rename(dto: RenameFileDto): Promise<void> {
+        await fmsClient.patch(`/file/${dto.id}/rename`, undefined, {
+            params: {
+                name: dto.name,
+            },
+        })
     }
 
-    async copyFile(dto: CopyFileDto): Promise<void> {
-        console.log(dto)
-        await wait(2000)
+    async delete(id: string): Promise<void> {
+        await fmsClient.delete(`/file/${id}`)
     }
 
-    async moveFile(dto: MoveFileDto): Promise<void> {
-        console.log(dto)
-        await wait(2000)
+    async move(dto: MoveFileDto): Promise<void> {
+        await fmsClient.patch(`/file/${dto.id}/move`, undefined, {
+            params: {
+                to: dto.to,
+            },
+        })
     }
 
-    async uploadFile(folderId: string, file: File): Promise<void> {
-        console.log(folderId, file)
-        await wait(2000)
+    async openConnection(fileId: string) {
+        const response = await fmsClient.get<GetFileResponseDto>(
+            `/file/${fileId}`
+        )
+
+        const instance = plainToClass(File, response.data.body)
+        return {
+            connectionId: instance.connectionId,
+            host: instance.host,
+        }
     }
 
-    async openConnection(fileId: string): Promise<string> {
-        console.log(fileId)
-        await wait(2000)
-        return "8f1a07f4-f88f-4f70-9fc2-70e66792044c"
-    }
-
-    async closeConnection(connectiondId: string): Promise<void> {
-        console.log(connectiondId)
-        await wait(2000)
-    }
-
-    getDownloadUrl(connectionId: string): string {
-        return `${
-            import.meta.env.VITE_FS_MOCK_BASE_URL
-        }/files/read?connectionID=${connectionId}`
+    async closeConnection(file: File) {
+        await fsClient.post(
+            `${file.host}/files/close?connectionID=${file.connectionId}`
+        )
     }
 }
 

@@ -1,0 +1,27 @@
+@use "@/assets/sass/abstracts";
+
+.searchPageWrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-top: 16px;
+}
+
+.header {
+    font-weight: abstracts.$typography-fw-bold;
+    font-size: abstracts.$typography-font-lg;
+    margin-inline-end: 10px;
+}
+
+.headerWrapper {
+    margin-bottom: 16px;
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+.contentsTableWrapper {
+    flex-grow: 1;
+}
+

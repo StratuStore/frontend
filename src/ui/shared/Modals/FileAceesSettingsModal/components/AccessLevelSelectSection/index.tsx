@@ -1,31 +1,26 @@
-import Select from "@/ui/shared/Select"
 import styles from "./styles.module.scss"
 import { useState } from "react"
 import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
 import Input from "@/ui/shared/Input"
 import Button from "@/ui/shared/Button"
-
-enum AccessLevel {
-    Public = "public",
-    Restricted = "restricted",
-    Private = "private",
-}
-
-const levelSelectItems = [
-    { label: "Public", value: AccessLevel.Public },
-    { label: "Restricted", value: AccessLevel.Restricted },
-    { label: "Private", value: AccessLevel.Private },
-]
-
-const levelSelectDescriptions = {
-    [AccessLevel.Public]: "Anyone with the link can access the file",
-    [AccessLevel.Restricted]: "Only people with the link can view the file",
-    [AccessLevel.Private]: "Only you can access the file",
-}
+import AccessLevelSelect from "@/ui/shared/AccessLevelSelect"
+import { AccessLevel } from "@/ui/shared/AccessLevelSelect/constants"
+import { useTranslation } from "react-i18next"
 
 export default function AccessLevelSelectSection() {
-    const [level, setLevel] = useState(levelSelectItems[0].value)
+    const [level, setLevel] = useState(AccessLevel.Public)
+
+    const { t } = useTranslation("common")
+
+    const levelSelectDescriptions = {
+        [AccessLevel.Public]: t(
+            "accessLevelModal.publicAccessLevelDescription"
+        ),
+        [AccessLevel.Private]: t(
+            "accessLevelModal.privateAccessLevelDescription"
+        ),
+    }
 
     return (
         <div className={styles.sectionWrapper}>
@@ -42,12 +37,9 @@ export default function AccessLevelSelectSection() {
 
             <div className={styles.selectWrapper}>
                 <div className={styles.selectComponentWrapper}>
-                    <Select
-                        items={levelSelectItems}
-                        value={level}
-                        onValueChange={(value) =>
-                            setLevel(value as AccessLevel)
-                        }
+                    <AccessLevelSelect
+                        level={level}
+                        setLevel={(newLevel) => setLevel(newLevel)}
                     />
                 </div>
                 <p className={styles.accessLevelCaption}>
@@ -57,7 +49,7 @@ export default function AccessLevelSelectSection() {
 
             <div className={styles.linkWrapper}>
                 <Input disabled placeholder="https://some-link.com/this-file" />
-                <Button>Copy link</Button>
+                <Button>{t("accessLevelModal.copyLink")}</Button>
             </div>
         </div>
     )

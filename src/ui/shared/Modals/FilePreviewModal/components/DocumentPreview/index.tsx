@@ -2,40 +2,39 @@ import VideoPreview from "./components/VideoPreview"
 import ImagePreview from "./components/ImagePreview"
 import { FC } from "react"
 import AudioPreview from "./components/AudioPreview"
+import { File } from "@/entities/File"
+import { observer } from "mobx-react-lite"
 
 export type DocumentPreviewProps = {
-    uri: string
-    extension: string
+    file: File
 }
 
 type PreviewComponentProps = {
-    uri: string
+    file: File
 }
 
-function resolvePreviewComponent(
-    fileExtension: string
-): FC<PreviewComponentProps> | null {
-    if (fileExtension === "mp4") {
+function resolvePreviewComponent(file: File): FC<PreviewComponentProps> | null {
+    if (file.extension === "mp4") {
         return VideoPreview
-    } else if (["jpg", "jpeg", "png", "gif"].includes(fileExtension || "")) {
+    } else if (["jpg", "jpeg", "png", "gif"].includes(file.extension)) {
         return ImagePreview
-    } else if (["mp3"].includes(fileExtension || "")) {
+    } else if (["mp3"].includes(file.extension)) {
         return AudioPreview
     }
 
     return null
 }
 
-export default function DocumentPreview({
-    uri,
-    extension,
-}: DocumentPreviewProps) {
-    const PreviewComponent = resolvePreviewComponent(extension)
+function DocumentPreviewComponent({ file }: DocumentPreviewProps) {
+    const PreviewComponent = resolvePreviewComponent(file)
 
     if (!PreviewComponent) {
         return <p>Unsupported file type</p>
     }
 
-    return <PreviewComponent uri={uri} />
+    return <PreviewComponent file={file} />
 }
+
+const DocumentPreview = observer(DocumentPreviewComponent)
+export default DocumentPreview
 

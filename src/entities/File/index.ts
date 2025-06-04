@@ -1,22 +1,47 @@
+import { Expose } from "class-transformer"
+
 export class File {
-    constructor(id: string, name: string, createdAt: string, size: number) {
+    constructor(
+        id: string,
+        name: string,
+        createdAt: string,
+        size: number,
+        updatedAt: string,
+        starred: boolean,
+        shared: boolean,
+        extension: string,
+        host: string,
+        connectionId: string
+    ) {
         this.id = id
         this.name = name
         this.createdAt = createdAt
         this.size = size
+        this.updatedAt = updatedAt
+        this.starred = starred
+        this.shared = shared
+        this.extension = extension
+        this.host = host
+        this.connectionId = connectionId
     }
 
     id: string
     name: string
     createdAt: string
+    updatedAt: string
     size: number
+    starred: boolean
+    extension: string
+    host?: string
 
-    get extension() {
-        return this.name.split(".").pop() || ""
-    }
+    @Expose({ name: "connectionID" })
+    connectionId?: string
 
-    getType() {
-        return File
+    @Expose({ name: "public" })
+    shared: boolean
+
+    getUrl(): string {
+        return `${this.host}/files/read?connectionID=${this.connectionId}&name=${this.name}`
     }
 }
 

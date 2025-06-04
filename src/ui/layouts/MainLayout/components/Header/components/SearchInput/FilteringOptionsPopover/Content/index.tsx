@@ -12,6 +12,12 @@ import {
 } from "./constants"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
+import DateRangePicker from "@/ui/shared/shadcn/DateRangePicker"
+import AccessLevelSelect from "@/ui/shared/AccessLevelSelect"
+import { SearchDto } from "@/entities/Search/dto/SearchDto"
+import { folderStore } from "@/entities/Folder/store"
+import { useNavigate } from "react-router"
+import { AccessLevel } from "@/ui/shared/AccessLevelSelect/constants"
 
 export default function Content() {
     const {
@@ -26,9 +32,30 @@ export default function Content() {
     })
 
     const { t } = useTranslation("common")
+    const navigate = useNavigate()
 
     const onSubmit = (data: FilteringFormValues) => {
-        console.log("Form submitted with data:", data)
+        let accessLevel: boolean | undefined = undefined
+
+        if (data.accessLevel === AccessLevel.Public) {
+            accessLevel = true
+        } else if (data.accessLevel === AccessLevel.Private) {
+            accessLevel = false
+        }
+
+        const searchDto = new SearchDto({
+            name: data.name,
+            createdAtFrom: data.createdAtRange?.from,
+            createdAtTo: data.createdAtRange?.to,
+            updatedAtFrom: data.updatedAtRange?.from,
+            updatedAtTo: data.updatedAtRange?.to,
+            public: accessLevel,
+            starred: data.isPinned ? true : undefined,
+            extensions: data.extension.length > 0 ? data.extension : undefined,
+        })
+
+        folderStore.setSearchFilters(searchDto)
+        navigate("/search")
     }
 
     const handleClear = () => {
@@ -86,24 +113,61 @@ export default function Content() {
             </div>
 
             <div className={styles.formEntry}>
-                <label htmlFor="sharedWith">
-                    {t("filteringOptionsPopover.sharedWith")}
+                <label htmlFor="createdAtRange">
+                    {t("filteringOptionsPopover.createdAtRange")}
                 </label>
                 <FormControl
-                    error={errors.sharedWith?.[0]?.message}
                     control={
                         <Controller
-                            name="sharedWith"
+                            name="createdAtRange"
                             control={control}
                             render={({ field }) => (
-                                <TagsInput
-                                    inputPlaceholder={t(
-                                        "filteringOptionsPopover.sharedWithPlaceholder"
-                                    )}
-                                    allowDuplicates={false}
-                                    delimiters={[",", "Enter", " "]}
-                                    valid={!errors.extension}
-                                    {...field}
+                                <DateRangePicker
+                                    // @ts-expect-error mistake in react-day-picker types
+                                    date={field.value}
+                                    setDate={field.onChange}
+                                />
+                            )}
+                        />
+                    }
+                />
+            </div>
+
+            <div className={styles.formEntry}>
+                <label htmlFor="updatedAtRange">
+                    {t("filteringOptionsPopover.updatedAtRange")}
+                </label>
+                <FormControl
+                    control={
+                        <Controller
+                            name="updatedAtRange"
+                            control={control}
+                            render={({ field }) => (
+                                <DateRangePicker
+                                    // @ts-expect-error mistake in react-day-picker types
+                                    date={field.value}
+                                    setDate={field.onChange}
+                                />
+                            )}
+                        />
+                    }
+                />
+            </div>
+
+            <div className={styles.formEntry}>
+                <label htmlFor="accessLevel">
+                    {t("filteringOptionsPopover.accessLevel")}
+                </label>
+                <FormControl
+                    control={
+                        <Controller
+                            name="accessLevel"
+                            control={control}
+                            render={({ field }) => (
+                                <AccessLevelSelect
+                                    level={field.value!}
+                                    setLevel={field.onChange}
+                                    triggerClassName="!justify-start"
                                 />
                             )}
                         />

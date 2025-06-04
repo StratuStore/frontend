@@ -1,0 +1,459 @@
+:root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+}
+
+.dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+}
+
+.rc-picker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 280px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid hsl(var(--input));
+    border-radius: var(--radius);
+    background-color: hsl(var(--background));
+    font-size: 14px;
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: hsl(var(--accent-foreground) / 0.5);
+    }
+
+    &:focus-within {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        ring: 2px;
+        ring-color: hsl(var(--ring));
+        ring-offset: 2px;
+        box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+    }
+
+    &-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    &-clear {
+        position: absolute;
+        right: 36px;
+        color: hsl(var(--muted-foreground));
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s;
+
+        &:hover {
+            color: hsl(var(--foreground));
+        }
+    }
+
+    &:hover .rc-picker-clear {
+        opacity: 1;
+    }
+
+    &-suffix {
+        margin-left: 8px;
+        color: hsl(var(--muted-foreground));
+        pointer-events: none;
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    &-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        color: hsl(var(--foreground));
+        cursor: pointer;
+
+        &::placeholder {
+            color: hsl(var(--muted-foreground));
+        }
+    }
+}
+
+.rc-picker-dropdown {
+    position: absolute;
+    z-index: 1050;
+    background-color: hsl(var(--popover));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+        0 4px 6px -4px rgb(0 0 0 / 0.1);
+    animation: slideUpAndFade 0.2s ease-out;
+
+    &-hidden {
+        display: none;
+    }
+}
+
+.rc-picker-panel-container {
+    padding: 16px;
+    background-color: hsl(var(--popover));
+    border-radius: var(--radius);
+}
+
+.rc-picker-panel {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.rc-picker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 12px;
+    min-height: 32px;
+
+    button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: none;
+        border-radius: calc(var(--radius) - 2px);
+        background-color: transparent;
+        color: hsl(var(--foreground));
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+
+        &:focus-visible {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px hsl(var(--ring));
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    &-view {
+        display: flex;
+        gap: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        color: hsl(var(--foreground));
+
+        button {
+            width: auto;
+            padding: 0 8px;
+            font-weight: 500;
+
+            &:hover {
+                background-color: hsl(var(--accent));
+                color: hsl(var(--accent-foreground));
+            }
+        }
+    }
+}
+
+.rc-picker-body {
+    padding: 0;
+}
+
+.rc-picker-content {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        text-align: center;
+        padding: 0;
+    }
+
+    th {
+        height: 32px;
+        color: hsl(var(--muted-foreground));
+        font-weight: 400;
+        font-size: 12px;
+    }
+
+    td {
+        position: relative;
+    }
+}
+
+.rc-picker-cell {
+    color: hsl(var(--foreground));
+    cursor: pointer;
+
+    &-inner {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        margin: 2px;
+        border-radius: calc(var(--radius) - 2px);
+        font-size: 14px;
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+    }
+
+    &-disabled {
+        .rc-picker-cell-inner {
+            color: hsl(var(--muted-foreground));
+            cursor: not-allowed;
+            opacity: 0.5;
+
+            &:hover {
+                background-color: transparent;
+            }
+        }
+    }
+
+    &-today {
+        .rc-picker-cell-inner {
+            border: 1px solid hsl(var(--border));
+        }
+    }
+
+    &-selected {
+        .rc-picker-cell-inner {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+
+            &:hover {
+                background-color: hsl(var(--primary));
+                color: hsl(var(--primary-foreground));
+            }
+        }
+    }
+
+    &-in-range {
+        .rc-picker-cell-inner {
+            background-color: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+    }
+
+    &-range-start,
+    &-range-end {
+        .rc-picker-cell-inner {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+    }
+}
+
+.rc-picker-month-panel,
+.rc-picker-year-panel {
+    .rc-picker-cell-inner {
+        width: 60px;
+        height: 36px;
+    }
+}
+
+.rc-picker-time-panel {
+    width: auto;
+
+    .rc-picker-content {
+        display: flex;
+        height: 200px;
+    }
+
+    &-column {
+        flex: 1;
+        overflow-y: auto;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: hsl(var(--border));
+            border-radius: 3px;
+        }
+
+        li {
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                background-color: hsl(var(--accent));
+            }
+
+            &.rc-picker-time-panel-cell-selected {
+                background-color: hsl(var(--primary));
+                color: hsl(var(--primary-foreground));
+            }
+
+            &.rc-picker-time-panel-cell-disabled {
+                color: hsl(var(--muted-foreground));
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+        }
+    }
+}
+
+.rc-picker-footer {
+    border-top: 1px solid hsl(var(--border));
+    padding: 12px 16px;
+    margin: 0 -16px -16px;
+}
+
+.rc-picker-range {
+    .rc-picker-active-bar {
+        background-color: hsl(var(--primary));
+        opacity: 0.1;
+    }
+}
+
+@keyframes slideUpAndFade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rc-picker-dropdown {
+    .rc-picker-today-btn {
+        color: hsl(var(--primary));
+        cursor: pointer;
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    .rc-picker-ok {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 16px;
+        border: none;
+        border-radius: calc(var(--radius) - 2px);
+        background-color: hsl(var(--primary));
+        color: hsl(var(--primary-foreground));
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        &:focus-visible {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px hsl(var(--ring));
+        }
+    }
+}
+
+.rc-picker-decade-panel {
+    .rc-picker-cell-inner {
+        width: 72px;
+        height: 36px;
+    }
+}
+
+.rc-picker-week-panel {
+    .rc-picker-cell-week {
+        color: hsl(var(--muted-foreground));
+        font-size: 12px;
+    }
+}
+
+.rc-picker-input:focus-visible {
+    outline: none;
+}
+
+.rc-picker-rtl {
+    direction: rtl;
+
+    .rc-picker-suffix {
+        margin-left: 0;
+        margin-right: 8px;
+    }
+
+    .rc-picker-clear {
+        right: auto;
+        left: 36px;
+    }
+}
+

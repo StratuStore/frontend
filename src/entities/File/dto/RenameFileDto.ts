@@ -1,4 +1,4 @@
 export class RenameFileDto {
-    constructor(public name: string, public id: string) {}
+    constructor(public id: string, public name: string) {}
 }
 

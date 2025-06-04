@@ -25,9 +25,14 @@ export default function Select({
     triggerProps,
     ...rest
 }: SelectProps) {
+    const { className: triggerClassName, ...triggerRest } = triggerProps || {}
+
     return (
         <RadixSelect.Root {...rest}>
-            <RadixSelect.Trigger className={styles.trigger} {...triggerProps}>
+            <RadixSelect.Trigger
+                className={clsx(styles.trigger, triggerClassName)}
+                {...triggerRest}
+            >
                 <RadixSelect.Value placeholder={placeholder} />
                 <RadixSelect.Icon className={styles.icon}>
                     <Icon

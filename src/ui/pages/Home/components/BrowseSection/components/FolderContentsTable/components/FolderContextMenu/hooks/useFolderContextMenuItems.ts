@@ -84,8 +84,6 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
     }
 
     if (selectedFiles.length === 1 && selectedFolders.length === 0) {
-        const file = selectedFiles[0]
-
         return [
             {
                 items: [
@@ -112,7 +110,7 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                     {
                         label: "Delete",
                         onClick: () => {
-                            fileStore.deleteFile(file.id)
+                            fileStore.showDeleteFileModal()
                         },
                     },
                 ],

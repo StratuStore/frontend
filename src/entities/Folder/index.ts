@@ -59,9 +59,5 @@ export class Folder {
         this.foldersCount = foldersCount
         this.name = name
     }
-
-    getType() {
-        return Folder
-    }
 }
 

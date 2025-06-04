@@ -1,16 +1,17 @@
+import { File } from "@/entities/File"
 import { FileUploadHandlers } from "./types"
-import { fileService } from "@/entities/File/api"
 
 class FileSystemService {
-    async uploadFile(file: globalThis.File, handlers: FileUploadHandlers) {
+    async uploadFile(
+        file: globalThis.File,
+        metadata: File,
+        handlers: FileUploadHandlers
+    ) {
         const xhr = this.prepareRequest(handlers)
-        const connectionId = await fileService.openConnection(file.name)
 
         xhr.open(
             "POST",
-            `${
-                import.meta.env.VITE_FS_MOCK_BASE_URL
-            }/files/write?connectionID=${connectionId}`,
+            `${metadata.host}/files/write?connectionID=${metadata.connectionId}`,
             true
         )
 

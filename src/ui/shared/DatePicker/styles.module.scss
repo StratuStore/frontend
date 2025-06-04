@@ -1,0 +1,49 @@
+@use "@/assets/sass/abstracts";
+
+// .popup {
+//     z-index: 3;
+//     box-shadow: none !important;
+
+//     :global(.rc-picker-panel) {
+//         width: 280px;
+//         padding: 12px;
+//     }
+
+//     :global(.rc-picker-content) {
+//         width: 100%;
+//     }
+
+//     :global(.rc-picker-cell-inner) {
+//         border: none !important;
+//     }
+
+//     :global(.rc-picker-cell) {
+//         border-radius: 8px;
+//     }
+
+//     :global(.rc-picker-cell-hover) {
+//         background-color: var(--button-bg-hover);
+//     }
+
+//     :global(.rc-picker-cell-selected) {
+//         border: none !important;
+//     }
+// }
+
+// .wrapper {
+//     border: none !important;
+
+//     :global(.rc-picker-input) {
+//         input {
+//             font: inherit;
+//             color: inherit;
+//             padding: 8px 12px;
+//             border-radius: 8px;
+//             border: 1px solid var(--border-color);
+//             transition: border abstracts.$animations-duration-normal;
+//             outline: none;
+//             width: 100%;
+//         }
+//     }
+// }
+

@@ -4,12 +4,18 @@ import { observer } from "mobx-react-lite"
 
 export type FolderContextMenuProps = {
     children: React.ReactNode
+    disabled?: boolean
 }
 
 function FolderContentsContextMenuComponent({
     children,
+    disabled = false,
 }: FolderContextMenuProps) {
     const items = useFolderContextMenuItems()
+
+    if (disabled) {
+        return <>{children}</>
+    }
 
     return <ContextMenu groups={items}>{children}</ContextMenu>
 }

@@ -51,14 +51,12 @@ export class ClipboardStore {
     }
 
     setItem(item: File | Folder) {
-        const clone = structuredClone(item)
-
-        if (clone.constructor === File) {
-            this.setFile(clone as File)
+        if (item.constructor === File) {
+            this.setFile(item as File)
             this.setFolder(null)
             fileStore.clearSelectedFiles()
         } else {
-            this.setFolder(clone as Folder)
+            this.setFolder(item as Folder)
             this.setFile(null)
             folderStore.clearSelectedFolders()
         }
@@ -173,11 +171,13 @@ export class ClipboardStore {
 
         try {
             this.setClipboardActionLoading(true)
-            fileService.moveFile(dto)
+            fileService.move(dto)
         } catch (error) {
             console.log(error)
+            toast.error("Failed to move file. Please try again.")
         } finally {
             this.setClipboardActionLoading(false)
+            fileStore.clearSelectedFiles()
         }
     }
 }

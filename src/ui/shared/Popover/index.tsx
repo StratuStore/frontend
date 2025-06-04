@@ -16,7 +16,13 @@ export default function Popover({
                 {renderTrigger()}
             </RadixPopover.Trigger>
             <RadixPopover.Portal>
-                <RadixPopover.Content className={styles.content} sideOffset={5}>
+                <RadixPopover.Content
+                    className={styles.content}
+                    sideOffset={5}
+                    onOpenAutoFocus={(e) => {
+                        e.preventDefault()
+                    }}
+                >
                     {renderContent()}
                 </RadixPopover.Content>
             </RadixPopover.Portal>

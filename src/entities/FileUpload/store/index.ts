@@ -1,6 +1,10 @@
 import { makeAutoObservable } from "mobx"
 import { FileUpload, FileUploadStatus } from "@/entities/FileUpload"
 import { Folder } from "@/entities/Folder"
+import { fileService } from "@/entities/File/api"
+import { CreateFileDto } from "@/entities/File/dto/CreateFileDto"
+import toast from "react-hot-toast"
+import { folderStore } from "@/entities/Folder/store"
 import { fileSystemService } from "@/entities/FileUpload/api"
 
 class FileUploadStore {
@@ -41,30 +45,47 @@ class FileUploadStore {
         )
     }
 
-    addFileUpload(folder: Folder, file: globalThis.File) {
-        const fileUpload = new FileUpload(folder, file)
+    async addFileUpload(folder: Folder, file: globalThis.File) {
+        try {
+            const dto = new CreateFileDto(
+                file.name,
+                folder.id,
+                file.size,
+                file.name.split(".").pop() || ""
+            )
 
-        fileSystemService.uploadFile(fileUpload.file, {
-            onProgress: (progress: number) => {
-                fileUpload.progress = progress
-            },
+            const metadata = await fileService.create(dto)
+            await folderStore.refreshFolderContents()
 
-            onSuccess: () => {
-                fileUpload.status = FileUploadStatus.Successful
-                fileUpload.progress = 100
-                fileUpload.error = null
-            },
+            if (!metadata.connectionId || !metadata.host) {
+                throw new Error("File metadata is missing connectionId or host")
+            }
 
-            onError: (error: Error) => {
-                fileUpload.status = FileUploadStatus.Failed
-                fileUpload.error = error.message
-            },
-        })
+            const fileUpload = new FileUpload(folder, file)
 
-        fileUpload.status = FileUploadStatus.Failed
+            fileSystemService.uploadFile(fileUpload.file, metadata, {
+                onProgress: (progress: number) => {
+                    fileUpload.progress = progress
+                },
 
-        this.items.push(fileUpload)
-        this.shouldShowFileUploadPopup = true
+                onSuccess: () => {
+                    fileUpload.status = FileUploadStatus.Successful
+                    fileUpload.progress = 100
+                    fileUpload.error = null
+                },
+
+                onError: (error: Error) => {
+                    fileUpload.status = FileUploadStatus.Failed
+                    fileUpload.error = error.message
+                },
+            })
+
+            this.items.push(fileUpload)
+            this.shouldShowFileUploadPopup = true
+        } catch (error) {
+            console.error("Failed to add file upload:", error)
+            toast.error("Failed to start file upload. Please try again.")
+        }
     }
 
     updateFileUpload(id: number, fileUpload: Partial<FileUpload>) {

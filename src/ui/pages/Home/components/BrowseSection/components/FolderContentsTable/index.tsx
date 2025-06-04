@@ -27,6 +27,7 @@ interface FolderContentsTableProps {
     files: File[]
     folders: Folder[]
     loading?: boolean
+    disableContextMenu?: boolean
 }
 
 type TableItem = {
@@ -52,6 +53,7 @@ function FolderContentsTableComponent({
     files,
     folders,
     loading = false,
+    disableContextMenu = false,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
@@ -159,7 +161,7 @@ function FolderContentsTableComponent({
     }
 
     return (
-        <FolderContentsContextMenu>
+        <FolderContentsContextMenu disabled={disableContextMenu}>
             <div ref={parentRef} className={styles.tableWrapper}>
                 <table className={styles.table}>
                     <thead className={styles.tableHeader}>
@@ -191,7 +193,7 @@ function FolderContentsTableComponent({
                             const row = rows[virtualRow.index]
 
                             if (
-                                row.original.originalItem.getType() === Folder
+                                row.original.originalItem.constructor === Folder
                             ) {
                                 return (
                                     <TableRow

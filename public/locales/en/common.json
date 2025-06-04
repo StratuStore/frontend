@@ -28,6 +28,17 @@
         "sharedWithPlaceholder": "Add an email address",
         "showOnlyPinned": "Show only pinned items",
         "clear": "Clear",
-        "apply": "Apply filters"
+        "apply": "Apply filters",
+        "createdAtRange": "Created at range",
+        "updatedAtRange": "Updated at range",
+        "accessLevel": "Access level"
+    },
+    "accessLevelModal": {
+        "title": "Share file",
+        "description": "Get a link using which others can access the file",
+        "publicAccessLevelDescription": "Anyone with the link can access the file",
+        "privateAccessLevelDescription": "Only you can access the file",
+        "apply": "Apply",
+        "copyLink": "Copy link"
     }
 }

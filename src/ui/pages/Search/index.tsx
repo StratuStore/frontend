@@ -1,3 +1,52 @@
-export default function SearchPage() {
-    return <div>Search page</div>
+import { folderStore } from "@/entities/Folder/store"
+import FolderContentsTable from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable"
+import { observer } from "mobx-react-lite"
+import { useEffect } from "react"
+import styles from "./styles.module.scss"
+import { Link, useNavigate } from "react-router"
+import NoContent from "./components/NoContent"
+import { useTranslation } from "react-i18next"
+
+function SearchPageComponent() {
+    const files = folderStore.searchResults.files
+    const folders = folderStore.searchResults.folders
+
+    const navigate = useNavigate()
+    const { t } = useTranslation("search")
+
+    useEffect(() => {
+        folderStore.getSearchResults()
+    }, [])
+
+    useEffect(() => {
+        if (Object.keys(folderStore.search).length === 0) {
+            navigate("/")
+        }
+    }, [navigate])
+
+    return (
+        <div className={styles.searchPageWrapper}>
+            <div className={styles.headerWrapper}>
+                <h2 className={styles.header}>{t("heading")}</h2>
+                <Link to="/">{t("backToHomePage")}</Link>
+            </div>
+
+            <div className={styles.contentsTableWrapper}>
+                {files.length === 0 && folders.length === 0 ? (
+                    <NoContent />
+                ) : (
+                    <FolderContentsTable
+                        files={files ?? []}
+                        folders={folders ?? []}
+                        loading={folderStore.isLoading}
+                        disableContextMenu
+                    />
+                )}
+            </div>
+        </div>
+    )
 }
+
+const SearchPage = observer(SearchPageComponent)
+export default SearchPage
+

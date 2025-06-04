@@ -1,26 +1,26 @@
-import Button from "@/ui/shared/Button"
-import Icon from "@/ui/shared/Icon"
-import { IconName } from "@/ui/shared/Icon/types"
 import Modal from "@/ui/shared/Modal"
 import styles from "./styles.module.scss"
 import AccessLevelSelectSection from "@/ui/shared/Modals/FileAceesSettingsModal/components/AccessLevelSelectSection"
-import ShareByEmailSection from "@/ui/shared/Modals/FileAceesSettingsModal/components/ShareByEmailSection"
+import { File } from "@/entities/File"
+import { useTranslation } from "react-i18next"
 
 const renderAccessLevelSection = () => <AccessLevelSelectSection />
-const renderShareByEmailSection = () => <ShareByEmailSection />
 
-export default function FileAccessSettingsModal() {
-    const renderTrigger = () => (
-        <Button variant="icon">
-            <Icon name={IconName.CogOutline} width="24px" height="24px" />
-        </Button>
-    )
+export type FileAccessSettingsModalProps = {
+    renderTrigger?: () => React.ReactNode
+    file: File
+}
+
+export default function FileAccessSettingsModal({
+    renderTrigger,
+}: FileAccessSettingsModalProps) {
+    const { t } = useTranslation("common")
 
     const renderHeading = () => (
         <div className={styles.headingWrapper}>
-            <p>Share file</p>
+            <p>{t("accessLevelModal.title")}</p>
             <p className={styles.subheading}>
-                Get a link with which others can access the file
+                {t("accessLevelModal.description")}
             </p>
         </div>
     )
@@ -29,10 +29,7 @@ export default function FileAccessSettingsModal() {
         <Modal
             renderTrigger={renderTrigger}
             renderHeading={renderHeading}
-            renderBodySections={[
-                renderAccessLevelSection,
-                renderShareByEmailSection,
-            ]}
+            renderBodySections={[renderAccessLevelSection]}
             contentClasses={styles.modalContent}
         />
     )
