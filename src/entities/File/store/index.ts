@@ -249,6 +249,7 @@ class FileStore {
         } catch (error) {
             console.error("Failed to load shared file:", error)
             toast.error("Sorry, this file is not available or does not exist.")
+            throw error
         } finally {
             this.setIsSharedFileLoading(false)
         }

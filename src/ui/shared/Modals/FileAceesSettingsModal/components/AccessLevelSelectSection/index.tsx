@@ -19,7 +19,9 @@ export type AccessLevelSelectSectionProps = {
 function AccessLevelSelectSectionComponent({
     file,
 }: AccessLevelSelectSectionProps) {
-    const [level, setLevel] = useState(AccessLevel.Public)
+    const [level, setLevel] = useState(() => {
+        return file.shared ? AccessLevel.Public : AccessLevel.Private
+    })
     const isUpdatingAccessLevel = fileStore.isUpdatingFileAccess
 
     const { t } = useTranslation("common")

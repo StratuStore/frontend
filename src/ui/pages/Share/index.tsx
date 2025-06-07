@@ -20,9 +20,14 @@ function SharePageComponent() {
         }
 
         if (!isSharedFileLoaded) {
-            fileStore.loadSharedFile(id).then(() => {
-                setIsSharedFileLoaded(true)
-            })
+            fileStore
+                .loadSharedFile(id)
+                .then(() => {
+                    setIsSharedFileLoaded(true)
+                })
+                .catch(() => {
+                    navigate("/")
+                })
         }
     }, [id, navigate, isSharedFileLoaded])
 
