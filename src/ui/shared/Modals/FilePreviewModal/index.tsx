@@ -10,25 +10,27 @@ import { useEffect } from "react"
 import Spinner from "@/ui/shared/Spinner"
 import { observer } from "mobx-react-lite"
 import FileAccessSettingsModal from "@/ui/shared/Modals/FileAceesSettingsModal"
+import { File } from "@/entities/File"
 
 export type FilePreviewModalProps = {
     open: boolean
     closeModal: () => void
+    file?: File
+    isSharedFile?: boolean
 }
 
 function FilePreviewModalComponent(props: FilePreviewModalProps) {
-    const { open, closeModal } = props
-    const file = fileStore.selectedFiles[0]
+    const { open, closeModal, file, isSharedFile = false } = props
 
     useEffect(() => {
         if (!open || !file) {
             return
         }
 
-        fileStore.loadDocumentPreview()
+        fileStore.loadDocumentPreview(file)
 
         return () => {
-            fileStore.closeConnection()
+            fileStore.closeConnection(file)
         }
     }, [open, file])
 
@@ -65,7 +67,7 @@ function FilePreviewModalComponent(props: FilePreviewModalProps) {
 
                             <Button
                                 variant="icon"
-                                onClick={() => fileStore.downloadFile()}
+                                onClick={() => fileStore.downloadFile(file)}
                             >
                                 <Icon
                                     name={IconName.TrayArrowDown}
@@ -75,19 +77,21 @@ function FilePreviewModalComponent(props: FilePreviewModalProps) {
                                 />
                             </Button>
 
-                            <FileAccessSettingsModal
-                                file={file}
-                                renderTrigger={() => (
-                                    <Button variant="icon">
-                                        <Icon
-                                            name={IconName.ShareVariant}
-                                            width="24px"
-                                            height="24px"
-                                            className={styles.headerIcon}
-                                        />
-                                    </Button>
-                                )}
-                            />
+                            {!isSharedFile && (
+                                <FileAccessSettingsModal
+                                    file={file}
+                                    renderTrigger={() => (
+                                        <Button variant="icon">
+                                            <Icon
+                                                name={IconName.ShareVariant}
+                                                width="24px"
+                                                height="24px"
+                                                className={styles.headerIcon}
+                                            />
+                                        </Button>
+                                    )}
+                                />
+                            )}
                         </div>
 
                         {fileStore.isDocumentPreviewLoading ? (

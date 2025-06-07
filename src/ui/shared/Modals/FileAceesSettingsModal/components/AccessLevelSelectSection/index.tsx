@@ -7,9 +7,20 @@ import Button from "@/ui/shared/Button"
 import AccessLevelSelect from "@/ui/shared/AccessLevelSelect"
 import { AccessLevel } from "@/ui/shared/AccessLevelSelect/constants"
 import { useTranslation } from "react-i18next"
+import { fileStore } from "@/entities/File/store"
+import { observer } from "mobx-react-lite"
+import { File } from "@/entities/File"
+import toast from "react-hot-toast"
 
-export default function AccessLevelSelectSection() {
+export type AccessLevelSelectSectionProps = {
+    file: File
+}
+
+function AccessLevelSelectSectionComponent({
+    file,
+}: AccessLevelSelectSectionProps) {
     const [level, setLevel] = useState(AccessLevel.Public)
+    const isUpdatingAccessLevel = fileStore.isUpdatingFileAccess
 
     const { t } = useTranslation("common")
 
@@ -21,6 +32,8 @@ export default function AccessLevelSelectSection() {
             "accessLevelModal.privateAccessLevelDescription"
         ),
     }
+
+    const shareUrl = `${window.location.origin}/share/${file.id}`
 
     return (
         <div className={styles.sectionWrapper}>
@@ -40,18 +53,36 @@ export default function AccessLevelSelectSection() {
                     <AccessLevelSelect
                         level={level}
                         setLevel={(newLevel) => setLevel(newLevel)}
+                        onChange={(level) =>
+                            fileStore.updateAccessLevel(
+                                file.id,
+                                level === AccessLevel.Public
+                            )
+                        }
                     />
                 </div>
                 <p className={styles.accessLevelCaption}>
-                    {levelSelectDescriptions[level]}
+                    {isUpdatingAccessLevel
+                        ? t("accessLevelModal.updatingAccessLevel")
+                        : levelSelectDescriptions[level]}
                 </p>
             </div>
 
             <div className={styles.linkWrapper}>
-                <Input disabled placeholder="https://some-link.com/this-file" />
-                <Button>{t("accessLevelModal.copyLink")}</Button>
+                <Input disabled placeholder={shareUrl} />
+                <Button
+                    onClick={() => {
+                        navigator.clipboard.writeText(shareUrl)
+                        toast.success(t("accessLevelModal.linkCopied"))
+                    }}
+                >
+                    {t("accessLevelModal.copyLink")}
+                </Button>
             </div>
         </div>
     )
 }
+
+const AccessLevelSelectSection = observer(AccessLevelSelectSectionComponent)
+export default AccessLevelSelectSection
 

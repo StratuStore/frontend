@@ -54,6 +54,23 @@ class FileService {
             `${file.host}/files/close?connectionID=${file.connectionId}`
         )
     }
+
+    async updateAccessLevel(fileId: string, isPublic: boolean): Promise<void> {
+        await fmsClient.patch(`/file/${fileId}/share`, undefined, {
+            params: {
+                public: isPublic,
+            },
+        })
+    }
+
+    async getById(fileId: string) {
+        const response = await fmsClient.get<GetFileResponseDto>(
+            `/file/${fileId}`
+        )
+
+        const instance = plainToClass(File, response.data.body)
+        return instance
+    }
 }
 
 export const fileService = new FileService()

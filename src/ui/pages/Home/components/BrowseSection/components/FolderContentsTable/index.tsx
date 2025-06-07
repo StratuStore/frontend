@@ -22,6 +22,7 @@ import FileActionModal from "@/ui/pages/Home/components/BrowseSection/components
 import Spinner from "@/ui/shared/Spinner"
 import FilePreviewModal from "@/ui/shared/Modals/FilePreviewModal"
 import { TEST_IDS } from "@/shared/constants/tests/shared"
+import FileAccessSettingsModal from "@/ui/shared/Modals/FileAceesSettingsModal"
 
 interface FolderContentsTableProps {
     files: File[]
@@ -257,6 +258,14 @@ function FolderContentsTableComponent({
                 <FilePreviewModal
                     open={isPreviewModalOpen}
                     closeModal={() => setPreviewModalOpen(false)}
+                    file={fileStore.selectedFiles[0] || null}
+                />
+                <FileAccessSettingsModal
+                    file={selectedFiles[0]}
+                    open={fileStore.isAccessSettingsModalOpen}
+                    closeModal={() =>
+                        fileStore.setIsAccessSettingsModalOpen(false)
+                    }
                 />
             </div>
         </FolderContentsContextMenu>

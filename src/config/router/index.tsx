@@ -7,6 +7,7 @@ import PinnedPage from "@/ui/pages/Pinned"
 import FolderPage from "@/ui/pages/Folder"
 import NotFoundPage from "@/ui/pages/NotFound"
 import AuthPage from "@/ui/pages/Auth"
+import SharePage from "@/ui/pages/Share"
 
 export const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
     {
         path: "auth",
         element: <AuthPage />,
+    },
+    {
+        path: "share/:id",
+        element: <SharePage />,
     },
     {
         path: "/",

@@ -98,13 +98,19 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                     {
                         label: "Download",
                         onClick: () => {
-                            fileStore.downloadFile()
+                            fileStore.downloadFile(selectedFiles[0])
                         },
                     },
                     {
                         label: "Rename",
                         onClick: () => {
                             fileStore.showRenameFileModal()
+                        },
+                    },
+                    {
+                        label: "Manage access",
+                        onClick: () => {
+                            fileStore.setIsAccessSettingsModalOpen(true)
                         },
                     },
                     {

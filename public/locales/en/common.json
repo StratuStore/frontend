@@ -38,7 +38,10 @@
         "description": "Get a link using which others can access the file",
         "publicAccessLevelDescription": "Anyone with the link can access the file",
         "privateAccessLevelDescription": "Only you can access the file",
+        "cancel": "Cancel",
         "apply": "Apply",
-        "copyLink": "Copy link"
+        "copyLink": "Copy link",
+        "linkCopied": "Link copied to clipboard",
+        "updatingAccessLevel": "Updating access level..."
     }
 }

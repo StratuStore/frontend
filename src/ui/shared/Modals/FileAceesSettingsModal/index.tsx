@@ -3,16 +3,24 @@ import styles from "./styles.module.scss"
 import AccessLevelSelectSection from "@/ui/shared/Modals/FileAceesSettingsModal/components/AccessLevelSelectSection"
 import { File } from "@/entities/File"
 import { useTranslation } from "react-i18next"
+import { observer } from "mobx-react-lite"
 
-const renderAccessLevelSection = () => <AccessLevelSelectSection />
+const renderAccessLevelSection = (file: File) => (
+    <AccessLevelSelectSection file={file} />
+)
 
 export type FileAccessSettingsModalProps = {
     renderTrigger?: () => React.ReactNode
     file: File
+    open?: boolean
+    closeModal?: () => void
 }
 
-export default function FileAccessSettingsModal({
+function FileAccessSettingsModalComponent({
     renderTrigger,
+    file,
+    open,
+    closeModal,
 }: FileAccessSettingsModalProps) {
     const { t } = useTranslation("common")
 
@@ -29,9 +37,14 @@ export default function FileAccessSettingsModal({
         <Modal
             renderTrigger={renderTrigger}
             renderHeading={renderHeading}
-            renderBodySections={[renderAccessLevelSection]}
+            renderBodySections={[() => renderAccessLevelSection(file)]}
             contentClasses={styles.modalContent}
+            open={open}
+            closeModal={closeModal}
         />
     )
 }
+
+const FileAccessSettingsModal = observer(FileAccessSettingsModalComponent)
+export default FileAccessSettingsModal
 

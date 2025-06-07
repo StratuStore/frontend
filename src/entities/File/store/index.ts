@@ -22,6 +22,12 @@ class FileStore {
     isActionLoading: boolean = false
 
     isDocumentPreviewLoading: boolean = false
+    isUpdatingFileAccess: boolean = false
+
+    sharedFile: File | null = null
+    isSharedFileLoading: boolean = false
+
+    isAccessSettingsModalOpen: boolean = false
 
     setUploadFolder(folder: Folder | null) {
         this.uploadFolder = folder
@@ -108,6 +114,22 @@ class FileStore {
         this.setModalAction(null)
     }
 
+    setIsUpdatingFileAccess(isUpdating: boolean) {
+        this.isUpdatingFileAccess = isUpdating
+    }
+
+    setSharedFile(file: File | null) {
+        this.sharedFile = file
+    }
+
+    setIsSharedFileLoading(isLoading: boolean) {
+        this.isSharedFileLoading = isLoading
+    }
+
+    setIsAccessSettingsModalOpen(isOpen: boolean) {
+        this.isAccessSettingsModalOpen = isOpen
+    }
+
     async renameFile(fileId: string, newName: string) {
         const dto = new RenameFileDto(fileId, newName)
 
@@ -141,9 +163,7 @@ class FileStore {
         }
     }
 
-    async downloadFile() {
-        const file = this.selectedFiles[0]
-
+    async downloadFile(file: File) {
         if (!file) {
             return
         }
@@ -173,9 +193,8 @@ class FileStore {
         }
     }
 
-    async loadDocumentPreview() {
+    async loadDocumentPreview(file: File) {
         this.isDocumentPreviewLoading = true
-        const file = this.selectedFiles[0]
 
         try {
             const { connectionId, host } = await fileService.openConnection(
@@ -192,9 +211,8 @@ class FileStore {
         }
     }
 
-    async closeConnection() {
+    async closeConnection(file: File) {
         this.isDocumentPreviewLoading = true
-        const file = this.selectedFiles[0]
 
         try {
             await fileService.closeConnection(file)
@@ -205,6 +223,34 @@ class FileStore {
             file.connectionId = undefined
 
             this.isDocumentPreviewLoading = false
+        }
+    }
+
+    async updateAccessLevel(fileId: string, isPublic: boolean) {
+        this.setIsUpdatingFileAccess(true)
+
+        try {
+            await fileService.updateAccessLevel(fileId, isPublic)
+            toast.success("File access level updated successfully")
+        } catch (error) {
+            console.error("Failed to update file access level:", error)
+            toast.error("Failed to update file access level. Please try again.")
+        } finally {
+            this.setIsUpdatingFileAccess(false)
+        }
+    }
+
+    async loadSharedFile(id: string) {
+        this.setIsSharedFileLoading(true)
+
+        try {
+            const file = await fileService.getById(id)
+            this.setSharedFile(file)
+        } catch (error) {
+            console.error("Failed to load shared file:", error)
+            toast.error("Sorry, this file is not available or does not exist.")
+        } finally {
+            this.setIsSharedFileLoading(false)
         }
     }
 }
