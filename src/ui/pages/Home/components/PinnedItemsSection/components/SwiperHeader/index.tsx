@@ -11,19 +11,10 @@ export type SwiperHeaderProps = {
 export default function SwiperHeader({ swiper }: SwiperHeaderProps) {
     const { t } = useTranslation("home")
 
-    if (!swiper) {
-        return null
-    }
-
     return (
         <div className={styles.headerRowWrapper}>
             <h2 className={styles.header}>{t("pinnedItemsSection.title")}</h2>
-            <SwiperControls
-                hasNext
-                hasPrev
-                setNext={() => swiper.slideNext()}
-                setPrev={() => swiper.slidePrev()}
-            />
+            <SwiperControls hasNext hasPrev swiper={swiper} />
         </div>
     )
 }

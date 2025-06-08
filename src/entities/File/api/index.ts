@@ -71,6 +71,10 @@ class FileService {
         const instance = plainToClass(File, response.data.body)
         return instance
     }
+
+    async togglePinned(fileId: string): Promise<void> {
+        await fmsClient.patch(`/file/${fileId}/star`)
+    }
 }
 
 export const fileService = new FileService()

@@ -8,7 +8,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { useRef, useEffect, useCallback, useState } from "react"
+import { useRef, useEffect, useCallback } from "react"
 import styles from "./styles.module.scss"
 import TableRow from "./components/TableRow"
 import { useNavigate } from "react-router"
@@ -59,8 +59,6 @@ function FolderContentsTableComponent({
     const parentRef = useRef<HTMLDivElement>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
-
-    const [isPreviewModalOpen, setPreviewModalOpen] = useState<boolean>(false)
 
     const { data, columns } = useTableData(files, folders)
 
@@ -238,7 +236,9 @@ function FolderContentsTableComponent({
                                     }
                                     onClick={() => handleRowClick(row.original)}
                                     onDoubleClick={() =>
-                                        setPreviewModalOpen(true)
+                                        folderStore.setIsDocumentPreviewOpen(
+                                            true
+                                        )
                                     }
                                     wrapperProps={{
                                         "data-testid": `${TEST_IDS.FileRow}-${row.original.originalItem.id}`,
@@ -256,8 +256,10 @@ function FolderContentsTableComponent({
                 <FolderActionModal />
                 <FileActionModal />
                 <FilePreviewModal
-                    open={isPreviewModalOpen}
-                    closeModal={() => setPreviewModalOpen(false)}
+                    open={folderStore.isDocumentPreviewOpen}
+                    closeModal={() =>
+                        folderStore.setIsDocumentPreviewOpen(false)
+                    }
                     file={fileStore.selectedFiles[0] || null}
                 />
                 <FileAccessSettingsModal

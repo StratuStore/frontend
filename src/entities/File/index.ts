@@ -1,4 +1,5 @@
 import { Expose } from "class-transformer"
+import { makeAutoObservable } from "mobx"
 
 export class File {
     constructor(
@@ -23,6 +24,8 @@ export class File {
         this.extension = extension
         this.host = host
         this.connectionId = connectionId
+
+        makeAutoObservable(this)
     }
 
     id: string

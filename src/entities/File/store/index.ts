@@ -56,6 +56,11 @@ class FileStore {
         )
     }
 
+    forceSelectFile(file: File) {
+        this.selectedFiles = [file]
+        return
+    }
+
     deselectFile(file: File) {
         const index = this.selectedFiles.findIndex(
             (selectedFile) => selectedFile.id === file.id
@@ -252,6 +257,19 @@ class FileStore {
             throw error
         } finally {
             this.setIsSharedFileLoading(false)
+        }
+    }
+
+    async togglePinned(file: File) {
+        try {
+            file.starred = !file.starred
+            await fileService.togglePinned(file.id)
+
+            // await folderStore.refreshFolderContents()
+            await folderStore.getPinnedFiles()
+        } catch (error) {
+            console.error("Failed to toggle pinned status:", error)
+            toast.error("Failed to update pinned status. Please try again.")
         }
     }
 }

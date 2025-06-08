@@ -1,6 +1,7 @@
 {
     "pinnedItemsSection": {
-        "title": "Pinned items & folders"
+        "title": "Starred folder & files",
+        "noContent": "You have no starred folders or files yet."
     },
     "browseSection": {
         "title": "Browse"

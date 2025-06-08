@@ -43,6 +43,8 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
     }
 
     if (selectedFolders.length === 1 && selectedFiles.length === 0) {
+        const folder = selectedFolders[0]
+
         return [
             {
                 items: [
@@ -67,6 +69,14 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                         },
                     },
                     {
+                        label: folder.starred
+                            ? "Remove from starred"
+                            : "Add to starred",
+                        onClick: () => {
+                            folderStore.togglePinned(folder)
+                        },
+                    },
+                    {
                         label: "Rename",
                         onClick: () => {
                             folderStore.showRenameFolderModal()
@@ -84,6 +94,8 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
     }
 
     if (selectedFiles.length === 1 && selectedFolders.length === 0) {
+        const file = selectedFiles[0]
+
         return [
             {
                 items: [
@@ -111,6 +123,14 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                         label: "Manage access",
                         onClick: () => {
                             fileStore.setIsAccessSettingsModalOpen(true)
+                        },
+                    },
+                    {
+                        label: file.starred
+                            ? "Remove from starred"
+                            : "Add to starred",
+                        onClick: () => {
+                            fileStore.togglePinned(file)
                         },
                     },
                     {

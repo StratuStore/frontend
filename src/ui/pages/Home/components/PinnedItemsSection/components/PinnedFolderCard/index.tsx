@@ -3,12 +3,15 @@ import PinnedItemCard from "@/ui/pages/Home/components/PinnedItemsSection/compon
 import Icon from "@/ui/shared/Icon"
 import { IconName } from "@/ui/shared/Icon/types"
 import styles from "./styles.module.scss"
+import { useNavigate } from "react-router"
 
 export type PinnedFolderCardProps = {
     folder: Folder
 }
 
 export default function PinnedFolderCard({ folder }: PinnedFolderCardProps) {
+    const navigate = useNavigate()
+
     return (
         <PinnedItemCard
             icon={
@@ -19,7 +22,8 @@ export default function PinnedFolderCard({ folder }: PinnedFolderCardProps) {
                     className={styles.folderIcon}
                 />
             }
-            name={folder.path.at(-1)!}
+            name={folder.name}
+            onClick={() => navigate(`/folder/${folder.id}`)}
         />
     )
 }

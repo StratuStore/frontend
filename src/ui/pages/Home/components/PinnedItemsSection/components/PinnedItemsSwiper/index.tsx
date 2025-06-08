@@ -12,20 +12,24 @@ import { PINNED_ITEM_CARD_WIDTH } from "@/ui/pages/Home/components/PinnedItemsSe
 import { PINNED_ITEM_CARDS_GAP } from "@/ui/pages/Home/components/PinnedItemsSection/components/PinnedItemsSwiper/constants"
 
 import styles from "./styles.module.scss"
+import Loading from "./components/Loading"
+import NoContent from "./components/NoContent"
 
 export type PinnedFilesSwiperProps = {
     folders: Folder[]
     files: File[]
     parentWidth: number
+    loading?: boolean
 }
 
 function getCardsPerSlide(parentWidth: number) {
-    return (
+    const cardsPerSlide =
         Math.ceil(
             (parentWidth + PINNED_ITEM_CARDS_GAP) /
                 (PINNED_ITEM_CARD_WIDTH + PINNED_ITEM_CARDS_GAP)
         ) - 1
-    )
+
+    return cardsPerSlide < 1 ? 1 : cardsPerSlide
 }
 
 function getTotalCards(files: File[], folders: Folder[]) {
@@ -40,6 +44,7 @@ export default function PinnedItemsSwiper({
     folders,
     files,
     parentWidth,
+    loading = false,
 }: PinnedFilesSwiperProps) {
     const [swiper, setSwiper] = useState<Swiper | undefined>(undefined)
 
@@ -82,9 +87,16 @@ export default function PinnedItemsSwiper({
         return null
     }
 
-    return (
-        <>
-            <SwiperHeader swiper={swiper} />
+    function renderContent() {
+        if (loading) {
+            return <Loading />
+        }
+
+        if (files.length === 0 && folders.length === 0) {
+            return <NoContent />
+        }
+
+        return (
             <SwiperComponent
                 onSwiper={setSwiper}
                 slidesPerView={1}
@@ -98,6 +110,13 @@ export default function PinnedItemsSwiper({
                     </SwiperSlide>
                 ))}
             </SwiperComponent>
+        )
+    }
+
+    return (
+        <>
+            <SwiperHeader swiper={swiper} />
+            {renderContent()}
         </>
     )
 }

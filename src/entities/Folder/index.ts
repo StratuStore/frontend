@@ -1,6 +1,7 @@
 import { File } from "@/entities/File"
 import { PathFragment } from "@/entities/Folder/types/PathFramgent"
 import { Expose, plainToInstance, Transform } from "class-transformer"
+import { makeAutoObservable } from "mobx"
 
 export class Folder {
     id: string
@@ -33,6 +34,7 @@ export class Folder {
     updatedAt: string
     size: number
     name: string
+    starred: boolean
 
     constructor(
         id: string,
@@ -45,7 +47,8 @@ export class Folder {
         size: number,
         filesCount: number,
         foldersCount: number,
-        name: string
+        name: string,
+        starred: boolean
     ) {
         this.id = id
         this.path = path
@@ -58,6 +61,9 @@ export class Folder {
         this.filesCount = filesCount
         this.foldersCount = foldersCount
         this.name = name
+        this.starred = starred
+
+        makeAutoObservable(this)
     }
 }
 

@@ -41,11 +41,21 @@ class FolderStore {
         folders: Folder[]
         files: File[]
         total: number
+        limit: number
+        offset: number
     } = {
         folders: [],
         files: [],
         total: -1,
+        limit: Number.MAX_SAFE_INTEGER,
+        offset: 0,
     }
+
+    sharedFiles: File[] = []
+    sharedFolders: Folder[] = []
+    isSharedLoading: boolean = false
+
+    isDocumentPreviewOpen: boolean = false
 
     setIsLoading(isLoading: boolean) {
         this.isLoading = isLoading
@@ -112,6 +122,10 @@ class FolderStore {
         this.currentFolder = folder
         this.currentFolderId = folder.id
         this.isCurrentFolderReady = false
+    }
+
+    setIsDocumentPreviewOpen(isOpen: boolean) {
+        this.isDocumentPreviewOpen = isOpen
     }
 
     async getRootFolder() {
@@ -286,6 +300,8 @@ class FolderStore {
                 folders: results.folders,
                 files: results.files,
                 total: results.foldersCount + results.filesCount,
+                limit: Number.MAX_SAFE_INTEGER,
+                offset: 0,
             }
         } catch (error) {
             console.error("Error fetching search results:", error)
@@ -295,9 +311,44 @@ class FolderStore {
                 folders: [],
                 files: [],
                 total: -1,
+                limit: Number.MAX_SAFE_INTEGER,
+                offset: 0,
             }
         } finally {
             this.setIsLoading(false)
+        }
+    }
+
+    async getPinnedFiles() {
+        this.isSharedLoading = true
+        const dto = new SearchDto({
+            starred: true,
+            limit: Number.MAX_SAFE_INTEGER,
+            offset: 0,
+        })
+
+        try {
+            const sharedFiles = await searchService.getResults(dto)
+
+            this.sharedFiles = sharedFiles.files
+            this.sharedFolders = sharedFiles.folders
+        } catch (error) {
+            console.error("Error fetching pinned files:", error)
+            toast.error("Failed to load starred files. Please try again.")
+        } finally {
+            this.isSharedLoading = false
+        }
+    }
+
+    async togglePinned(folder: Folder) {
+        try {
+            folder.starred = !folder.starred
+            await folderService.togglePinned(folder.id)
+
+            await folderStore.getPinnedFiles()
+        } catch (error) {
+            console.error("Failed to toggle pinned status:", error)
+            toast.error("Failed to update pinned status. Please try again.")
         }
     }
 }

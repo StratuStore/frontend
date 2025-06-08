@@ -94,6 +94,10 @@ class FolderSerive {
             },
         })
     }
+
+    async togglePinned(id: string): Promise<void> {
+        await fmsClient.patch(`/directory/${id}/star`)
+    }
 }
 
 export const folderService = new FolderSerive()
