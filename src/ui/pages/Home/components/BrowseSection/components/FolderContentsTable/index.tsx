@@ -23,12 +23,15 @@ import Spinner from "@/ui/shared/Spinner"
 import FilePreviewModal from "@/ui/shared/Modals/FilePreviewModal"
 import { TEST_IDS } from "@/shared/constants/tests/shared"
 import FileAccessSettingsModal from "@/ui/shared/Modals/FileAceesSettingsModal"
+import { SortingDirection } from "@/entities/Folder/types/SortingDirection"
+import clsx from "clsx"
 
 interface FolderContentsTableProps {
     files: File[]
     folders: Folder[]
     loading?: boolean
     disableContextMenu?: boolean
+    isCurrentFolderReady?: boolean
 }
 
 type TableItem = {
@@ -38,6 +41,13 @@ type TableItem = {
     type: string
     size: string
     originalItem: File | Folder
+}
+
+const sortFieldMap: Record<string, string> = {
+    name: "name",
+    createdAt: "createdAt",
+    updatedAt: "updatedAt",
+    size: "size",
 }
 
 function isFolderActive(folder: Folder, selectedFolders: Folder[]) {
@@ -55,6 +65,7 @@ function FolderContentsTableComponent({
     folders,
     loading = false,
     disableContextMenu = false,
+    isCurrentFolderReady = false,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
@@ -151,7 +162,27 @@ function FolderContentsTableComponent({
         }
     }
 
-    if (loading && !isLoadingMoreItems) {
+    const handleHeaderClick = async (columnId: string) => {
+        const sortField = sortFieldMap[columnId] || null
+
+        if (!sortField) {
+            return
+        }
+
+        await folderStore.updateSort(sortField)
+    }
+
+    const getSortIndicator = (columnId: string) => {
+        const sortField = sortFieldMap[columnId]
+
+        if (folderStore.sort.field !== sortField) {
+            return null
+        }
+
+        return folderStore.sort.direction === SortingDirection.Asc ? "↑" : "↓"
+    }
+
+    if (loading && !isLoadingMoreItems && !isCurrentFolderReady) {
         return <Loader />
     }
 
@@ -169,12 +200,29 @@ function FolderContentsTableComponent({
                                 {headerGroup.headers.map((header) => (
                                     <th
                                         key={header.id}
-                                        className={styles.tableHeaderCell}
-                                    >
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
+                                        className={clsx(
+                                            styles.tableHeaderCell,
+                                            {
+                                                [styles.sortableHeader]:
+                                                    header.column.id in
+                                                    sortFieldMap,
+                                            }
                                         )}
+                                        onClick={() =>
+                                            handleHeaderClick(header.id)
+                                        }
+                                    >
+                                        <div className={styles.headerContent}>
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                            <span
+                                                className={styles.sortIndicator}
+                                            >
+                                                {getSortIndicator(header.id)}
+                                            </span>
+                                        </div>
                                     </th>
                                 ))}
                             </tr>
@@ -275,5 +323,6 @@ function FolderContentsTableComponent({
 }
 
 const FolderContentsTable = observer(FolderContentsTableComponent)
+
 export default FolderContentsTable
 

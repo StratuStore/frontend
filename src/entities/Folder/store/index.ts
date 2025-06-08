@@ -11,6 +11,7 @@ import { SearchDto } from "@/entities/Search/dto/SearchDto"
 import { searchService } from "@/entities/Search/api"
 import { File } from "@/entities/File"
 import { fileStore } from "@/entities/File/store"
+import { SortingDirection } from "@/entities/Folder/types/SortingDirection"
 
 class FolderStore {
     constructor() {
@@ -21,6 +22,7 @@ class FolderStore {
     currentFolder: Folder | null = null
     isLoading: boolean = false
     isCurrentFolderReady: boolean = false
+
     pagination: {
         limit: number
         offset: number
@@ -29,6 +31,14 @@ class FolderStore {
         limit: 50,
         offset: 0,
         total: -1,
+    }
+
+    sort: {
+        field: string | null
+        direction: SortingDirection
+    } = {
+        field: null,
+        direction: SortingDirection.Asc,
     }
 
     modalAction: FolderModalAction | null = null
@@ -182,10 +192,13 @@ class FolderStore {
         }
 
         this.setIsLoading(true)
+
         const dto = new GetFolderDto(
             this.currentFolder.id,
             this.pagination.offset,
-            this.pagination.limit
+            this.pagination.limit,
+            this.sort.field ?? undefined,
+            this.sort.direction
         )
 
         try {
@@ -349,6 +362,32 @@ class FolderStore {
         } catch (error) {
             console.error("Failed to toggle pinned status:", error)
             toast.error("Failed to update pinned status. Please try again.")
+        }
+    }
+
+    async updateSort(field: string | null) {
+        // debugger
+
+        this.resolveSort(field)
+        await this.refreshFolderContents()
+    }
+
+    private resolveSort(field: string | null) {
+        if (this.sort.field !== field) {
+            this.sort.field = field
+            this.sort.direction = SortingDirection.Asc
+            return
+        }
+
+        if (this.sort.direction === SortingDirection.Asc) {
+            this.sort.direction = SortingDirection.Desc
+            return
+        }
+
+        if (this.sort.direction === SortingDirection.Desc) {
+            this.sort.direction = SortingDirection.Asc
+            this.sort.field = null
+            return
         }
     }
 }

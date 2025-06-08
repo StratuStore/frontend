@@ -10,11 +10,18 @@ export class GetFolderDto {
     ) {}
 
     toQueryParams() {
+        if (!this.sortByField) {
+            return {
+                offset: this.offset,
+                limit: this.limit,
+            }
+        }
+
         return {
             offset: this.offset,
             limit: this.limit,
             sortByField: this.sortByField,
-            sortDirection: this.sortDirection,
+            sortOrder: this.sortDirection,
         }
     }
 }

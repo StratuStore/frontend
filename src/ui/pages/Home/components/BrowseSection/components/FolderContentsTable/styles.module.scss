@@ -14,7 +14,7 @@
 
 .tableHeader > tr {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .tableHeaderCell {
@@ -31,7 +31,7 @@
     position: absolute;
     width: 100%;
     cursor: pointer;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
 
     &.active {
         background-color: var(--accent-color-opaque);
@@ -50,5 +50,24 @@
 .tableCell {
     padding: 16px 12px;
     border-bottom: 2px solid var(--border-color);
+}
+
+.sortableHeader {
+    user-select: none;
+    cursor: pointer;
+}
+
+.headerContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.sortIndicator {
+    font-size: 12px;
+    color: var(--text-color);
+    min-width: 12px;
+    text-align: center;
 }
 

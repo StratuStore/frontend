@@ -9,6 +9,7 @@
     "folderContentsTable": {
         "name": "Item name",
         "createdAt": "Date of creation",
+        "updatedAt": "Last updated",
         "type": "Type",
         "size": "Size",
         "folderItemType": "Folder",

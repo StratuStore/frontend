@@ -22,6 +22,8 @@ function FolderNavigationBreadcrumbsComponent() {
             return
         }
 
+        folderStore.setIsCurrentFolderReady(false)
+
         if (index === 0) {
             navigate("/")
             return

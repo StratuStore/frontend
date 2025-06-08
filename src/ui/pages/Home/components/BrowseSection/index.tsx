@@ -28,6 +28,7 @@ function BrowseSectionComponent() {
                     files={currentFolder?.files ?? []}
                     folders={currentFolder?.folders ?? []}
                     loading={folderStore.isLoading}
+                    isCurrentFolderReady={folderStore.isCurrentFolderReady}
                 />
             </div>
             <FileUploadPopup />

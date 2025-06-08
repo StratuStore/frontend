@@ -40,6 +40,7 @@ function SearchPageComponent() {
                         folders={folders ?? []}
                         loading={folderStore.isLoading}
                         disableContextMenu
+                        isCurrentFolderReady={folderStore.isCurrentFolderReady}
                     />
                 )}
             </div>
