@@ -6,9 +6,12 @@ import styles from "./styles.module.scss"
 import CreateFolder from "./components/CreateFolder"
 import RenameFolder from "./components/RenameFolder"
 import DeleteFolder from "./components/DeleteFolder"
+import { useTranslation } from "react-i18next"
 
 function FolderActionModalComponent() {
     const open = folderStore.modalAction !== null
+
+    const { t } = useTranslation("home")
 
     const renderBodySections = () => {
         switch (folderStore.modalAction) {
@@ -24,11 +27,11 @@ function FolderActionModalComponent() {
     const getHeading = () => {
         switch (folderStore.modalAction) {
             case FolderModalAction.Create:
-                return "Create Folder"
+                return t("createFolderModal.heading")
             case FolderModalAction.Rename:
-                return "Rename Folder"
+                return t("renameFolderModal.heading")
             case FolderModalAction.Delete:
-                return "Delete Folder"
+                return t("deleteFolderModal.heading")
         }
     }
 

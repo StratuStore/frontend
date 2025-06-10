@@ -40,7 +40,9 @@ function AccessLevelSelectSectionComponent({
     return (
         <div className={styles.sectionWrapper}>
             <div className={styles.selectHeadingWrapper}>
-                <p className={styles.selectHeading}>Choose access level</p>
+                <p className={styles.selectHeading}>
+                    {t("accessLevelSelect.heading")}
+                </p>
                 <div className={styles.headingIconWrapper}>
                     <Icon
                         name={IconName.LockOutline}

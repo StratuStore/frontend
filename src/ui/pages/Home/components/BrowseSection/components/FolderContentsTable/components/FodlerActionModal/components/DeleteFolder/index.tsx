@@ -2,9 +2,12 @@ import { folderStore } from "@/entities/Folder/store"
 import Button from "@/ui/shared/Button"
 import { observer } from "mobx-react-lite"
 import styles from "./styles.module.scss"
+import { useTranslation } from "react-i18next"
 
 function DeleteFolderComponent() {
     const folder = folderStore.selectedFolders[0]
+
+    const { t } = useTranslation("home")
 
     if (!folder) {
         return null
@@ -12,10 +15,7 @@ function DeleteFolderComponent() {
 
     return (
         <div className={styles.deleteFolderWrapper}>
-            <p>
-                Are you sure you want to delete this folder? <b>All</b> included
-                items will be deleted. This action is irreversible.
-            </p>
+            <p>{t("deleteFolderModal.message")}</p>
             <div className={styles.submitRow}>
                 <Button
                     variant="ghost"
@@ -23,7 +23,7 @@ function DeleteFolderComponent() {
                     onClick={() => folderStore.setModalAction(null)}
                     disabled={folderStore.isActionLoading}
                 >
-                    Cancel
+                    {t("deleteFolderModal.cancel")}
                 </Button>
 
                 <Button
@@ -31,7 +31,7 @@ function DeleteFolderComponent() {
                     onClick={() => folderStore.deleteFolder(folder.id)}
                     loading={folderStore.isActionLoading}
                 >
-                    Delete
+                    {t("deleteFolderModal.delete")}
                 </Button>
             </div>
         </div>

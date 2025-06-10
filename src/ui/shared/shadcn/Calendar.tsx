@@ -1,10 +1,13 @@
 "use client"
 
+import i18n from "@/config/i18n"
 import { Button, buttonVariants } from "@/ui/shared/shadcn/Button"
 import { cn } from "@/utils/cn"
 import { differenceInCalendarDays } from "date-fns"
+import { enUS } from "date-fns/locale"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import * as React from "react"
+import { useState } from "react"
 import {
     DayPicker,
     labelNext,
@@ -81,6 +84,13 @@ function Calendar({
             }
         }, [yearRange])
     )
+
+    const [locale, setLocale] = useState(i18n.language === "ua" ? uk : enUS)
+
+    React.useEffect(() => {
+        setLocale(i18n.language === "ua" ? uk : enUS)
+        console.log(i18n.language)
+    }, [i18n.language])
 
     const { onNextClick, onPrevClick, startMonth, endMonth } = props
 
@@ -174,7 +184,7 @@ function Calendar({
 
     return (
         <DayPicker
-            locale={uk}
+            locale={locale}
             showOutsideDays={showOutsideDays}
             className={cn("p-3", className)}
             style={{

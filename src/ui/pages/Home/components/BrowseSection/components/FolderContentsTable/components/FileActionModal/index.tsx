@@ -5,9 +5,12 @@ import { fileStore } from "@/entities/File/store"
 import { FileModalAction } from "@/entities/File/store/types"
 import RenameFile from "./components/RenameFile"
 import DeleteFile from "./components/DeleteFile"
+import { useTranslation } from "react-i18next"
 
 function FileActionModalComponent() {
     const open = fileStore.modalAction !== null
+
+    const { t } = useTranslation("home")
 
     const renderBodySections = () => {
         switch (fileStore.modalAction) {
@@ -21,9 +24,9 @@ function FileActionModalComponent() {
     const getHeading = () => {
         switch (fileStore.modalAction) {
             case FileModalAction.Rename:
-                return "Rename file"
+                return t("renameFileModal.heading")
             case FileModalAction.Delete:
-                return "Delete file"
+                return t("deleteFileModal.heading")
         }
     }
 

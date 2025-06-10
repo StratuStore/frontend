@@ -43,5 +43,17 @@
         "copyLink": "Copy link",
         "linkCopied": "Link copied to clipboard",
         "updatingAccessLevel": "Updating access level..."
+    },
+    "accessLevelSelect": {
+        "public": "Public",
+        "private": "Private",
+        "heading": "Choose access level",
+        "placeholder": "Select access level"
+    },
+    "dateRangePicker": {
+        "placeholder": "Pick a date range"
+    },
+    "toastMessages": {
+        "auth": {}
     }
 }

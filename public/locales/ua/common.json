@@ -1,9 +1,9 @@
 {
     "languagePicker": {
-        "placeholder": "Виберіть мову..."
+        "placeholder": "Оберіть мову..."
     },
     "themePicker": {
-        "placeholder": "Виберіть тему...",
+        "placeholder": "Оберіть тему...",
         "dark": "Темна",
         "light": "Світла",
         "system": "Системна"
@@ -17,7 +17,7 @@
         "logout": "Вийти"
     },
     "searchInput": {
-        "placeholder": "Шукати файли та папки за назвою..."
+        "placeholder": "Пошук файлів та папок за назвою..."
     },
     "filteringOptionsPopover": {
         "name": "Назва",
@@ -28,6 +28,29 @@
         "sharedWithPlaceholder": "Додайте електронну адресу",
         "showOnlyPinned": "Показати лише закріплені елементи",
         "clear": "Очистити",
-        "apply": "Застосувати фільтри"
+        "apply": "Застосувати фільтри",
+        "createdAtRange": "Проміжок створення",
+        "updatedAtRange": "Проміжок оновлення",
+        "accessLevel": "Рівень доступу"
+    },
+    "accessLevelModal": {
+        "title": "Поділитися файлом",
+        "description": "Отримайте посилання, за допомогою якого інші можуть отримати доступ до файлу",
+        "publicAccessLevelDescription": "Будь-хто з посиланням може отримати доступ до файлу",
+        "privateAccessLevelDescription": "Тільки ви можете отримати доступ до файлу",
+        "cancel": "Скасувати",
+        "apply": "Застосувати",
+        "copyLink": "Скопіювати",
+        "linkCopied": "Посилання скопійовано в буфер обміну",
+        "updatingAccessLevel": "Оновлення рівня доступу..."
+    },
+    "accessLevelSelect": {
+        "public": "Публічний",
+        "private": "Приватний",
+        "heading": "Оберіть рівень доступу",
+        "placeholder": "Оберіть рівень доступу"
+    },
+    "dateRangePicker": {
+        "placeholder": "Оберіть проміжок дат"
     }
 }

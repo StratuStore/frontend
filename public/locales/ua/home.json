@@ -1,6 +1,7 @@
 {
     "pinnedItemsSection": {
-        "title": "Закріплені файли і папки"
+        "title": "Папки та файли з зірочкою",
+        "noContent": "У вас поки що немає папок або файлів з зірочкою."
     },
     "browseSection": {
         "title": "Перегляд"
@@ -8,9 +9,73 @@
     "folderContentsTable": {
         "name": "Назва елемента",
         "createdAt": "Дата створення",
+        "updatedAt": "Останнє оновлення",
         "type": "Тип",
         "size": "Розмір",
         "folderItemType": "Папка",
-        "fileTypeUnknown": "Невідомий"
+        "fileTypeUnknown": "Невідомий",
+        "noContentHeading": "Ця папка порожня",
+        "noContentClickThisArea": "Натисніть на цю область, щоб завантажити файл до цієї папки",
+        "noContentCreateAFolder": "Або ви можете створити нову папку, натиснувши кнопку 'Створити нову папку'",
+        "noContentCreateFolderButton": "Створити нову папку"
+    },
+    "fileUploadPopup": {
+        "uploadingFiles_one": "Завантажується {{count}} файл",
+        "uploadingFiles_few": "Завантажується {{count}} файли",
+        "uploadingFiles_many": "Завантажується {{count}} файлів",
+        "uploadingFiles_other": "Завантажується {{count}} файлів",
+        "uploadedFiles_one": "Успішно завантажено {{count}} файл",
+        "uploadedFiles_few": "Успішно завантажено {{count}} файли",
+        "uploadedFiles_many": "Успішно завантажено {{count}} файлів",
+        "uploadedFiles_other": "Успішно завантажено {{count}} файлів",
+        "errorUploadingFiles_one": "Не вдалося завантажити {{count}} файл",
+        "errorUploadingFiles_few": "Не вдалося завантажити {{count}} файли",
+        "errorUploadingFiles_many": "Не вдалося завантажити {{count}} файлів",
+        "errorUploadingFiles_other": "Не вдалося завантажити {{count}} файлів",
+        "destination": "Призначення: {{destination}}"
+    },
+    "createFolderModal": {
+        "heading": "Створити папку",
+        "nameInputLabel": "Назва папки",
+        "nameInputPlaceholder": "Введіть назву папки",
+        "clear": "Очистити",
+        "submit": "Підтвердити",
+        "validation": {
+            "required": "Вкажіть назву папки"
+        }
+    },
+    "renameFolderModal": {
+        "heading": "Перейменувати папку",
+        "nameInputLabel": "Назва папки",
+        "nameInputPlaceholder": "Введіть назву папки",
+        "clear": "Очистити",
+        "submit": "Підтвердити",
+        "validation": {
+            "required": "Вкажіть назву папки",
+            "differentName": "Назва папки має відрізнятися від поточної"
+        }
+    },
+    "deleteFolderModal": {
+        "heading": "Видалити папку",
+        "cancel": "Скасувати",
+        "delete": "Видалити",
+        "message": "Ви впевнені, що хочете видалити цю папку? Усі включені елементи будуть видалені. Цю дію неможливо скасувати."
+    },
+    "renameFileModal": {
+        "heading": "Перейменувати файл",
+        "nameInputLabel": "Назва файлу",
+        "nameInputPlaceholder": "Введіть назву файлу",
+        "clear": "Очистити",
+        "submit": "Підтвердити",
+        "validation": {
+            "required": "Вкажіть назву файлу",
+            "differentName": "Назва файлу має відрізнятися від поточної"
+        }
+    },
+    "deleteFileModal": {
+        "heading": "Видалити файл",
+        "cancel": "Скасувати",
+        "delete": "Видалити",
+        "message": "Ви впевнені, що хочете видалити цей файл? Цю дію неможливо скасувати."
     }
 }

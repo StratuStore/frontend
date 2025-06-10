@@ -1,8 +1,6 @@
-import {
-    AccessLevel,
-    levelSelectItems,
-} from "@/ui/shared/AccessLevelSelect/constants"
+import { AccessLevel } from "@/ui/shared/AccessLevelSelect/constants"
 import Select from "@/ui/shared/Select"
+import { useTranslation } from "react-i18next"
 
 export type AccessLevelSelectProps = {
     level: AccessLevel | ""
@@ -17,6 +15,13 @@ export default function AccessLevelSelect({
     triggerClassName = "",
     onChange,
 }: AccessLevelSelectProps) {
+    const { t } = useTranslation("common")
+
+    const levelSelectItems = [
+        { label: t("accessLevelSelect.public"), value: AccessLevel.Public },
+        { label: t("accessLevelSelect.private"), value: AccessLevel.Private },
+    ]
+
     return (
         <Select
             items={levelSelectItems}
@@ -28,7 +33,7 @@ export default function AccessLevelSelect({
                     onChange(value as AccessLevel)
                 }
             }}
-            placeholder="Select access level"
+            placeholder={t("accessLevelSelect.placeholder")}
             triggerProps={{ className: triggerClassName }}
         />
     )

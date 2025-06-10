@@ -1,14 +1,17 @@
 import { z } from "zod"
 
+import i18next from "i18next"
+export const t = i18next.t.bind(i18next)
+
 export const createRenameFileFormSchema = (originalName: string) =>
     z.object({
         name: z
             .string()
             .trim()
-            .min(1, "File name is required")
+            .min(1, t("renameFileModal.validation.required", { ns: "home" }))
             .refine(
                 (value) => value !== originalName,
-                "New name must be different from current name"
+                t("renameFileModal.validation.differentName", { ns: "home" })
             ),
     })
 
