@@ -24,9 +24,5 @@ export default defineConfig({
     plugins: [react(), tailwindcss()],
 
     publicDir: "public",
-
-    server: {
-        port: 3000,
-    },
 })
 
