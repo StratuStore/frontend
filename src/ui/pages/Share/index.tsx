@@ -1,3 +1,4 @@
+import { withAuthGuard } from "@/entities/Auth/components/withAuthGuard"
 import { fileStore } from "@/entities/File/store"
 import FullSreenLoader from "@/ui/shared/FullScreenLoader"
 import FilePreviewModal from "@/ui/shared/Modals/FilePreviewModal"
@@ -52,6 +53,6 @@ function SharePageComponent() {
     )
 }
 
-const SharePage = observer(SharePageComponent)
+const SharePage = withAuthGuard(observer(SharePageComponent))
 export default SharePage
 

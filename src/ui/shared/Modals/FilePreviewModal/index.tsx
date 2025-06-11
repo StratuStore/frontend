@@ -95,7 +95,9 @@ function FilePreviewModalComponent(props: FilePreviewModalProps) {
                         </div>
 
                         {fileStore.isDocumentPreviewLoading ? (
-                            <Spinner width="32px" height="32px" />
+                            <div className={styles.spinnerContainer}>
+                                <Spinner width="64px" height="64px" />
+                            </div>
                         ) : (
                             <div className={styles.body}>
                                 <DocumentPreview file={file} />
