@@ -10,7 +10,7 @@ export function withAuthGuard(WrappedComponent: FC) {
 
         useEffect(() => {
             if (authStore.isReady && !authStore.user) {
-                navigate("/auth")
+                navigate("/sso")
                 return
             }
         }, [navigate])

@@ -14,7 +14,7 @@ function QuickActionsComponent() {
 
     async function handleLogout() {
         await authStore.logout()
-        navigate("/auth")
+        navigate("/sso")
     }
 
     return (

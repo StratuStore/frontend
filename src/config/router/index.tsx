@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
         element: <NotFoundPage />,
     },
     {
-        path: "auth",
+        path: "sso",
         element: <AuthPage />,
     },
     {
