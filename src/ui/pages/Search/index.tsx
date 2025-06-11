@@ -6,6 +6,7 @@ import styles from "./styles.module.scss"
 import { Link, useNavigate } from "react-router"
 import NoContent from "./components/NoContent"
 import { useTranslation } from "react-i18next"
+import { withAuthGuard } from "@/entities/Auth/components/withAuthGuard"
 
 function SearchPageComponent() {
     const files = folderStore.searchResults.files
@@ -48,6 +49,6 @@ function SearchPageComponent() {
     )
 }
 
-const SearchPage = observer(SearchPageComponent)
+const SearchPage = withAuthGuard(observer(SearchPageComponent))
 export default SearchPage
 

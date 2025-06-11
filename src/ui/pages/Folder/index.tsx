@@ -7,6 +7,7 @@ import FileUploadPopup from "@/ui/pages/Home/components/BrowseSection/components
 import { useEffect } from "react"
 import { useParams } from "react-router"
 import FolderNavigationBreadcrumbs from "@/ui/pages/Folder/components/FolderNavigationBreadcrumbs"
+import { withAuthGuard } from "@/entities/Auth/components/withAuthGuard"
 
 function FolderPageComponent() {
     const { t } = useTranslation("home")
@@ -43,6 +44,6 @@ function FolderPageComponent() {
     )
 }
 
-const FolderPage = observer(FolderPageComponent)
+const FolderPage = withAuthGuard(observer(FolderPageComponent))
 export default FolderPage
 
