@@ -16,10 +16,6 @@ function SearchPageComponent() {
     const { t } = useTranslation("search")
 
     useEffect(() => {
-        folderStore.getSearchResults()
-    }, [])
-
-    useEffect(() => {
         if (Object.keys(folderStore.search).length === 0) {
             navigate("/")
         }

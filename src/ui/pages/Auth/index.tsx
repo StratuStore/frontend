@@ -4,15 +4,18 @@ import { IconName } from "@/ui/shared/Icon/types"
 import GoogleLoginButton from "@/ui/pages/Auth/components/GoogleLoginButton"
 import banner from "@/assets/images/banner.jpg"
 import Header from "./components/Header"
+import { useTranslation } from "react-i18next"
 
 export default function AuthPage() {
+    const { t } = useTranslation("auth")
+
     return (
         <div className={styles.authPageWrapper}>
             <img src={banner} className={styles.banner} />
             <div className={styles.content}>
                 <Header />
                 <div className={styles.body}>
-                    <p className={styles.title}>Welcome to</p>
+                    <p className={styles.title}>{t("title")}</p>
                     <p className={styles.appName}>
                         Stratustore
                         <Icon
@@ -32,9 +35,7 @@ export default function AuthPage() {
                             </linearGradient>
                         </svg>
                     </p>
-                    <p className={styles.login}>
-                        Please, log in using your Google account
-                    </p>
+                    <p className={styles.login}>{t("login")}</p>
                     <GoogleLoginButton />
                 </div>
             </div>

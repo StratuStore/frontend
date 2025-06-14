@@ -141,6 +141,14 @@ class FolderStore {
         this.isDocumentPreviewOpen = isOpen
     }
 
+    resetPagination() {
+        this.pagination = {
+            limit: 50,
+            offset: 0,
+            total: -1,
+        }
+    }
+
     async getRootFolder() {
         try {
             this.setIsLoading(true)
@@ -218,7 +226,7 @@ class FolderStore {
         } catch (error) {
             console.error("Error fetching more folder contents:", error)
             toast.error(t("toast.folder.loadMoreFailed", { ns: "common" }))
-            this.pagination.offset += this.pagination.limit
+            this.pagination.offset -= this.pagination.limit
         } finally {
             this.setIsLoading(false)
         }
@@ -229,9 +237,7 @@ class FolderStore {
             return
         }
 
-        this.pagination.offset = 0
-        this.pagination.limit = 50
-        this.pagination.total = -1
+        this.resetPagination()
         this.currentFolder.folders = []
         this.currentFolder.files = []
         this.clearSelectedFolders()
@@ -280,13 +286,15 @@ class FolderStore {
             this.setActionLoading(true)
             await folderService.rename(dto)
 
-            this.refreshFolderContents()
+            await this.refreshFolderContents()
+            this.closeActionModal()
+            await this.getPinnedFiles()
         } catch (error) {
             console.error("Error renaming folder:", error)
             toast.error(t("toast.folder.renameFailed", { ns: "common" }))
         } finally {
-            this.setActionLoading(false)
             this.closeActionModal()
+            this.setActionLoading(false)
         }
     }
 
@@ -298,7 +306,9 @@ class FolderStore {
             await folderService.delete(dto)
             toast.success(t("toast.folder.deleted", { ns: "common" }))
 
-            this.refreshFolderContents()
+            await this.refreshFolderContents()
+            this.closeActionModal()
+            await this.getPinnedFiles()
         } catch (error) {
             console.error("Error deleting folder:", error)
             toast.error(t("toast.folder.deleteFailed", { ns: "common" }))

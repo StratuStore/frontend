@@ -1,7 +1,5 @@
 import { FileUploadStatus } from "@/entities/FileUpload"
-import _ProgressBar from "@ramonak/react-progress-bar"
-
-import styles from "./styles.module.scss"
+import { Progress } from "@/ui/shared/shadcn/Progress"
 
 export type ProgressBarProps = {
     progress: number
@@ -24,13 +22,6 @@ function getProgressBarColor(status: FileUploadStatus): string {
 }
 
 export default function ProgressBar({ progress, status }: ProgressBarProps) {
-    return (
-        <_ProgressBar
-            completed={progress}
-            labelClassName={styles.label}
-            height="15px"
-            bgColor={getProgressBarColor(status)}
-        />
-    )
+    return <Progress value={progress} color={getProgressBarColor(status)} />
 }
 

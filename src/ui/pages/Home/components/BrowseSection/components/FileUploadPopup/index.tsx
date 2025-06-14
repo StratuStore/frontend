@@ -5,6 +5,7 @@ import { useState } from "react"
 import clsx from "clsx"
 import { fileUploadStore } from "@/entities/FileUpload/store"
 import { observer } from "mobx-react-lite"
+import ReactDOM from "react-dom"
 
 function FileUploadPopupComponent() {
     const [isExpanded, setIsExpanded] = useState<boolean>(true)
@@ -13,7 +14,7 @@ function FileUploadPopupComponent() {
         setIsExpanded((prev) => !prev)
     }
 
-    return (
+    const popup = (
         <div
             className={clsx(styles.fileUploadPopup, {
                 [styles.expanded]: isExpanded,
@@ -27,6 +28,8 @@ function FileUploadPopupComponent() {
             </div>
         </div>
     )
+
+    return ReactDOM.createPortal(popup, document.body)
 }
 
 const FileUploadPopup = observer(FileUploadPopupComponent)

@@ -16,14 +16,16 @@ import { useMemo } from "react"
 import { TEST_IDS } from "@/shared/constants/tests/shared"
 
 function RenameFolderComponent() {
-    const folder = folderStore.selectedFolders[0]
+    const folder = folderStore.selectedFolders[0] ?? null
+
     const defaultValues = useMemo(
-        () => getDefaultValues(folder.name),
-        [folder.name]
+        () => getDefaultValues(folder?.name ?? ""),
+        [folder?.name]
     )
+
     const schema = useMemo(
-        () => createRenameFolderFormSchema(folder.name),
-        [folder.name]
+        () => createRenameFolderFormSchema(folder?.name ?? ""),
+        [folder?.name]
     )
 
     const {

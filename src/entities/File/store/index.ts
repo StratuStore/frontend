@@ -146,6 +146,8 @@ class FileStore {
             await fileService.rename(dto)
 
             await folderStore.refreshFolderContents()
+            this.closeActionModal()
+            await folderStore.getPinnedFiles()
         } catch (error) {
             console.error("Failed to rename file:", error)
             toast.error(t("toast.file.failedToRename", { ns: "common" }))
@@ -161,6 +163,8 @@ class FileStore {
             await fileService.delete(fileId)
 
             await folderStore.refreshFolderContents()
+            this.closeActionModal()
+            await folderStore.getPinnedFiles()
         } catch (error) {
             console.error("Failed to delete file:", error)
             toast.error(t("toast.file.failedToDelete", { ns: "common" }))

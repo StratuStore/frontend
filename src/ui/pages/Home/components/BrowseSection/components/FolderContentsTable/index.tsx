@@ -11,7 +11,7 @@ import { useVirtualizer } from "@tanstack/react-virtual"
 import { useRef, useEffect, useCallback } from "react"
 import styles from "./styles.module.scss"
 import TableRow from "./components/TableRow"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import Loader from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/Loader"
 import NoContent from "@/ui/pages/Home/components/BrowseSection/components/FolderContentsTable/components/NoContent"
 import { folderStore } from "@/entities/Folder/store"
@@ -70,6 +70,7 @@ function FolderContentsTableComponent({
     const parentRef = useRef<HTMLDivElement>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
+    const location = useLocation()
 
     const { data, columns } = useTableData(files, folders)
 
@@ -135,6 +136,12 @@ function FolderContentsTableComponent({
         }
     }, [handleObserver, folders, files])
 
+    useEffect(() => {
+        folderStore.clearSelectedFolders()
+        fileStore.clearSelectedFiles()
+        folderStore.resetPagination()
+    }, [location.pathname])
+
     function handleFileClick(file: File) {
         folderStore.clearSelectedFolders()
         fileStore.selectFile(file)
@@ -182,7 +189,7 @@ function FolderContentsTableComponent({
         return folderStore.sort.direction === SortingDirection.Asc ? "↑" : "↓"
     }
 
-    if (loading && !isLoadingMoreItems && !isCurrentFolderReady) {
+    if (loading && !isLoadingMoreItems) {
         return <Loader />
     }
 

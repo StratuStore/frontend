@@ -58,7 +58,6 @@ class FileUploadStore {
             )
 
             const metadata = await fileService.create(dto)
-            await folderStore.refreshFolderContents()
 
             if (!metadata.connectionId || !metadata.host) {
                 throw new Error("File metadata is missing connectionId or host")
@@ -75,6 +74,8 @@ class FileUploadStore {
                     fileUpload.status = FileUploadStatus.Successful
                     fileUpload.progress = 100
                     fileUpload.error = null
+
+                    folderStore.refreshFolderContents()
                 },
 
                 onError: (error: Error) => {

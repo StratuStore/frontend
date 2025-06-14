@@ -16,7 +16,7 @@ import DateRangePicker from "@/ui/shared/shadcn/DateRangePicker"
 import AccessLevelSelect from "@/ui/shared/AccessLevelSelect"
 import { SearchDto } from "@/entities/Search/dto/SearchDto"
 import { folderStore } from "@/entities/Folder/store"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import { AccessLevel } from "@/ui/shared/AccessLevelSelect/constants"
 
 export default function Content() {
@@ -33,6 +33,7 @@ export default function Content() {
 
     const { t } = useTranslation("common")
     const navigate = useNavigate()
+    const location = useLocation()
 
     const onSubmit = (data: FilteringFormValues) => {
         let accessLevel: boolean | undefined = undefined
@@ -54,8 +55,14 @@ export default function Content() {
             extensions: data.extension.length > 0 ? data.extension : undefined,
         })
 
+        if (location.pathname !== "/search") {
+            navigate({
+                pathname: "/search",
+            })
+        }
+
         folderStore.setSearchFilters(searchDto)
-        navigate("/search")
+        folderStore.getSearchResults()
     }
 
     const handleClear = () => {

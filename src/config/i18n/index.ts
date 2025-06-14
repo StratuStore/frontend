@@ -15,7 +15,7 @@ i18n.use(Backend)
         backend: {
             loadPath: "/locales/{{lng}}/{{ns}}.json",
         },
-        ns: ["home", "common"],
+        ns: ["home", "common", "search", "auth"],
     })
 
 export default i18n
