@@ -12,6 +12,9 @@ import { searchService } from "@/entities/Search/api"
 import { File } from "@/entities/File"
 import { fileStore } from "@/entities/File/store"
 import { SortingDirection } from "@/entities/Folder/types/SortingDirection"
+import i18next from "i18next"
+
+const t = i18next.t.bind(i18next)
 
 class FolderStore {
     constructor() {
@@ -153,7 +156,7 @@ class FolderStore {
             this.currentFolderId = rootFolder.id
         } catch (error) {
             console.error("Error fetching root folder:", error)
-            toast.error("Failed to load folder. Please try again.")
+            toast.error(t("toast.folder.loadFolerFailed", { ns: "common" }))
             this.currentFolder = null
             this.currentFolderId = null
         } finally {
@@ -177,7 +180,7 @@ class FolderStore {
             this.currentFolderId = folder.id
         } catch (error) {
             console.error("Error fetching folder:", error)
-            toast.error("Failed to load folder. Please try again.")
+            toast.error(t("toast.folder.loadFolerFailed", { ns: "common" }))
             this.currentFolder = null
             this.currentFolderId = null
         } finally {
@@ -214,7 +217,7 @@ class FolderStore {
             this.pagination.offset += this.pagination.limit
         } catch (error) {
             console.error("Error fetching more folder contents:", error)
-            toast.error("Failed to load more items. Please try again.")
+            toast.error(t("toast.folder.loadMoreFailed", { ns: "common" }))
             this.pagination.offset += this.pagination.limit
         } finally {
             this.setIsLoading(false)
@@ -255,6 +258,7 @@ class FolderStore {
             this.refreshFolderContents()
         } catch (error) {
             console.error("Error creating folder:", error)
+            toast.error(t("toast.folder.createFailed", { ns: "common" }))
         } finally {
             this.setActionLoading(false)
             this.closeActionModal()
@@ -279,6 +283,7 @@ class FolderStore {
             this.refreshFolderContents()
         } catch (error) {
             console.error("Error renaming folder:", error)
+            toast.error(t("toast.folder.renameFailed", { ns: "common" }))
         } finally {
             this.setActionLoading(false)
             this.closeActionModal()
@@ -291,16 +296,15 @@ class FolderStore {
         try {
             this.setActionLoading(true)
             await folderService.delete(dto)
-            toast.success("Folder deleted successfully.")
+            toast.success(t("toast.folder.deleted", { ns: "common" }))
 
             this.refreshFolderContents()
         } catch (error) {
-            console.error("Error renaming folder:", error)
-            toast.error("Failed to delete folder. Please try again.")
+            console.error("Error deleting folder:", error)
+            toast.error(t("toast.folder.deleteFailed", { ns: "common" }))
         } finally {
             this.setActionLoading(false)
             this.closeActionModal()
-            toast.success("Folder deleted successfully.")
         }
     }
 
@@ -318,7 +322,7 @@ class FolderStore {
             }
         } catch (error) {
             console.error("Error fetching search results:", error)
-            toast.error("Failed to load search results. Please try again.")
+            toast.error(t("toast.folder.searchLoadFailed", { ns: "common" }))
 
             this.searchResults = {
                 folders: [],
@@ -347,7 +351,7 @@ class FolderStore {
             this.sharedFolders = sharedFiles.folders
         } catch (error) {
             console.error("Error fetching pinned files:", error)
-            toast.error("Failed to load starred files. Please try again.")
+            toast.error(t("toast.folder.starredLoadFailed", { ns: "common" }))
         } finally {
             this.isSharedLoading = false
         }
@@ -361,13 +365,11 @@ class FolderStore {
             await folderStore.getPinnedFiles()
         } catch (error) {
             console.error("Failed to toggle pinned status:", error)
-            toast.error("Failed to update pinned status. Please try again.")
+            toast.error(t("toast.folder.updateStarredFailed", { ns: "common" }))
         }
     }
 
     async updateSort(field: string | null) {
-        // debugger
-
         this.resolveSort(field)
         await this.refreshFolderContents()
     }

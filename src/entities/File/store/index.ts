@@ -7,6 +7,9 @@ import { RenameFileDto } from "@/entities/File/dto/RenameFileDto"
 import { folderStore } from "@/entities/Folder/store"
 import { fileService } from "@/entities/File/api"
 import toast from "react-hot-toast"
+import i18next from "i18next"
+
+export const t = i18next.t.bind(i18next)
 
 class FileStore {
     constructor() {
@@ -145,7 +148,7 @@ class FileStore {
             await folderStore.refreshFolderContents()
         } catch (error) {
             console.error("Failed to rename file:", error)
-            toast.error("Failed to rename file. Please try again.")
+            toast.error(t("toast.file.failedToRename", { ns: "common" }))
         } finally {
             fileStore.setIsActionLoading(false)
             this.closeActionModal()
@@ -160,11 +163,11 @@ class FileStore {
             await folderStore.refreshFolderContents()
         } catch (error) {
             console.error("Failed to delete file:", error)
-            toast.error("Failed to rename file. Please try again.")
+            toast.error(t("toast.file.failedToDelete", { ns: "common" }))
         } finally {
             fileStore.setIsActionLoading(false)
             this.closeActionModal()
-            toast.success("File deleted successfully")
+            toast.success(t("toast.file.deleted", { ns: "common" }))
         }
     }
 
@@ -194,7 +197,7 @@ class FileStore {
             document.body.removeChild(link)
         } catch (error) {
             console.error("Failed to download file:", error)
-            toast.error("Failed to download file. Please try again.")
+            toast.error(t("toast.file.failedToDownload", { ns: "common" }))
         }
     }
 
@@ -210,7 +213,9 @@ class FileStore {
             file.connectionId = connectionId
         } catch (error) {
             console.error("Failed to load document preview:", error)
-            toast.error("Failed to load document preview. Please try again.")
+            toast.error(
+                t("toast.file.failedToLoadDocumentPreview", { ns: "common" })
+            )
         } finally {
             this.isDocumentPreviewLoading = false
         }
@@ -236,10 +241,12 @@ class FileStore {
 
         try {
             await fileService.updateAccessLevel(fileId, isPublic)
-            toast.success("File access level updated successfully")
+            toast.success(t("toast.file.accessLevelUpdated", { ns: "common" }))
         } catch (error) {
             console.error("Failed to update file access level:", error)
-            toast.error("Failed to update file access level. Please try again.")
+            toast.error(
+                t("toast.file.failedToUpdateAccessLevel", { ns: "common" })
+            )
         } finally {
             this.setIsUpdatingFileAccess(false)
         }
@@ -253,7 +260,7 @@ class FileStore {
             this.setSharedFile(file)
         } catch (error) {
             console.error("Failed to load shared file:", error)
-            toast.error("Sorry, this file is not available or does not exist.")
+            toast.error(t("toast.file.sharedFileUnavailable", { ns: "common" }))
             throw error
         } finally {
             this.setIsSharedFileLoading(false)
@@ -265,11 +272,12 @@ class FileStore {
             file.starred = !file.starred
             await fileService.togglePinned(file.id)
 
-            // await folderStore.refreshFolderContents()
             await folderStore.getPinnedFiles()
         } catch (error) {
             console.error("Failed to toggle pinned status:", error)
-            toast.error("Failed to update pinned status. Please try again.")
+            toast.error(
+                t("toast.file.failedToUpdateStarredStatus", { ns: "common" })
+            )
         }
     }
 }

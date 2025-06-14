@@ -3,13 +3,14 @@ import { File } from "@/entities/File"
 import { makeAutoObservable } from "mobx"
 import { ClipboardAction } from "@/entities/Clipboard/store/types"
 import { folderStore } from "@/entities/Folder/store"
-import { CopyFolderDto } from "@/entities/Folder/dto/CopyFolderDto"
 import { folderService } from "@/entities/Folder/api"
-import { CopyFileDto } from "@/entities/File/dto/CopyFileDto"
 import { fileService } from "@/entities/File/api"
 import { MoveFileDto } from "@/entities/File/dto/MoveFileDto"
 import toast from "react-hot-toast"
 import { fileStore } from "@/entities/File/store"
+import i18next from "i18next"
+
+export const t = i18next.t.bind(i18next)
 
 export class ClipboardStore {
     constructor() {
@@ -61,7 +62,7 @@ export class ClipboardStore {
             folderStore.clearSelectedFolders()
         }
 
-        toast.success("Item added to clipboard")
+        toast.success(t("toast.clipboard.itemAdded", { ns: "common" }))
     }
 
     copyToClipboard(item: File | Folder) {
@@ -75,62 +76,12 @@ export class ClipboardStore {
     }
 
     async paste() {
-        if (this.clipboardAction === ClipboardAction.Copy) {
-            await this.copy()
-        } else if (this.clipboardAction === ClipboardAction.Cut) {
-            await this.cut()
-        }
+        await this.cut()
 
         this.setClipboardAction(null)
         this.setFile(null)
         this.setFolder(null)
         folderStore.refreshFolderContents()
-    }
-
-    async copy() {
-        if (this.file) {
-            await this.copyFile()
-        } else if (this.folder) {
-            await this.copyFolder()
-        }
-    }
-
-    async copyFolder() {
-        const destinationFolder = folderStore.currentFolder
-
-        if (!this.folder || !destinationFolder) {
-            return
-        }
-
-        const dto = new CopyFolderDto(this.folder.id, destinationFolder.id)
-
-        try {
-            this.setClipboardActionLoading(true)
-            folderService.copy(dto)
-        } catch (error) {
-            console.log(error)
-        } finally {
-            this.setClipboardActionLoading(false)
-        }
-    }
-
-    async copyFile() {
-        const destinationFolder = folderStore.currentFolder
-
-        if (!this.file || !destinationFolder) {
-            return
-        }
-
-        const dto = new CopyFileDto(this.file.id, destinationFolder.id)
-
-        try {
-            this.setClipboardActionLoading(true)
-            fileService.copyFile(dto)
-        } catch (error) {
-            console.log(error)
-        } finally {
-            this.setClipboardActionLoading(false)
-        }
     }
 
     async cut() {
@@ -153,6 +104,9 @@ export class ClipboardStore {
         try {
             this.setClipboardActionLoading(true)
             folderService.move(dto)
+            toast.error(
+                t("toast.clipboard.failedToMoveFolder", { ns: "common" })
+            )
         } catch (error) {
             console.log(error)
         } finally {
@@ -174,7 +128,7 @@ export class ClipboardStore {
             fileService.move(dto)
         } catch (error) {
             console.log(error)
-            toast.error("Failed to move file. Please try again.")
+            toast.error(t("toast.clipboard.failedToMoveFile", { ns: "common" }))
         } finally {
             this.setClipboardActionLoading(false)
             fileStore.clearSelectedFiles()

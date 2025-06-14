@@ -2,6 +2,9 @@ import { ContextMenuGroup } from "@/ui/shared/ContextMenu"
 import { folderStore } from "@/entities/Folder/store"
 import { fileStore } from "@/entities/File/store"
 import { clipboardStore } from "@/entities/Clipboard/store"
+import i18next from "i18next"
+
+export const t = i18next.t.bind(i18next)
 
 export function useFolderContextMenuItems(): ContextMenuGroup[] {
     const selectedFiles = fileStore.selectedFiles
@@ -15,13 +18,13 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
             {
                 items: [
                     {
-                        label: "New folder",
+                        label: t("contextMenu.newFolder", { ns: "common" }),
                         onClick: () => {
                             folderStore.showCreateFolderModal()
                         },
                     },
                     {
-                        label: "Upload a file",
+                        label: t("contextMenu.uploadFile", { ns: "common" }),
                         onClick: () => {
                             if (!folderStore.currentFolder) {
                                 return
@@ -31,7 +34,7 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                         },
                     },
                     {
-                        label: "Paste",
+                        label: t("contextMenu.paste", { ns: "common" }),
                         onClick: () => {
                             clipboardStore.paste()
                         },
@@ -49,7 +52,7 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
             {
                 items: [
                     {
-                        label: "Cut",
+                        label: t("contextMenu.cut", { ns: "common" }),
                         onClick: () => {
                             clipboardStore.cutToClipboard(
                                 folderStore.selectedFolders[0]
@@ -57,7 +60,9 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                         },
                     },
                     {
-                        label: "Upload a file to this folder",
+                        label: t("contextMenu.uploadFileToThisFolder", {
+                            ns: "common",
+                        }),
                         onClick: () => {
                             if (!folderStore.currentFolder) {
                                 return
@@ -70,20 +75,22 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                     },
                     {
                         label: folder.starred
-                            ? "Remove from starred"
-                            : "Add to starred",
+                            ? t("contextMenu.removeFromStarred", {
+                                  ns: "common",
+                              })
+                            : t("contextMenu.addToStarred", { ns: "common" }),
                         onClick: () => {
                             folderStore.togglePinned(folder)
                         },
                     },
                     {
-                        label: "Rename",
+                        label: t("contextMenu.rename", { ns: "common" }),
                         onClick: () => {
                             folderStore.showRenameFolderModal()
                         },
                     },
                     {
-                        label: "Delete",
+                        label: t("contextMenu.delete", { ns: "common" }),
                         onClick: () => {
                             folderStore.showDeleteFolderModal()
                         },
@@ -100,7 +107,7 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
             {
                 items: [
                     {
-                        label: "Cut",
+                        label: t("contextMenu.cut", { ns: "common" }),
                         onClick: () => {
                             clipboardStore.cutToClipboard(
                                 fileStore.selectedFiles[0]
@@ -108,33 +115,35 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                         },
                     },
                     {
-                        label: "Download",
+                        label: t("contextMenu.download", { ns: "common" }),
                         onClick: () => {
                             fileStore.downloadFile(selectedFiles[0])
                         },
                     },
                     {
-                        label: "Rename",
+                        label: t("contextMenu.rename", { ns: "common" }),
                         onClick: () => {
                             fileStore.showRenameFileModal()
                         },
                     },
                     {
-                        label: "Manage access",
+                        label: t("contextMenu.manageAccess", { ns: "common" }),
                         onClick: () => {
                             fileStore.setIsAccessSettingsModalOpen(true)
                         },
                     },
                     {
                         label: file.starred
-                            ? "Remove from starred"
-                            : "Add to starred",
+                            ? t("contextMenu.removeFromStarred", {
+                                  ns: "common",
+                              })
+                            : t("contextMenu.addToStarred", { ns: "common" }),
                         onClick: () => {
                             fileStore.togglePinned(file)
                         },
                     },
                     {
-                        label: "Delete",
+                        label: t("contextMenu.delete", { ns: "common" }),
                         onClick: () => {
                             fileStore.showDeleteFileModal()
                         },

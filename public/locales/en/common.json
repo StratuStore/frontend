@@ -53,7 +53,53 @@
     "dateRangePicker": {
         "placeholder": "Pick a date range"
     },
-    "toastMessages": {
-        "auth": {}
+    "toast": {
+        "auth": {
+            "signInError": "An error occured while signing-in. Please, try again later",
+            "loadProfileError": "An error occured while loading your profile. Please, try again later"
+        },
+        "clipboard": {
+            "itemAdded": "Item added to clipboard",
+            "failedToMoveFolder": "Failed to move the folder. Please try again.",
+            "failedToMoveFile": "Failed to move the file. Please try again."
+        },
+        "file": {
+            "failedToRename": "Failed to rename the file. Please try again.",
+            "failedToDelete": "Failed to delete the file. Please try again.",
+            "deleted": "File deleted successfully",
+            "failedToDownload": "Failed to download the file. Please try again.",
+            "failedToLoadDocumentPreview": "Failed to load document preview. Please try again.",
+            "accessLevelUpdated": "Access level updated successfully",
+            "failedToUpdateAccessLevel": "Failed to update access level. Please try again.",
+            "sharedFileUnavailable": "Sorry, this file is not available or does not exist.",
+            "failedToUpdateStarredStatus": "Failed to update starred status. Please try again."
+        },
+        "fileUpload": {
+            "startUploadFailed": "Failed to start file upload. Please try again."
+        },
+        "folder": {
+            "loadFolderFailed": "Failed to load folder. Please try again.",
+            "loadMoreFailed": "Failed to load more items. Please try again.",
+            "createFailed": "Failed to create folder. Please try again.",
+            "renameFailed": "Failed to rename the folder. Please try again.",
+            "deleteFailed": "Failed to delete the folder. Please try again.",
+            "deleted": "Folder deleted successfully",
+            "searchLoadFailed": "Failed to load search results. Please try again.",
+            "starredLoadFailed": "Failed to load starred items. Please try again.",
+            "updateStarredFailed": "Failed to update starred status. Please try again."
+        }
+    },
+    "contextMenu": {
+        "rename": "Rename",
+        "delete": "Delete",
+        "manageAccess": "Manage access",
+        "download": "Download",
+        "cut": "Cut",
+        "addToStarred": "Add to starred",
+        "removeFromStarred": "Remove from starred",
+        "newFolder": "New folder",
+        "uploadFile": "Upload a file",
+        "paste": "Paste",
+        "uploadFileToThisFolder": "Upload a file to this folder"
     }
 }

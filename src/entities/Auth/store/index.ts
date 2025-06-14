@@ -11,6 +11,9 @@ import { RefreshDto } from "@/entities/Auth/dto/RefreshDto"
 import { authMapper } from "@/entities/Auth/api/mapper"
 import { RevokeDto } from "@/entities/Auth/dto/RevokeDto"
 import { fmsClient } from "@/config/axios"
+import i18next from "i18next"
+
+export const t = i18next.t.bind(i18next)
 
 export class AuthStore {
     constructor() {
@@ -45,9 +48,7 @@ export class AuthStore {
         } catch (error) {
             console.log(error)
 
-            toast.error(
-                "An error occured while signing-in. Please, try again later"
-            )
+            toast.error(t("toast.auth.signInError", { ns: "common" }))
         } finally {
             this.isLoading = false
         }
@@ -84,8 +85,6 @@ export class AuthStore {
             this.isLoading = true
             const persistedRefreshToken = this.getPersistedRefreshToken()
 
-            console.log("persistedRefreshToken", persistedRefreshToken)
-
             if (!persistedRefreshToken) {
                 return
             }
@@ -109,9 +108,7 @@ export class AuthStore {
             const statusCode = (error as AxiosError).response?.status
 
             if (statusCode !== 401) {
-                toast.error(
-                    "An error occured while loading your profile. Please, try again later"
-                )
+                toast.error(t("toast.auth.loadProfileError", { ns: "common" }))
             }
         } finally {
             runInAction(() => {

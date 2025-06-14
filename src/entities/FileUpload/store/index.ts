@@ -6,6 +6,9 @@ import { CreateFileDto } from "@/entities/File/dto/CreateFileDto"
 import toast from "react-hot-toast"
 import { folderStore } from "@/entities/Folder/store"
 import { fileSystemService } from "@/entities/FileUpload/api"
+import i18next from "i18next"
+
+const t = i18next.t.bind(i18next)
 
 class FileUploadStore {
     constructor() {
@@ -84,7 +87,9 @@ class FileUploadStore {
             this.shouldShowFileUploadPopup = true
         } catch (error) {
             console.error("Failed to add file upload:", error)
-            toast.error("Failed to start file upload. Please try again.")
+            toast.error(
+                t("toast.fileUpload.startUploadFailed", { ns: "common" })
+            )
         }
     }
 
