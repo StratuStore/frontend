@@ -12,7 +12,11 @@ function CurrentUserComponent() {
     return (
         <div className={styles.currentUserContainer}>
             <div className={styles.usernameWrapper}>{user.name}</div>
-            <img src={user.picture} className={styles.avatar} />
+            <img
+                src={user.picture}
+                className={styles.avatar}
+                referrerPolicy="no-referrer"
+            />
         </div>
     )
 }

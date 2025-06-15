@@ -9,6 +9,7 @@ import {
     defaultValues,
     filteringFormSchema,
     FilteringFormValues,
+    getDefaultValues,
 } from "./constants"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useTranslation } from "react-i18next"
@@ -28,7 +29,7 @@ export default function Content() {
         control,
     } = useForm<FilteringFormValues>({
         resolver: zodResolver(filteringFormSchema),
-        defaultValues,
+        defaultValues: getDefaultValues(),
     })
 
     const { t } = useTranslation("common")
