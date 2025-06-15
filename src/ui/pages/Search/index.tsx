@@ -15,6 +15,12 @@ function SearchPageComponent() {
     const navigate = useNavigate()
     const { t } = useTranslation("search")
 
+    const foldersCount = folders.length
+    const filesCount = files.length
+
+    const hasMore =
+        foldersCount + filesCount < folderStore.searchPagination.total
+
     useEffect(() => {
         if (Object.keys(folderStore.search).length === 0) {
             navigate("/")
@@ -38,6 +44,12 @@ function SearchPageComponent() {
                         loading={folderStore.isLoading}
                         disableContextMenu
                         isCurrentFolderReady={folderStore.isCurrentFolderReady}
+                        onLoadMore={() => folderStore.fetchMoreSearchResults()}
+                        isLoadingMore={
+                            folderStore.searchPagination.offset > 0 &&
+                            folderStore.isLoading
+                        }
+                        hasMore={hasMore}
                     />
                 )}
             </div>

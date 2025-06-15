@@ -32,6 +32,9 @@ interface FolderContentsTableProps {
     loading?: boolean
     disableContextMenu?: boolean
     isCurrentFolderReady?: boolean
+    isLoadingMore?: boolean
+    hasMore?: boolean
+    onLoadMore: () => void
 }
 
 type TableItem = {
@@ -65,7 +68,9 @@ function FolderContentsTableComponent({
     folders,
     loading = false,
     disableContextMenu = false,
-    isCurrentFolderReady = false,
+    isLoadingMore = false,
+    hasMore = false,
+    onLoadMore,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
@@ -82,9 +87,6 @@ function FolderContentsTableComponent({
 
     const selectedFolders = folderStore.selectedFolders
     const selectedFiles = fileStore.selectedFiles
-
-    const isLoadingMoreItems =
-        folderStore.isLoading && folderStore.pagination.offset > 0
 
     const { rows } = table.getRowModel()
 
@@ -103,17 +105,12 @@ function FolderContentsTableComponent({
     const handleObserver = useCallback(
         (entries: IntersectionObserverEntry[]) => {
             const [entry] = entries
-            if (
-                entry.isIntersecting &&
-                !folderStore.isLoading &&
-                folderStore.pagination.total > 0 &&
-                folderStore.pagination.offset + folderStore.pagination.limit <
-                    folderStore.pagination.total
-            ) {
-                folderStore.fetchMoreFolderContents()
+
+            if (entry.isIntersecting && !folderStore.isLoading && hasMore) {
+                onLoadMore()
             }
         },
-        []
+        [onLoadMore, hasMore]
     )
 
     useEffect(() => {
@@ -189,7 +186,7 @@ function FolderContentsTableComponent({
         return folderStore.sort.direction === SortingDirection.Asc ? "↑" : "↓"
     }
 
-    if (loading && !isLoadingMoreItems) {
+    if (loading && !isLoadingMore) {
         return <Loader />
     }
 
@@ -305,7 +302,7 @@ function FolderContentsTableComponent({
                 </table>
 
                 <div ref={loaderRef} className={styles.loaderContainer}>
-                    {isLoadingMoreItems && <Spinner />}
+                    {isLoadingMore && <Spinner width="32px" height="32px" />}
                 </div>
 
                 <FolderActionModal />

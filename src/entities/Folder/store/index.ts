@@ -13,6 +13,7 @@ import { File } from "@/entities/File"
 import { fileStore } from "@/entities/File/store"
 import { SortingDirection } from "@/entities/Folder/types/SortingDirection"
 import i18next from "i18next"
+import { FOLDER_CONTENTS_TABLE_PAGE_SIZE } from "@/entities/Folder/constants"
 
 const t = i18next.t.bind(i18next)
 
@@ -31,7 +32,7 @@ class FolderStore {
         offset: number
         total: number
     } = {
-        limit: 50,
+        limit: FOLDER_CONTENTS_TABLE_PAGE_SIZE,
         offset: 0,
         total: -1,
     }
@@ -53,15 +54,18 @@ class FolderStore {
     searchResults: {
         folders: Folder[]
         files: File[]
-        total: number
-        limit: number
-        offset: number
     } = {
         folders: [],
         files: [],
-        total: -1,
-        limit: Number.MAX_SAFE_INTEGER,
+    }
+    searchPagination: {
+        limit: number
+        offset: number
+        total: number
+    } = {
+        limit: FOLDER_CONTENTS_TABLE_PAGE_SIZE,
         offset: 0,
+        total: -1,
     }
 
     sharedFiles: File[] = []
@@ -143,7 +147,15 @@ class FolderStore {
 
     resetPagination() {
         this.pagination = {
-            limit: 50,
+            limit: FOLDER_CONTENTS_TABLE_PAGE_SIZE,
+            offset: 0,
+            total: -1,
+        }
+    }
+
+    resetSearchPagination() {
+        this.searchPagination = {
+            limit: FOLDER_CONTENTS_TABLE_PAGE_SIZE,
             offset: 0,
             total: -1,
         }
@@ -162,6 +174,10 @@ class FolderStore {
 
             this.currentFolder = rootFolder
             this.currentFolderId = rootFolder.id
+
+            const total = rootFolder.foldersCount + rootFolder.filesCount
+            this.pagination.total = total
+            this.pagination.offset = this.pagination.limit
         } catch (error) {
             console.error("Error fetching root folder:", error)
             toast.error(t("toast.folder.loadFolerFailed", { ns: "common" }))
@@ -186,6 +202,10 @@ class FolderStore {
 
             this.currentFolder = folder
             this.currentFolderId = folder.id
+
+            const total = folder.foldersCount + folder.filesCount
+            this.pagination.total = total
+            this.pagination.offset = this.pagination.limit
         } catch (error) {
             console.error("Error fetching folder:", error)
             toast.error(t("toast.folder.loadFolerFailed", { ns: "common" }))
@@ -326,10 +346,11 @@ class FolderStore {
             this.searchResults = {
                 folders: results.folders,
                 files: results.files,
-                total: results.foldersCount + results.filesCount,
-                limit: Number.MAX_SAFE_INTEGER,
-                offset: 0,
             }
+
+            const { foldersCount, filesCount } = results
+            this.searchPagination.total = foldersCount + filesCount
+            this.searchPagination.offset = this.searchPagination.limit
         } catch (error) {
             console.error("Error fetching search results:", error)
             toast.error(t("toast.folder.searchLoadFailed", { ns: "common" }))
@@ -337,10 +358,40 @@ class FolderStore {
             this.searchResults = {
                 folders: [],
                 files: [],
-                total: -1,
-                limit: Number.MAX_SAFE_INTEGER,
-                offset: 0,
             }
+        } finally {
+            this.setIsLoading(false)
+        }
+    }
+
+    async fetchMoreSearchResults() {
+        if (!this.currentFolder) {
+            return
+        }
+
+        this.setIsLoading(true)
+
+        const dto = new SearchDto({
+            ...this.search,
+            offset: this.searchPagination.offset,
+            limit: this.searchPagination.limit,
+        })
+
+        try {
+            const contents = await searchService.getResults(dto)
+            const { files, folders, foldersCount, filesCount } = contents
+
+            this.searchResults.files = [...this.searchResults.files, ...files]
+            this.searchResults.folders = [
+                ...this.searchResults.folders,
+                ...folders,
+            ]
+            this.searchPagination.total = foldersCount + filesCount
+            this.searchPagination.offset += this.pagination.limit
+        } catch (error) {
+            console.error("Error fetching more folder contents:", error)
+            toast.error(t("toast.folder.loadMoreFailed", { ns: "common" }))
+            this.searchPagination.offset -= this.pagination.limit
         } finally {
             this.setIsLoading(false)
         }

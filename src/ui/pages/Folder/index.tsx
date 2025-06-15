@@ -23,6 +23,11 @@ function FolderPageComponent() {
         folderStore.getFolderById(folderId)
     }, [folderId])
 
+    const foldersCount = currentFolder?.folders.length ?? 0
+    const filesCount = currentFolder?.files.length ?? 0
+
+    const hasMore = foldersCount + filesCount < folderStore.pagination.total
+
     return (
         <div className={styles.folderPageWrapper}>
             <div className={styles.headerWrapper}>
@@ -37,6 +42,12 @@ function FolderPageComponent() {
                     folders={currentFolder?.folders ?? []}
                     loading={folderStore.isLoading}
                     isCurrentFolderReady={folderStore.isCurrentFolderReady}
+                    onLoadMore={() => folderStore.fetchMoreFolderContents()}
+                    isLoadingMore={
+                        folderStore.pagination.offset > 0 &&
+                        folderStore.isLoading
+                    }
+                    hasMore={hasMore}
                 />
             </div>
             <FileUploadPopup />

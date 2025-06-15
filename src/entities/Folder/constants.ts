@@ -1,0 +1,2 @@
+export const FOLDER_CONTENTS_TABLE_PAGE_SIZE = 20
+

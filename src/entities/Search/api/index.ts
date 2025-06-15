@@ -4,16 +4,19 @@ import { fmsClient } from "@/config/axios"
 import { plainToClass } from "class-transformer"
 import { SearchDto } from "@/entities/Search/dto/SearchDto"
 import { SearchResponseDto } from "@/entities/Search/dto/SearchResponseDto"
+import { FOLDER_CONTENTS_TABLE_PAGE_SIZE } from "@/entities/Folder/constants"
 
 class SearchService {
     async getResults(dto: SearchDto) {
-        const { extensions, ...rest } = dto
+        const { extensions, limit, offset, ...rest } = dto
 
         const response = await fmsClient.get<SearchResponseDto>(
             `/directory/search`,
             {
                 params: {
                     ...rest,
+                    limit: limit ?? FOLDER_CONTENTS_TABLE_PAGE_SIZE,
+                    offset: offset ?? 0,
                     extensions: extensions?.join(","),
                 },
             }

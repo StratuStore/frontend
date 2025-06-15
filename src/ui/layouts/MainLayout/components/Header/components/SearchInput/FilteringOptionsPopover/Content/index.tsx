@@ -61,6 +61,7 @@ export default function Content() {
             })
         }
 
+        folderStore.resetSearchPagination()
         folderStore.setSearchFilters(searchDto)
         folderStore.getSearchResults()
     }

@@ -29,6 +29,8 @@ export class Folder {
     shared: boolean
 
     filesCount: number
+
+    @Expose({ name: "directoriesCount" })
     foldersCount: number
     createdAt: string
     updatedAt: string

@@ -10,11 +10,12 @@ import { fmsClient } from "@/config/axios"
 import { plainToClass } from "class-transformer"
 import { GetFolderResponseDto } from "@/entities/Folder/dto/GetFolderResponseDto"
 import { FolderContents } from "@/entities/Folder/types/FolderContents"
+import { FOLDER_CONTENTS_TABLE_PAGE_SIZE } from "@/entities/Folder/constants"
 class FolderSerive {
     async getById(id: string): Promise<Folder> {
         const params = {
             offset: 0,
-            limit: 50,
+            limit: FOLDER_CONTENTS_TABLE_PAGE_SIZE,
         }
 
         const response = await fmsClient.get<GetFolderResponseDto>(
@@ -33,7 +34,7 @@ class FolderSerive {
     async getRootFolder() {
         const params = {
             offset: 0,
-            limit: 50,
+            limit: FOLDER_CONTENTS_TABLE_PAGE_SIZE,
         }
 
         const response = await fmsClient.get<GetFolderResponseDto>(
