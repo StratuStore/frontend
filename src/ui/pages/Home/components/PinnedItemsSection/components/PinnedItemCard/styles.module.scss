@@ -2,7 +2,6 @@ $pinnedItemCardWidth: 250;
 
 .pinnedItemCard {
     width: $pinnedItemCardWidth + 0px;
-    height: 130px;
     background-color: var(--accent-color-opaque);
     border-radius: 10px;
     padding: 30px 25px;
@@ -18,5 +17,12 @@ $pinnedItemCardWidth: 250;
 
 :export {
     pinnedItemCardWidth: $pinnedItemCardWidth;
+}
+
+.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
 }
 

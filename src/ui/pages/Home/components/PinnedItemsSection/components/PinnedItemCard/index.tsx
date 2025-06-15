@@ -16,7 +16,7 @@ export default function PinnedItemCard({
     return (
         <div className={styles.pinnedItemCard} onClick={onClick}>
             <div>{icon}</div>
-            <div>{name}</div>
+            <div className={styles.name}>{name}</div>
         </div>
     )
 }

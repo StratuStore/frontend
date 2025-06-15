@@ -17,7 +17,9 @@ export default function FileBadge({ name }: FileBadgeProps) {
                     height="16px"
                 />
             </span>
-            {name}
+            <span className={styles.name} title={name}>
+                {name}
+            </span>
         </div>
     )
 }

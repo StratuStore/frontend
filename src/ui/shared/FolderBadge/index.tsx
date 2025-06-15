@@ -17,7 +17,7 @@ export default function FolderBadge({ name }: FolderBadgeProps) {
                     height="16px"
                 />
             </span>
-            {name}
+            <span className={styles.name}>{name}</span>
         </div>
     )
 }
