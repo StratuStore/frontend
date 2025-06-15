@@ -81,7 +81,6 @@ export class ClipboardStore {
         this.setClipboardAction(null)
         this.setFile(null)
         this.setFolder(null)
-        folderStore.refreshFolderContents()
     }
 
     async cut() {
@@ -103,7 +102,7 @@ export class ClipboardStore {
 
         try {
             this.setClipboardActionLoading(true)
-            folderService.move(dto)
+            await folderService.move(dto)
         } catch (error) {
             console.log(error)
             toast.error(
@@ -125,7 +124,7 @@ export class ClipboardStore {
 
         try {
             this.setClipboardActionLoading(true)
-            fileService.move(dto)
+            await fileService.move(dto)
         } catch (error) {
             console.log(error)
             toast.error(t("toast.clipboard.failedToMoveFile", { ns: "common" }))

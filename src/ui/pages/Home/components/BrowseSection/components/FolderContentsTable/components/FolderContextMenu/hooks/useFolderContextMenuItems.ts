@@ -36,7 +36,9 @@ export function useFolderContextMenuItems(): ContextMenuGroup[] {
                     {
                         label: t("contextMenu.paste", { ns: "common" }),
                         onClick: () => {
-                            clipboardStore.paste()
+                            clipboardStore.paste().then(() => {
+                                folderStore.refreshFolderContents()
+                            })
                         },
                         visible: isPasteOptionVisible,
                     },

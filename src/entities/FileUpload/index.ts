@@ -25,6 +25,5 @@ export class FileUpload {
     file: globalThis.File
     status: FileUploadStatus = FileUploadStatus.InProgress
     progress: number = 0
-    error: string | null = null
 }
 

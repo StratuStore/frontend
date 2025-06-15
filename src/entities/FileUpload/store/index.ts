@@ -73,14 +73,17 @@ class FileUploadStore {
                 onSuccess: () => {
                     fileUpload.status = FileUploadStatus.Successful
                     fileUpload.progress = 100
-                    fileUpload.error = null
 
                     folderStore.refreshFolderContents()
                 },
 
                 onError: (error: Error) => {
                     fileUpload.status = FileUploadStatus.Failed
-                    fileUpload.error = error.message
+                    toast.error(
+                        t("toast.fileUpload.uploadFailed", {
+                            ns: "common",
+                        })
+                    )
                 },
             })
 

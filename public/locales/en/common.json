@@ -75,7 +75,8 @@
             "failedToUpdateStarredStatus": "Failed to update starred status. Please try again."
         },
         "fileUpload": {
-            "startUploadFailed": "Failed to start file upload. Please try again."
+            "startUploadFailed": "Failed to start file upload. Please try again.",
+            "uploadFailed": "File upload failed. Please try again."
         },
         "folder": {
             "loadFolderFailed": "Failed to load folder. Please try again.",
