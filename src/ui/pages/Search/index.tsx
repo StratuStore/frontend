@@ -35,7 +35,9 @@ function SearchPageComponent() {
             </div>
 
             <div className={styles.contentsTableWrapper}>
-                {files.length === 0 && folders.length === 0 ? (
+                {files.length === 0 &&
+                folders.length === 0 &&
+                !folderStore.isLoading ? (
                     <NoContent />
                 ) : (
                     <FolderContentsTable
@@ -50,6 +52,9 @@ function SearchPageComponent() {
                             folderStore.isLoading
                         }
                         hasMore={hasMore}
+                        onSortChange={(sort) =>
+                            folderStore.updateSort(sort, true)
+                        }
                     />
                 )}
             </div>

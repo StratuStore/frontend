@@ -161,6 +161,13 @@ class FolderStore {
         }
     }
 
+    resetSort() {
+        this.sort = {
+            field: null,
+            direction: SortingDirection.Asc,
+        }
+    }
+
     async getRootFolder() {
         try {
             this.setIsLoading(true)
@@ -264,6 +271,20 @@ class FolderStore {
         fileStore.clearSelectedFiles()
 
         this.fetchMoreFolderContents()
+    }
+
+    async refreshSearchResults() {
+        if (!this.currentFolder) {
+            return
+        }
+
+        this.resetSearchPagination()
+        this.searchResults.folders = []
+        this.searchResults.files = []
+        this.clearSelectedFolders()
+        fileStore.clearSelectedFiles()
+
+        this.fetchMoreSearchResults()
     }
 
     showCreateFolderModal() {
@@ -375,6 +396,8 @@ class FolderStore {
             ...this.search,
             offset: this.searchPagination.offset,
             limit: this.searchPagination.limit,
+            sortByField: this.sort.field ?? undefined,
+            sortOrder: this.sort.direction,
         })
 
         try {
@@ -430,8 +453,13 @@ class FolderStore {
         }
     }
 
-    async updateSort(field: string | null) {
+    async updateSort(field: string | null, search: boolean = false) {
         this.resolveSort(field)
+        if (search) {
+            await this.refreshSearchResults()
+            return
+        }
+
         await this.refreshFolderContents()
     }
 

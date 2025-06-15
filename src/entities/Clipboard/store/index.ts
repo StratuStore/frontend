@@ -104,11 +104,11 @@ export class ClipboardStore {
         try {
             this.setClipboardActionLoading(true)
             folderService.move(dto)
+        } catch (error) {
+            console.log(error)
             toast.error(
                 t("toast.clipboard.failedToMoveFolder", { ns: "common" })
             )
-        } catch (error) {
-            console.log(error)
         } finally {
             this.setClipboardActionLoading(false)
         }

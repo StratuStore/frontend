@@ -48,6 +48,7 @@ function FolderPageComponent() {
                         folderStore.isLoading
                     }
                     hasMore={hasMore}
+                    onSortChange={(sort) => folderStore.updateSort(sort)}
                 />
             </div>
             <FileUploadPopup />

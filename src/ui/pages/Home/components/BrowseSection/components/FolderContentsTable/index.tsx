@@ -35,6 +35,7 @@ interface FolderContentsTableProps {
     isLoadingMore?: boolean
     hasMore?: boolean
     onLoadMore: () => void
+    onSortChange: (sortField: string) => Promise<void>
 }
 
 type TableItem = {
@@ -71,6 +72,7 @@ function FolderContentsTableComponent({
     isLoadingMore = false,
     hasMore = false,
     onLoadMore,
+    onSortChange,
 }: FolderContentsTableProps) {
     const parentRef = useRef<HTMLDivElement>(null)
     const loaderRef = useRef<HTMLDivElement>(null)
@@ -137,6 +139,7 @@ function FolderContentsTableComponent({
         folderStore.clearSelectedFolders()
         fileStore.clearSelectedFiles()
         folderStore.resetPagination()
+        folderStore.resetSort()
     }, [location.pathname])
 
     function handleFileClick(file: File) {
@@ -173,7 +176,7 @@ function FolderContentsTableComponent({
             return
         }
 
-        await folderStore.updateSort(sortField)
+        await onSortChange(sortField)
     }
 
     const getSortIndicator = (columnId: string) => {

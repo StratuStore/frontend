@@ -40,6 +40,7 @@ function BrowseSectionComponent() {
                         folderStore.isLoading
                     }
                     hasMore={hasMore}
+                    onSortChange={(sort) => folderStore.updateSort(sort)}
                 />
             </div>
             <FileUploadPopup />
